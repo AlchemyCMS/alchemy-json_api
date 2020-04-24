@@ -15,6 +15,8 @@ module Alchemy
         :updated_at,
         :status
       )
+
+      has_many :elements
     end
   end
 end

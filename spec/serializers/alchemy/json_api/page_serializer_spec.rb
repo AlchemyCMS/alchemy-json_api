@@ -41,4 +41,17 @@ RSpec.describe Alchemy::JsonApi::PageSerializer do
       )
     end
   end
+
+  describe "relationships" do
+    let(:element) { FactoryBot.create(:alchemy_element) }
+    subject { serializer.serializable_hash[:data][:relationships] }
+
+    before do
+      page.elements << element
+    end
+
+    it "has the right keys and values" do
+      expect(subject[:elements]).to eq(data: [{ id: element.id.to_s, type: :element }])
+    end
+  end
 end
