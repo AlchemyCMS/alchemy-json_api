@@ -29,4 +29,5 @@ Gem::Specification.new do |spec|
   spec.add_dependency "fast_jsonapi", "~> 1.5"
 
   spec.add_development_dependency "rspec-rails"
+  spec.add_development_dependency "factory_bot"
 end

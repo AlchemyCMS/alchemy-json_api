@@ -1,0 +1,45 @@
+- name: index
+  unique: true
+
+- name: readonly
+  fixed_attributes:
+    page_layout: readonly
+    public_on: ~
+    public_until: ~
+    visible: false
+    restricted: false
+    name: false
+    urlname: false
+    title: false
+    robot_index: false
+    robot_follow: false
+    meta_keywords: ~
+    meta_description: ~
+
+- name: standard
+  elements: [article, header, slider, download]
+  autogenerate: [header, article, download]
+
+- name: everything
+  elements: [text, all_you_can_eat, gallery, right_column, left_column]
+  autogenerate: [all_you_can_eat, right_column, left_column]
+
+- name: news
+  feed: true
+  unique: true
+  insert_elements_at: top
+  elements: [headline, news]
+  autogenerate: [news]
+  feed_elements: [news]
+
+- name: contact
+  unique: true
+  cache: false
+  elements: [headline, text, contactform]
+  autogenerate: [headline, text, contactform]
+
+- name: footer
+  layoutpage: true
+
+- name: <%= 'erb_' + 'layout' %>
+  unique: true
