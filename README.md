@@ -1,8 +1,14 @@
 # Alchemy::JsonApi
-Short description and motivation.
+
+A JSON-API based API for AlchemyCMS
 
 ## Usage
-How to use my plugin.
+
+Mount the engine in your `config/routes.rb` file where you want, like this:
+
+```rb
+  mount Alchemy::JsonApi::Engine => "/jsonapi/"
+```
 
 ## Installation
 Add this line to your application's Gemfile:

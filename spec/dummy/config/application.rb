@@ -1,4 +1,4 @@
-require_relative 'boot'
+require_relative "boot"
 
 require "rails"
 # Pick the frameworks you want:
@@ -32,4 +32,3 @@ module Dummy
     config.api_only = true
   end
 end
-
