@@ -1,14 +1,8 @@
 require "alchemy/json_api/essence_serializer"
 
 module Alchemy::JsonApi
-  class EssenceTextSerializer
+  class EssenceDateSerializer
     include EssenceSerializer
-    attributes(
-      :body
-    )
-
-    link :href, :link
-
-    has_one :content
+    attributes :date
   end
 end
