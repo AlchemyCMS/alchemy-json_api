@@ -1,5 +1,5 @@
-require 'rails_helper'
-require 'alchemy/test_support/factories'
+require "rails_helper"
+require "alchemy/test_support/factories"
 
 RSpec.describe Alchemy::JsonApi::EssenceFileSerializer do
   let(:content) { FactoryBot.create(:alchemy_content) }
@@ -10,10 +10,10 @@ RSpec.describe Alchemy::JsonApi::EssenceFileSerializer do
 
   it_behaves_like "an essence"
 
-  describe 'attributes' do
+  describe "attributes" do
     subject { serializer.serializable_hash[:data][:attributes] }
 
-    it 'has the right keys and values' do
+    it "has the right keys and values" do
       expect(subject[:title]).to eq("File")
       expect(subject[:css_class]).to eq("custom")
       expect(subject[:name]).to eq("image")
@@ -24,10 +24,10 @@ RSpec.describe Alchemy::JsonApi::EssenceFileSerializer do
     end
   end
 
-  describe 'links' do
+  describe "links" do
     subject { serializer.serializable_hash[:data][:links] }
 
-    it 'has the right keys and values' do
+    it "has the right keys and values" do
       expect(subject[:url]).to eq("/attachment/#{essence.attachment_id}/show")
       expect(subject[:download_url]).to eq("/attachment/#{essence.attachment_id}/download")
     end

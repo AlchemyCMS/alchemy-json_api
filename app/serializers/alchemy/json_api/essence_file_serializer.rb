@@ -1,27 +1,22 @@
-require 'alchemy/json_api/essence_serializer'
+require "alchemy/json_api/essence_serializer"
+require "alchemy/json_api/link_helper"
 
 module Alchemy::JsonApi
   class EssenceFileSerializer
     include EssenceSerializer
+    extend LinkHelper
+
     attributes(
       :title,
       :css_class
     )
 
     link :url do |essence|
-      if Rails.application.routes.default_url_options[:host]
-        Alchemy::Engine.routes.url_helpers.show_attachment_url(essence.attachment)
-      else
-        Alchemy::Engine.routes.url_helpers.show_attachment_path(essence.attachment)
-      end
+      alchemy_link :show_attachment, essence.attachment
     end
 
     link :download_url do |essence|
-      if Rails.application.routes.default_url_options[:host]
-        Alchemy::Engine.routes.url_helpers.download_attachment_url(essence.attachment)
-      else
-        Alchemy::Engine.routes.url_helpers.download_attachment_path(essence.attachment)
-      end
+      alchemy_link :download_attachment, essence.attachment
     end
 
     attribute :name do |essence|
