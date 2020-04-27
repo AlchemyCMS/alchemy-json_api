@@ -19,24 +19,26 @@ module Alchemy::JsonApi
       alchemy_link :download_attachment, essence.attachment
     end
 
-    attribute :name do |essence|
-      essence.attachment.name
-    end
+    with_options if: Proc.new { |essence| essence.attachment.present? } do
+      attribute :name do |essence|
+        essence.attachment.name
+      end
 
-    attribute :file_name do |essence|
-      essence.attachment.file_name
-    end
+      attribute :file_name do |essence|
+        essence.attachment.file_name
+      end
 
-    attribute :mime_type do |essence|
-      essence.attachment.file_mime_type
-    end
+      attribute :mime_type do |essence|
+        essence.attachment.file_mime_type
+      end
 
-    attribute :size do |essence|
-      essence.attachment.file_size
-    end
+      attribute :size do |essence|
+        essence.attachment.file_size
+      end
 
-    attribute :tag_list do |essence|
-      essence.attachment.tag_list
+      attribute :tag_list do |essence|
+        essence.attachment.tag_list
+      end
     end
   end
 end

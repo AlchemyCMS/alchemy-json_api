@@ -32,4 +32,16 @@ RSpec.describe Alchemy::JsonApi::EssenceFileSerializer do
       expect(subject[:download_url]).to eq("/attachment/#{essence.attachment_id}/download")
     end
   end
+
+  context "With no file set" do
+    let(:essence) do
+      FactoryBot.create(
+        :alchemy_essence_file,
+        content: content,
+        attachment: nil,
+      )
+    end
+
+    it_behaves_like "an essence"
+  end
 end
