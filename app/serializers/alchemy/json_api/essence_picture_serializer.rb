@@ -16,7 +16,7 @@ module Alchemy::JsonApi
       :link_target
     )
 
-    link :url do |essence|
+    link :url  do |essence|
       essence.picture_url
     end
 
@@ -24,28 +24,30 @@ module Alchemy::JsonApi
       essence.link
     end
 
-    attribute :name do |essence|
-      essence.picture.name
-    end
+    with_options if: Proc.new { |essence| essence.picture.present? } do
+      attribute :name do |essence|
+        essence.picture.name
+      end
 
-    attribute :file_name do |essence|
-      essence.picture.image_file_name
-    end
+      attribute :file_name do |essence|
+        essence.picture.image_file_name
+      end
 
-    attribute :mime_type do |essence|
-      "image/#{essence.picture.image_file_format}"
-    end
+      attribute :mime_type do |essence|
+        "image/#{essence.picture.image_file_format}"
+      end
 
-    attribute :size do |essence|
-      essence.picture.image_file_size
-    end
+      attribute :size do |essence|
+        essence.picture.image_file_size
+      end
 
-    attribute :dimensions do |essence|
-      essence.picture.image_size
-    end
+      attribute :dimensions do |essence|
+        essence.picture.image_size
+      end
 
-    attribute :tag_list do |essence|
-      essence.picture.tag_list
+      attribute :tag_list do |essence|
+        essence.picture.tag_list
+      end
     end
   end
 end

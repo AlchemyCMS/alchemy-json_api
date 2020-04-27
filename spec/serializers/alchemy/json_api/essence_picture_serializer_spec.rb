@@ -42,4 +42,16 @@ RSpec.describe Alchemy::JsonApi::EssencePictureSerializer do
       expect(subject[:href]).to eq("/hello")
     end
   end
+
+  context "With no picture set" do
+    let(:essence) do
+      FactoryBot.create(
+        :alchemy_essence_picture,
+        content: content,
+        picture: nil,
+      )
+    end
+
+    it_behaves_like "an essence"
+  end
 end
