@@ -7,7 +7,6 @@ RSpec.describe Alchemy::JsonApi::EssenceLinkSerializer do
   let(:essence) do
     Alchemy::EssenceLink.create(
       link: "/hello",
-      link_class_name: "custom-link",
       link_target: "_blank",
       link_title: "Greetings!",
       content: content,
@@ -23,17 +22,9 @@ RSpec.describe Alchemy::JsonApi::EssenceLinkSerializer do
     subject { serializer.serializable_hash[:data][:attributes] }
 
     it "has the right keys and values" do
-      expect(subject[:target]).to eq("_blank")
-      expect(subject[:class_name]).to eq("custom-link")
-      expect(subject[:title]).to eq("Greetings!")
-    end
-  end
-
-  describe "links" do
-    subject { serializer.serializable_hash[:data][:links] }
-
-    it "has the right keys and values" do
-      expect(subject[:href]).to eq("/hello")
+      expect(subject[:ingredient]).to eq("/hello")
+      expect(subject[:link_target]).to eq("_blank")
+      expect(subject[:link_title]).to eq("Greetings!")
     end
   end
 end
