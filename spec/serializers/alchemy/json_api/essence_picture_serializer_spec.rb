@@ -9,7 +9,6 @@ RSpec.describe Alchemy::JsonApi::EssencePictureSerializer do
     FactoryBot.create(
       :alchemy_essence_picture,
       title: "Picture",
-      css_class: "custom",
       content: content,
       link: "/hello",
     )
@@ -25,22 +24,11 @@ RSpec.describe Alchemy::JsonApi::EssencePictureSerializer do
 
     it "has the right keys and values" do
       expect(subject[:title]).to eq("Picture")
-      expect(subject[:css_class]).to eq("custom")
-      expect(subject[:name]).to eq("image")
-      expect(subject[:file_name]).to eq("image.png")
-      expect(subject[:mime_type]).to eq("image/png")
-      expect(subject[:size]).to eq(70)
-      expect(subject[:dimensions]).to eq(height: 1, width: 1)
-      expect(subject[:tag_list]).to eq([])
-    end
-  end
-
-  describe "links" do
-    subject { serializer.serializable_hash[:data][:links] }
-
-    it "has the right keys and values" do
-      expect(subject[:url]).to match(/\/pictures\/\w+\/image\.png\?sha=\w+/)
-      expect(subject[:href]).to eq("/hello")
+      expect(subject[:image_name]).to eq("image")
+      expect(subject[:image_file_name]).to eq("image.png")
+      expect(subject[:image_mime_type]).to eq("image/png")
+      expect(subject[:image_file_size]).to eq(70)
+      expect(subject[:image_dimensions]).to eq(height: 0, width: 0)
     end
   end
 
@@ -54,5 +42,13 @@ RSpec.describe Alchemy::JsonApi::EssencePictureSerializer do
     end
 
     it_behaves_like "an essence"
+
+    describe "attributes" do
+      subject { serializer.serializable_hash[:data][:attributes] }
+
+      it "has the right keys and values" do
+        expect(subject[:ingredient]).to be nil
+      end
+    end
   end
 end
