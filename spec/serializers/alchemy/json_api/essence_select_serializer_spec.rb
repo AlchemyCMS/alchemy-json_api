@@ -15,7 +15,7 @@ RSpec.describe Alchemy::JsonApi::EssenceSelectSerializer do
     subject { serializer.serializable_hash[:data][:attributes] }
 
     it "has the right keys and values" do
-      expect(subject[:value]).to eq("wat")
+      expect(subject[:ingredient]).to eq("wat")
     end
   end
 end
