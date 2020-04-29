@@ -4,11 +4,10 @@ module Alchemy::JsonApi
   class EssenceTextSerializer
     include EssenceSerializer
     attributes(
-      :body
+      :body,
+      :link_title,
+      :link_target
     )
-
-    link :href, :link
-
-    has_one :content
+    attribute :link_url, &:link
   end
 end

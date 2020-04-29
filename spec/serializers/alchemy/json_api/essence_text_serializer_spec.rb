@@ -16,22 +16,9 @@ RSpec.describe Alchemy::JsonApi::EssenceTextSerializer do
 
     it "has the right keys and values" do
       expect(subject[:body]).to eq("This is a headline")
-    end
-  end
-
-  describe "relationships" do
-    subject { serializer.serializable_hash[:data][:relationships] }
-
-    it "has the right keys and values" do
-      expect(subject[:content]).to eq(data: { id: content.id.to_s, type: :content })
-    end
-  end
-
-  describe "links" do
-    subject { serializer.serializable_hash[:data][:links] }
-
-    it "has the right keys and values" do
-      expect(subject[:href]).to eq("/hello")
+      expect(subject[:link_url]).to eq("/hello")
+      expect(subject[:link_target]).to eq("_blank")
+      expect(subject[:link_title]).to eq("Warm Greetings")
     end
   end
 end
