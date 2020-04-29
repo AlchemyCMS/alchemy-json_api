@@ -17,7 +17,7 @@ RSpec.describe Alchemy::JsonApi::ElementSerializer do
     subject { serializer.serializable_hash[:data][:attributes] }
 
     it "has the right keys and values" do
-      expect(subject[:name]).to eq("article")
+      expect(subject[:element_type]).to eq("article")
       expect(subject[:created_at]).to eq(element.created_at)
       expect(subject[:updated_at]).to eq(element.updated_at)
       expect(subject[:tag_list]).to eq(["Tag1", "Tag2"])
@@ -30,6 +30,7 @@ RSpec.describe Alchemy::JsonApi::ElementSerializer do
 
     it "has the right keys and values" do
       expect(subject[:page]).to eq(data: { id: element.page_id.to_s, type: :page })
+      expect(subject[:essences]).to eq(data: element.contents.map { |c| {id: c.essence_id.to_s, type: c.essence.class.name.demodulize.underscore.to_sym} })
     end
   end
 end
