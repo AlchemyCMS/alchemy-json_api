@@ -15,22 +15,13 @@ RSpec.describe Alchemy::JsonApi::EssenceFileSerializer do
     subject { serializer.serializable_hash[:data][:attributes] }
 
     it "has the right keys and values" do
-      expect(subject[:title]).to eq("File")
-      expect(subject[:css_class]).to eq("custom")
-      expect(subject[:name]).to eq("image")
-      expect(subject[:file_name]).to eq("image.png")
-      expect(subject[:mime_type]).to eq("image/png")
-      expect(subject[:size]).to eq(70)
-      expect(subject[:tag_list]).to eq([])
-    end
-  end
-
-  describe "links" do
-    subject { serializer.serializable_hash[:data][:links] }
-
-    it "has the right keys and values" do
-      expect(subject[:url]).to eq("/attachment/#{essence.attachment_id}/show")
-      expect(subject[:download_url]).to eq("/attachment/#{essence.attachment_id}/download")
+      expect(subject[:ingredient]).to eq("/attachment/#{essence.attachment_id}/download/image.png")
+      expect(subject[:link_title]).to eq("File")
+      expect(subject[:attachment_name]).to eq("image")
+      expect(subject[:attachment_file_name]).to eq("image.png")
+      expect(subject[:attachment_mime_type]).to eq("image/png")
+      expect(subject[:attachment_file_size]).to eq(70)
+      expect(subject[:attachment_tag_list]).to eq([])
     end
   end
 
@@ -44,5 +35,13 @@ RSpec.describe Alchemy::JsonApi::EssenceFileSerializer do
     end
 
     it_behaves_like "an essence"
+
+    describe "attributes" do
+      subject { serializer.serializable_hash[:data][:attributes] }
+
+      it "has the right keys and values" do
+        expect(subject[:ingredient]).to be nil
+      end
+    end
   end
 end
