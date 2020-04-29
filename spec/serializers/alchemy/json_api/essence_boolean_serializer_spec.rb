@@ -15,7 +15,7 @@ RSpec.describe Alchemy::JsonApi::EssenceBooleanSerializer do
     subject { serializer.serializable_hash[:data][:attributes] }
 
     it "has the right keys and values" do
-      expect(subject[:value]).to be true
+      expect(subject[:ingredient]).to be true
     end
   end
 end
