@@ -21,7 +21,6 @@ RSpec.describe Alchemy::JsonApi::EssenceFileSerializer do
       expect(subject[:attachment_file_name]).to eq("image.png")
       expect(subject[:attachment_mime_type]).to eq("image/png")
       expect(subject[:attachment_file_size]).to eq(70)
-      expect(subject[:attachment_tag_list]).to eq([])
     end
   end
 

@@ -25,10 +25,6 @@ module Alchemy::JsonApi
       attribute :attachment_file_size do |essence|
         essence.attachment.file_size
       end
-
-      attribute :attachment_tag_list do |essence|
-        essence.attachment.tag_list
-      end
     end
   end
 end
