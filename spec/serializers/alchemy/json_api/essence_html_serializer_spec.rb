@@ -15,7 +15,7 @@ RSpec.describe Alchemy::JsonApi::EssenceHtmlSerializer do
     subject { serializer.serializable_hash[:data][:attributes] }
 
     it "has the right keys and values" do
-      expect(subject[:source]).to eq("<iframe></iframe>")
+      expect(subject[:ingredient]).to eq("<iframe></iframe>")
     end
   end
 end
