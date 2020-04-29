@@ -2,9 +2,10 @@ require "rails_helper"
 require "alchemy/test_support/factories"
 
 RSpec.describe Alchemy::JsonApi::EssenceRichtextSerializer do
-  let(:content) { FactoryBot.create(:alchemy_content) }
+  let(:element) { FactoryBot.create(:alchemy_element) }
+  let(:content) { FactoryBot.create(:alchemy_content, element: element) }
   let(:essence) do
-    Alchemy::EssenceRichtext.new(
+    Alchemy::EssenceRichtext.create(
       body: "<h3>Hello</h3>",
       stripped_body: "Hello",
       content: content,

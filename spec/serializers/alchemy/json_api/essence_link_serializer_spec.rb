@@ -2,7 +2,8 @@ require "rails_helper"
 require "alchemy/test_support/factories"
 
 RSpec.describe Alchemy::JsonApi::EssenceLinkSerializer do
-  let(:content) { FactoryBot.create(:alchemy_content) }
+  let(:element) { FactoryBot.create(:alchemy_element) }
+  let(:content) { FactoryBot.create(:alchemy_content, element: element) }
   let(:essence) do
     Alchemy::EssenceLink.create(
       link: "/hello",

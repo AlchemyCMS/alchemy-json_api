@@ -3,7 +3,8 @@ require "alchemy/test_support/factories/content_factory"
 require "alchemy/test_support/factories/essence_picture_factory"
 
 RSpec.describe Alchemy::JsonApi::EssencePictureSerializer do
-  let(:content) { FactoryBot.create(:alchemy_content) }
+  let(:element) { FactoryBot.create(:alchemy_element) }
+  let(:content) { FactoryBot.create(:alchemy_content, element: element) }
   let(:essence) do
     FactoryBot.create(
       :alchemy_essence_picture,

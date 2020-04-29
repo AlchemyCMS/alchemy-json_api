@@ -12,7 +12,7 @@ RSpec.shared_examples "an essence" do
     subject { serializer.serializable_hash[:data][:relationships] }
 
     it "has the right keys and values" do
-      expect(subject[:content]).to eq(data: { id: content.id.to_s, type: :content })
+      expect(subject[:element]).to eq(data: { id: essence.element.id.to_s, type: :element })
     end
   end
 end
