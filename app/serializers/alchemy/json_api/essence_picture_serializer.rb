@@ -11,7 +11,7 @@ module Alchemy::JsonApi
       :link_title,
       :link_target
     )
-
+    attribute :ingredient, &:picture_url
     attribute :alt_text, &:alt_tag
     attribute :link_url, &:link
 

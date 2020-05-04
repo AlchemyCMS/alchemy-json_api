@@ -24,6 +24,7 @@ RSpec.describe Alchemy::JsonApi::EssencePictureSerializer do
 
     it "has the right keys and values" do
       expect(subject[:title]).to eq("Picture")
+      expect(subject[:ingredient]).to match(/pictures\/\w+\/image.png/)
       expect(subject[:image_name]).to eq("image")
       expect(subject[:image_file_name]).to eq("image.png")
       expect(subject[:image_mime_type]).to eq("image/png")
