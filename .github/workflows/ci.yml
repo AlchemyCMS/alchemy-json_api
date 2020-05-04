@@ -1,0 +1,47 @@
+name: Ruby
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - name: Set up Ruby 2.6
+      uses: actions/setup-ruby@v1
+      with:
+        ruby-version: 2.6.x
+    - name: Restore apt cache
+      id: apt-cache
+      uses: actions/cache@v1
+      with:
+        path: /home/runner/apt/cache
+        key: apt-sqlite-
+    - name: Install SQLite headers
+      run: |
+        sudo mkdir -p /home/runner/apt/cache
+        sudo apt-get update -qq
+        sudo apt-get install -qq --fix-missing libsqlite3-dev -o dir::cache::archives="/home/runner/apt/cache"
+        sudo chown -R runner /home/runner/apt/cache
+    - name: Install bundler
+      run: |
+        gem install bundler
+    - name: Restore Ruby Gems cache
+      id: cache
+      uses: actions/cache@v1
+      with:
+        path: vendor/bundle
+        key: bundle-${{ hashFiles('**/Gemfile.lock') }}
+        restore-keys: |
+          bundle-
+    - name: Install bundle
+      timeout-minutes: 10
+      run: |
+        bundle install --jobs 4 --retry 3 --path vendor/bundle
+    - name: Build and test with RSpec
+      env:
+        RAILS_ENV: test
+        DB_USER: user
+        DB_PASSWORD: password
+        DB_PORT: ${{ job.services.mariadb.ports[3306] }}
+      run: bundle exec rake
