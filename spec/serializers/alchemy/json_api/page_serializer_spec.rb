@@ -25,7 +25,7 @@ RSpec.describe Alchemy::JsonApi::PageSerializer do
       expect(attributes[:name]).to eq(page.name)
       expect(attributes[:page_layout]).to eq("standard")
       expect(attributes[:title]).to eq("Page Title")
-      expect(attributes[:language_code]).to eq("en")
+      expect(attributes[:language_code]).to eq("de")
       expect(attributes[:meta_keywords]).to eq("Meta Keywords")
       expect(attributes[:meta_description]).to eq("Meta Description")
       expect(attributes[:created_at]).to eq(page.created_at)

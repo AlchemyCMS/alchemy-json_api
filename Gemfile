@@ -14,3 +14,5 @@ gemspec
 # To use a debugger
 # gem 'byebug', group: [:development, :test]
 gem "sqlite3"
+
+gem "alchemy_cms", github: 'AlchemyCMS/alchemy_cms', branch: "master"
