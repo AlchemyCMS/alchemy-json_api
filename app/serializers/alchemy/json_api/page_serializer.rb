@@ -17,6 +17,7 @@ module Alchemy
       )
 
       has_many :elements
+      has_many :all_elements, record_type: :element, serializer: ElementSerializer
     end
   end
 end

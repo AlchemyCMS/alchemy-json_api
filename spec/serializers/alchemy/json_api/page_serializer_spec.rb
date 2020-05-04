@@ -52,6 +52,7 @@ RSpec.describe Alchemy::JsonApi::PageSerializer do
 
     it "has the right keys and values" do
       expect(subject[:elements]).to eq(data: [{ id: element.id.to_s, type: :element }])
+      expect(subject[:all_elements]).to eq(data: [{ id: element.id.to_s, type: :element }])
     end
   end
 end
