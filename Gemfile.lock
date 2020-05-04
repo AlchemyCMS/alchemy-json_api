@@ -35,6 +35,7 @@ PATH
     alchemy-json_api (0.1.0)
       alchemy_cms
       fast_jsonapi (~> 1.5)
+      jsonapi.rb
 
 GEM
   remote: https://rubygems.org/
@@ -150,6 +151,12 @@ GEM
     jquery-ui-rails (6.0.1)
       railties (>= 3.2.16)
     jsonapi-renderer (0.2.2)
+    jsonapi-rspec (0.0.4)
+      rspec-expectations
+    jsonapi.rb (1.5.7)
+      fast_jsonapi (~> 1.5)
+      rack
+      ransack
     kaminari (1.2.0)
       activesupport (>= 4.1.0)
       kaminari-actionview (= 1.2.0)
@@ -292,6 +299,7 @@ DEPENDENCIES
   alchemy-json_api!
   alchemy_cms!
   factory_bot
+  jsonapi-rspec
   rspec-rails
   sqlite3
 

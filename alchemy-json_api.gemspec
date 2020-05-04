@@ -26,8 +26,10 @@ Gem::Specification.new do |spec|
   spec.files = Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.md"]
 
   spec.add_dependency "alchemy_cms"
+  spec.add_dependency "jsonapi.rb"
   spec.add_dependency "fast_jsonapi", "~> 1.5"
 
   spec.add_development_dependency "rspec-rails"
   spec.add_development_dependency "factory_bot"
+  spec.add_development_dependency "jsonapi-rspec"
 end
