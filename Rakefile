@@ -1,19 +1,28 @@
+#!/usr/bin/env rake
 begin
-  require "bundler/setup"
+  require 'bundler/setup'
 rescue LoadError
-  puts "You must `gem install bundler` and `bundle install` to run rake tasks"
+  puts 'You must `gem install bundler` and `bundle install` to run rake tasks'
 end
+Bundler::GemHelper.install_tasks
 
-require "rdoc/task"
+require 'rspec/core'
+require 'rspec/core/rake_task'
+RSpec::Core::RakeTask.new(:spec)
 
-RDoc::Task.new(:rdoc) do |rdoc|
-  rdoc.rdoc_dir = "rdoc"
-  rdoc.title = "Alchemy::JsonApi"
-  rdoc.options << "--line-numbers"
-  rdoc.rdoc_files.include("README.md")
-  rdoc.rdoc_files.include("lib/**/*.rb")
+task default: [:test_setup, :spec]
+
+require 'active_support/core_ext/string'
+
+desc 'Setup test app'
+task :test_setup do
+  Dir.chdir('spec/dummy') do
+    system <<-SETUP.strip_heredoc
+      export RAILS_ENV=test && \
+      bin/rake db:environment:set db:drop && \
+      bin/rake railties:install:migrations && \
+      bin/rake db:migrate
+    SETUP
+    exit($?.exitstatus) unless $?.success?
+  end
 end
-
-load "rails/tasks/statistics.rake"
-
-require "bundler/gem_tasks"
