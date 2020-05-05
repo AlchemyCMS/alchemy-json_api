@@ -10,14 +10,17 @@ module Alchemy
         :language_code,
         :meta_keywords,
         :meta_description,
-        :tag_list,
         :created_at,
         :updated_at,
-        :status
       )
 
       has_many :elements
       has_many :all_elements, record_type: :element, serializer: ElementSerializer
+
+      with_options if: -> (_, params) { params[:admin] == true } do
+        attribute :tag_list
+        attribute :status
+      end
     end
   end
 end

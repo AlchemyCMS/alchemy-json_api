@@ -30,15 +30,24 @@ RSpec.describe Alchemy::JsonApi::PageSerializer do
       expect(attributes[:meta_description]).to eq("Meta Description")
       expect(attributes[:created_at]).to eq(page.created_at)
       expect(attributes[:updated_at]).to eq(page.updated_at)
-      expect(attributes[:tag_list]).to eq(["Tag1", "Tag2"])
-      expect(attributes[:status]).to eq(
-        {
-          public: false,
-          locked: false,
-          restricted: false,
-          visible: false,
-        }
-      )
+      expect(attributes.keys).not_to include(:tag_list, :status)
+    end
+
+    context "with admin set to true" do
+      let(:options) { {params: {admin: true}} }
+
+      it "includes admin-only attributes" do
+        attributes = subject[:data][:attributes]
+        expect(attributes[:tag_list]).to eq(["Tag1", "Tag2"])
+        expect(attributes[:status]).to eq(
+          {
+            public: false,
+            locked: false,
+            restricted: false,
+            visible: false,
+          }
+        )
+      end
     end
   end
 
