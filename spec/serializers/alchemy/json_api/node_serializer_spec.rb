@@ -44,7 +44,6 @@ RSpec.describe Alchemy::JsonApi::NodeSerializer do
     subject { serializer.serializable_hash[:data][:relationships] }
 
     it "has the right keys and values" do
-      expect(subject[:descendants]).to eq(data: [{ id: child_node.id.to_s, type: :node }, { id: child_of_child_node.id.to_s, type: :node}])
       expect(subject[:children]).to eq(data: [{ id: child_node.id.to_s, type: :node }])
     end
   end
