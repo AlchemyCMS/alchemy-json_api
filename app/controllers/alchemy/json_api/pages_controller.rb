@@ -3,7 +3,7 @@ module Alchemy
     class PagesController < ApplicationController
       include JSONAPI::Fetching
       def show
-        @page = ::Alchemy::Page.preload(all_elements: {contents: :essence}).find(params[:id])
+        @page = ::Alchemy::Page.preload(all_elements: [:parent_element, :nested_elements, {contents: {essence: :ingredient_association}}]).find(params[:id])
         render jsonapi: @page
       end
 
