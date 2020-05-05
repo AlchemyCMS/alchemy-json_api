@@ -3,18 +3,34 @@ module Alchemy
     class PagesController < BaseController
       include JSONAPI::Fetching
 
+      before_action :load_page
+
       def show
-        @page = ::Alchemy::Page.
-          preload(all_elements: [:parent_element, :nested_elements, {contents: {essence: :ingredient_association}}]).
-          find(params[:id])
         render jsonapi: @page
       end
 
       private
 
-      def jsonapi_serializer_class(resource, is_collection)
-        klass = resource.class.name.demodulize
-        "Alchemy::JsonApi::#{klass}Serializer".constantize
+
+      def load_page
+        @page = load_page_by_id || load_page_by_urlname || raise(ActiveRecord::RecordNotFound)
+      end
+
+      def load_page_by_id
+        page_scope.find_by(id: params[:id])
+      end
+
+      def load_page_by_urlname
+        # The route param is called :id although it might be a string
+        page_scope.find_by(
+          urlname: params[:id],
+          language_code: params[:locale] || Language.current.code
+        )
+      end
+
+      def page_scope
+        ::Alchemy::Page.
+          preload(all_elements: [:parent_element, :nested_elements, {contents: {essence: :ingredient_association}}])
       end
     end
   end

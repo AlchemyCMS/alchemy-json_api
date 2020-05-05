@@ -33,5 +33,15 @@ RSpec.describe "Alchemy::JsonApi::Pages", type: :request do
         expect(included).to include(have_type('element').and have_id(element.id.to_s))
       end
     end
+
+    context "when requesting a URL" do
+      it "finds the page" do
+        get alchemy_json_api.page_path(page.urlname)
+        expect(response).to have_http_status(200)
+        document = JSON.parse(response.body)
+        expect(document['data']).to have_id(page.id.to_s)
+        expect(document['data']).to have_type("page")
+      end
+    end
   end
 end
