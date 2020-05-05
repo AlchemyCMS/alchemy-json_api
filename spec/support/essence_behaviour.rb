@@ -3,8 +3,7 @@ RSpec.shared_examples "an essence" do
     subject { serializer.serializable_hash[:data][:attributes] }
 
     it "has the right keys and values" do
-      expect(subject[:created_at]).to eq(essence.created_at)
-      expect(subject[:updated_at]).to eq(essence.updated_at)
+      expect(subject).to have_key(:ingredient)
     end
   end
 
