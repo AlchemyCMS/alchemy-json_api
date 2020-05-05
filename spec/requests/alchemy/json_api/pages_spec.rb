@@ -6,6 +6,7 @@ RSpec.describe "Alchemy::JsonApi::Pages", type: :request do
   let(:page) do
     FactoryBot.create(
       :alchemy_page,
+      :public,
       urlname: "a-page",
       title: "Page Title",
       meta_keywords: "Meta Keywords",

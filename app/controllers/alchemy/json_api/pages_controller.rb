@@ -11,7 +11,6 @@ module Alchemy
 
       private
 
-
       def load_page
         @page = load_page_by_id || load_page_by_urlname || raise(ActiveRecord::RecordNotFound)
       end
@@ -30,6 +29,7 @@ module Alchemy
 
       def page_scope
         ::Alchemy::Page.
+          published.
           preload(all_elements: [:parent_element, :nested_elements, {contents: {essence: :ingredient_association}}])
       end
     end
