@@ -15,7 +15,7 @@ RSpec.describe "Alchemy::JsonApi::Pages", type: :request do
     )
   end
 
-  describe "GET /alchemy/json_api/pages" do
+  describe "GET /alchemy/json_api/pages/:id" do
     it "gets a valid JSON:API document" do
       get alchemy_json_api.page_path(page)
       expect(response).to have_http_status(200)
@@ -53,6 +53,30 @@ RSpec.describe "Alchemy::JsonApi::Pages", type: :request do
       it 'returns a 404' do
         get alchemy_json_api.page_path(page.urlname)
         expect(response).to have_http_status(404)
+      end
+    end
+  end
+
+  describe "GET /alchemy/json_api/pages" do
+    let!(:layoutpage) { FactoryBot.create(:alchemy_page, :layoutpage, :public) }
+    let!(:non_public_page) { FactoryBot.create(:alchemy_page) }
+    let!(:public_page) { FactoryBot.create(:alchemy_page, :public) }
+
+    it "displays the layoutpage and the public page" do
+      get alchemy_json_api.pages_path
+      document = JSON.parse(response.body)
+      expect(document['data']).to include(have_id(layoutpage.id.to_s))
+      expect(document['data']).not_to include(have_id(non_public_page.id.to_s))
+      expect(document['data']).to include(have_id(public_page.id.to_s))
+    end
+
+    context "with a filter parameter" do
+      it "displays the layoutpage but not the public page" do
+        get alchemy_json_api.pages_path(filter: {layoutpage_true: "1"})
+        document = JSON.parse(response.body)
+        expect(document['data']).to include(have_id(layoutpage.id.to_s))
+        expect(document['data']).not_to include(have_id(non_public_page.id.to_s))
+        expect(document['data']).not_to include(have_id(public_page.id.to_s))
       end
     end
   end

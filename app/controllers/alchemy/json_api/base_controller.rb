@@ -3,13 +3,7 @@ module Alchemy
     class BaseController < ::ApplicationController
       include JSONAPI::Fetching
       include JSONAPI::Errors
-
-      private
-
-      def jsonapi_serializer_class(resource, is_collection)
-        klass = resource.class.name.demodulize
-        "Alchemy::JsonApi::#{klass}Serializer".constantize
-      end
+      include JSONAPI::Filtering
     end
   end
 end

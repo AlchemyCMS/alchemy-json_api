@@ -1,9 +1,15 @@
 module Alchemy
   module JsonApi
     class PagesController < BaseController
-      include JSONAPI::Fetching
+      before_action :load_page, only: :show
 
-      before_action :load_page
+      def index
+        allowed = [:page_layout, :layoutpage]
+
+        jsonapi_filter(page_scope, allowed) do |filtered|
+          render jsonapi: filtered.result
+        end
+      end
 
       def show
         render jsonapi: @page
@@ -29,6 +35,12 @@ module Alchemy
           with_language(Language.current).
           published.
           preload(all_elements: [:parent_element, :nested_elements, {contents: {essence: :ingredient_association}}])
+      end
+
+      private
+
+      def jsonapi_serializer_class(_resource, _is_collection)
+        ::Alchemy::JsonApi::PageSerializer
       end
     end
   end
