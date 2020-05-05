@@ -21,14 +21,12 @@ module Alchemy
 
       def load_page_by_urlname
         # The route param is called :id although it might be a string
-        page_scope.find_by(
-          urlname: params[:id],
-          language_code: params[:locale] || Language.current.code
-        )
+        page_scope.find_by(urlname: params[:id])
       end
 
       def page_scope
         ::Alchemy::Page.
+          with_language(Language.current).
           published.
           preload(all_elements: [:parent_element, :nested_elements, {contents: {essence: :ingredient_association}}])
       end

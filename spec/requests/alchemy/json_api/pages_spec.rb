@@ -44,5 +44,16 @@ RSpec.describe "Alchemy::JsonApi::Pages", type: :request do
         expect(document['data']).to have_type("page")
       end
     end
+
+    context 'when the language is incorrect' do
+      let!(:language) { FactoryBot.create(:alchemy_language) }
+      let!(:other_language) { FactoryBot.create(:alchemy_language, :english) }
+      let(:page) { FactoryBot.create(:alchemy_page, :public, language: other_language) }
+
+      it 'returns a 404' do
+        get alchemy_json_api.page_path(page.urlname)
+        expect(response).to have_http_status(404)
+      end
+    end
   end
 end
