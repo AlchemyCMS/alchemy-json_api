@@ -25,8 +25,17 @@ RSpec.describe Alchemy::JsonApi::ElementSerializer do
       expect(subject[:created_at]).to eq(element.created_at)
       expect(subject[:updated_at]).to eq(element.updated_at)
       expect(subject[:position]).to eq(element.position)
-      expect(subject[:tag_list]).to eq(["Tag1", "Tag2"])
-      expect(subject[:display_name]).to eq("Article: ")
+      expect(subject.keys).not_to include(:tag_list, :display_name)
+    end
+
+
+    context "with admin set to true" do
+      let(:options) { {params: {admin: true}} }
+
+      it "includes admin-only attributes" do
+        expect(subject[:tag_list]).to eq(["Tag1", "Tag2"])
+        expect(subject[:display_name]).to eq("Article: ")
+      end
     end
   end
 

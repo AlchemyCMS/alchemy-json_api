@@ -3,11 +3,9 @@ module Alchemy::JsonApi
     include FastJsonapi::ObjectSerializer
     attributes(
       :position,
-      :tag_list,
       :created_at,
       :updated_at
     )
-    attribute :display_name, &:display_name_with_preview_text
     attribute :element_type, &:name
     belongs_to :parent_element, record_type: :element
 
@@ -17,5 +15,11 @@ module Alchemy::JsonApi
     end
 
     has_many :nested_elements, record_type: :element, serializer: self
+
+
+    with_options if: -> (_, params) { params[:admin] == true } do
+      attribute :tag_list
+      attribute :display_name, &:display_name_with_preview_text
+    end
   end
 end
