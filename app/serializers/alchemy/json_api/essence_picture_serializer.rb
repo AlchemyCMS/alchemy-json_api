@@ -35,10 +35,6 @@ module Alchemy::JsonApi
       attribute :image_file_size do |essence|
         essence.picture.image_file_size
       end
-
-      attribute :image_tag_list do |essence|
-        essence.picture.tag_list
-      end
     end
   end
 end
