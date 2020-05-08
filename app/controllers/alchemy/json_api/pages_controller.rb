@@ -1,6 +1,6 @@
 module Alchemy
   module JsonApi
-    class PagesController < BaseController
+    class PagesController < JsonApi::BaseController
       before_action :load_page, only: :show
 
       def index
