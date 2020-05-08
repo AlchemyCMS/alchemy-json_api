@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/AlchemyCMS/alchemy_cms.git
-  revision: 7596a4898658093b293396478138b954e2bf28bc
+  revision: c206a2ad00ce015f29eb7c7a46234a5925187698
   branch: master
   specs:
     alchemy_cms (5.0.0.a)
@@ -18,7 +18,7 @@ GIT
       kaminari (~> 1.1)
       non-stupid-digest-assets (~> 1.0.8)
       originator (~> 3.1)
-      rails (>= 5.0.0, < 6.1)
+      rails (>= 5.2.0, < 6.1)
       ransack (>= 1.8, < 3.0)
       request_store (~> 1.2)
       responders (>= 2.0, < 4.0)
@@ -177,7 +177,7 @@ GEM
     marcel (0.3.3)
       mimemagic (~> 0.3.2)
     method_source (1.0.0)
-    mimemagic (0.3.4)
+    mimemagic (0.3.5)
     mini_mime (1.0.2)
     mini_portile2 (2.4.0)
     minitest (5.14.0)
