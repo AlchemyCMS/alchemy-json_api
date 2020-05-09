@@ -4,7 +4,7 @@ module Alchemy
       before_action :load_page, only: :show
 
       def index
-        allowed = [:page_layout, :layoutpage]
+        allowed = [:page_layout]
 
         jsonapi_filter(page_scope, allowed) do |filtered|
           render jsonapi: filtered.result
@@ -31,6 +31,10 @@ module Alchemy
       end
 
       def page_scope
+        base_page_scope.contentpages
+      end
+
+      def base_page_scope
         ::Alchemy::Page.
           with_language(Language.current).
           published.
