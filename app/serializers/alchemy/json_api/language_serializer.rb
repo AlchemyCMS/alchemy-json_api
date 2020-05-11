@@ -15,7 +15,7 @@ module Alchemy
         language.nodes.select { |n| n.parent.nil? }
       end
       has_many :pages
-      has_one :root_page, record_type: :page, serializer: PageSerializer, &:root_page
+      has_one :root_page, record_type: :page, serializer: PageSerializer
 
       with_options if: ->(_, params) { params[:admin] == true } do
         attribute :created_at
