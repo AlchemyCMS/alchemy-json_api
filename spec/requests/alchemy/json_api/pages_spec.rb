@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require "rails_helper"
 require "alchemy/test_support/factories/page_factory"
 require "alchemy/test_support/factories/element_factory"
@@ -31,7 +32,7 @@ RSpec.describe "Alchemy::JsonApi::Pages", type: :request do
       it "includes the data" do
         get alchemy_json_api.page_path(page, include: "all_elements.essences")
         included = JSON.parse(response.body)["included"]
-        expect(included).to include(have_type("element").and have_id(element.id.to_s))
+        expect(included).to include(have_type("element").and(have_id(element.id.to_s)))
       end
     end
 

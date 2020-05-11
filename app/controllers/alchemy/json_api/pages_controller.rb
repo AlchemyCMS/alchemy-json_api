@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module Alchemy
   module JsonApi
     class PagesController < JsonApi::BaseController
@@ -40,8 +41,6 @@ module Alchemy
           published.
           preload(all_elements: [:parent_element, :nested_elements, { contents: { essence: :ingredient_association } }])
       end
-
-      private
 
       def jsonapi_serializer_class(_resource, _is_collection)
         ::Alchemy::JsonApi::PageSerializer

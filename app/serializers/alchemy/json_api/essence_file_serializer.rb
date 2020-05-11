@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require "alchemy/json_api/essence_serializer"
 require "alchemy/json_api/link_helper"
 
@@ -9,7 +10,7 @@ module Alchemy::JsonApi
 
     attribute :ingredient, &:attachment_url
 
-    with_options if: Proc.new { |essence| essence.attachment.present? } do
+    with_options if: proc { |essence| essence.attachment.present? } do
       attribute :attachment_name do |essence|
         essence.attachment.name
       end

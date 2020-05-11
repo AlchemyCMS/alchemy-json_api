@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 RSpec.shared_examples "an essence" do
   describe "attributes" do
     subject { serializer.serializable_hash[:data][:attributes] }

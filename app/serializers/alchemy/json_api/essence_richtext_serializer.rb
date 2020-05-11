@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require "alchemy/json_api/essence_serializer"
 
 module Alchemy::JsonApi
@@ -5,7 +6,7 @@ module Alchemy::JsonApi
     include EssenceSerializer
     attributes(
       :body,
-      :stripped_body
+      :stripped_body,
     )
   end
 end

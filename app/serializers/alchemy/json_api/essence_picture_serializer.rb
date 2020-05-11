@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require "alchemy/json_api/essence_serializer"
 require "alchemy/json_api/link_helper"
 
@@ -9,13 +10,13 @@ module Alchemy::JsonApi
       :title,
       :caption,
       :link_title,
-      :link_target
+      :link_target,
     )
     attribute :ingredient, &:picture_url
     attribute :alt_text, &:alt_tag
     attribute :link_url, &:link
 
-    with_options if: Proc.new { |essence| essence.picture.present? } do
+    with_options if: proc { |essence| essence.picture.present? } do
       attribute :image_dimensions do |essence|
         essence.sizes_from_string(essence.render_size)
       end
