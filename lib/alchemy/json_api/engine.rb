@@ -1,4 +1,4 @@
-require 'jsonapi'
+require "jsonapi"
 
 module Alchemy
   module JsonApi

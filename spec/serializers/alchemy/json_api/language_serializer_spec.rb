@@ -8,7 +8,7 @@ RSpec.describe Alchemy::JsonApi::LanguageSerializer do
     FactoryBot.create(
       :alchemy_language,
       country_code: "DE",
-      language_code: "de"
+      language_code: "de",
     )
   end
   let(:options) { {} }
@@ -27,7 +27,7 @@ RSpec.describe Alchemy::JsonApi::LanguageSerializer do
     end
 
     context "with admin set to true" do
-      let(:options) { {params: {admin: true}} }
+      let(:options) { { params: { admin: true } } }
 
       it "includes admin-only attributes" do
         attributes = subject[:data][:attributes]
@@ -49,7 +49,7 @@ RSpec.describe Alchemy::JsonApi::LanguageSerializer do
       expect(subject[:root_page]).to eq(data: { id: root_page.id.to_s, type: :page })
       expect(subject[:pages]).to eq(data: [{ id: root_page.id.to_s, type: :page }])
       expect(subject[:menus]).to eq(data: [{ id: menu.id.to_s, type: :node }])
-      expect(subject[:menu_items]).to eq(data: [{ id: menu.id.to_s, type: :node }, { id: menu_node.id.to_s, type: :node}])
+      expect(subject[:menu_items]).to eq(data: [{ id: menu.id.to_s, type: :node }, { id: menu_node.id.to_s, type: :node }])
     end
   end
 end

@@ -16,8 +16,7 @@ module Alchemy::JsonApi
 
     has_many :nested_elements, record_type: :element, serializer: self
 
-
-    with_options if: -> (_, params) { params[:admin] == true } do
+    with_options if: ->(_, params) { params[:admin] == true } do
       attribute :tag_list
       attribute :display_name, &:display_name_with_preview_text
     end

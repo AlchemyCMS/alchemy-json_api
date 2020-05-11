@@ -2,7 +2,7 @@ require "rails_helper"
 require "alchemy/test_support/factories"
 
 RSpec.describe Alchemy::JsonApi::EssenceDateSerializer do
-  let(:today)  { Date.today }
+  let(:today) { Date.today }
   let(:element) { FactoryBot.create(:alchemy_element) }
   let(:content) { FactoryBot.create(:alchemy_content, element: element) }
   let(:essence) { Alchemy::EssenceDate.create(date: today, content: content) }

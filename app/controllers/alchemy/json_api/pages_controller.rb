@@ -38,7 +38,7 @@ module Alchemy
         ::Alchemy::Page.
           with_language(Language.current).
           published.
-          preload(all_elements: [:parent_element, :nested_elements, {contents: {essence: :ingredient_association}}])
+          preload(all_elements: [:parent_element, :nested_elements, { contents: { essence: :ingredient_association } }])
       end
 
       private

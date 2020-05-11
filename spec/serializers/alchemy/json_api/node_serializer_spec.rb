@@ -8,7 +8,7 @@ RSpec.describe Alchemy::JsonApi::NodeSerializer do
       name: "A Node",
       url: "/acdc",
       title: "Pop-up explanation",
-      nofollow: true
+      nofollow: true,
     )
   end
   let(:options) { {} }
@@ -35,11 +35,11 @@ RSpec.describe Alchemy::JsonApi::NodeSerializer do
         url: "/acdc",
         title: "Pop-up explanation",
         nofollow: true,
-        children: [child_node]
+        children: [child_node],
       )
     end
     let(:child_node) { FactoryBot.create(:alchemy_node, children: [child_of_child_node]) }
-    let(:child_of_child_node ) { FactoryBot.create(:alchemy_node) }
+    let(:child_of_child_node) { FactoryBot.create(:alchemy_node) }
 
     subject { serializer.serializable_hash[:data][:relationships] }
 

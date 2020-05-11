@@ -18,7 +18,7 @@ module Alchemy
         language.root_page
       end
 
-      with_options if: -> (_, params) { params[:admin] == true } do
+      with_options if: ->(_, params) { params[:admin] == true } do
         attribute :created_at
         attribute :updated_at
         attribute :public

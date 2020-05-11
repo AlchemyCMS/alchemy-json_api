@@ -19,7 +19,7 @@ module Alchemy
       has_many :elements
       has_many :all_elements, record_type: :element, serializer: ElementSerializer
 
-      with_options if: -> (_, params) { params[:admin] == true } do
+      with_options if: ->(_, params) { params[:admin] == true } do
         attribute :tag_list
         attribute :status
       end
