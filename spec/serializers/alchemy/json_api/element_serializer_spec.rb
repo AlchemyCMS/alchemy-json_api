@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require "rails_helper"
 require "alchemy/test_support/factories"
 
@@ -8,7 +9,7 @@ RSpec.describe Alchemy::JsonApi::ElementSerializer do
       autogenerate_contents: true,
       tag_list: "Tag1,Tag2",
       nested_elements: [nested_element],
-      parent_element: parent_element
+      parent_element: parent_element,
     )
   end
   let(:nested_element) { FactoryBot.create(:alchemy_element) }
@@ -28,9 +29,8 @@ RSpec.describe Alchemy::JsonApi::ElementSerializer do
       expect(subject.keys).not_to include(:tag_list, :display_name)
     end
 
-
     context "with admin set to true" do
-      let(:options) { {params: {admin: true}} }
+      let(:options) { { params: { admin: true } } }
 
       it "includes admin-only attributes" do
         expect(subject[:tag_list]).to eq(["Tag1", "Tag2"])
@@ -44,9 +44,9 @@ RSpec.describe Alchemy::JsonApi::ElementSerializer do
 
     it "has the right keys and values" do
       expect(subject[:page]).to eq(data: { id: element.page_id.to_s, type: :page })
-      expect(subject[:essences]).to eq(data: element.contents.map { |c| {id: c.essence_id.to_s, type: c.essence.class.name.demodulize.underscore.to_sym} })
-      expect(subject[:nested_elements]).to eq(data: [{id: nested_element.id.to_s, type: :element}])
-      expect(subject[:parent_element]).to eq(data: {id: parent_element.id.to_s, type: :element})
+      expect(subject[:essences]).to eq(data: element.contents.map { |c| { id: c.essence_id.to_s, type: c.essence.class.name.demodulize.underscore.to_sym } })
+      expect(subject[:nested_elements]).to eq(data: [{ id: nested_element.id.to_s, type: :element }])
+      expect(subject[:parent_element]).to eq(data: { id: parent_element.id.to_s, type: :element })
     end
   end
 end

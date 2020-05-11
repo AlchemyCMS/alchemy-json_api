@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require "alchemy/json_api/essence_serializer"
 require "alchemy/json_api/link_helper"
 
@@ -11,7 +12,7 @@ module Alchemy::JsonApi
 
     belongs_to :node
 
-    with_options if: Proc.new { |essence| essence.node.present? } do
+    with_options if: proc { |essence| essence.node.present? } do
       attribute :name do |essence|
         essence.node.name
       end

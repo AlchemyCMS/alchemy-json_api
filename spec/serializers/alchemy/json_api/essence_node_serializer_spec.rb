@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require "rails_helper"
 require "alchemy/test_support/factories"
 require "alchemy/essence_node"
@@ -8,7 +9,7 @@ RSpec.describe Alchemy::JsonApi::EssenceNodeSerializer do
   let(:essence) { Alchemy::EssenceNode.create(node: node, content: content) }
   let(:node) { FactoryBot.create(:alchemy_node, title: "Pop-up explanation", url: "/acdc", nofollow: true, children: [child_node]) }
   let(:child_node) { FactoryBot.create(:alchemy_node, children: [child_of_child_node]) }
-  let(:child_of_child_node ) { FactoryBot.create(:alchemy_node) }
+  let(:child_of_child_node) { FactoryBot.create(:alchemy_node) }
   let(:options) { {} }
 
   subject(:serializer) { described_class.new(essence, options) }

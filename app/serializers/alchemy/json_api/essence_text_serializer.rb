@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require "alchemy/json_api/essence_serializer"
 
 module Alchemy::JsonApi
@@ -6,7 +7,7 @@ module Alchemy::JsonApi
     attributes(
       :body,
       :link_title,
-      :link_target
+      :link_target,
     )
     attribute :link_url, &:link
   end

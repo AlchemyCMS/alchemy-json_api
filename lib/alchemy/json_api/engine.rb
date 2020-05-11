@@ -1,4 +1,5 @@
-require 'jsonapi'
+# frozen_string_literal: true
+require "jsonapi"
 
 module Alchemy
   module JsonApi

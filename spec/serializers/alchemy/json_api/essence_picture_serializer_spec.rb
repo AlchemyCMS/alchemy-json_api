@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require "rails_helper"
 require "alchemy/test_support/factories/content_factory"
 require "alchemy/test_support/factories/essence_picture_factory"

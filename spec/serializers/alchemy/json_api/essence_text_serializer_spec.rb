@@ -1,10 +1,11 @@
+# frozen_string_literal: true
 require "rails_helper"
 require "alchemy/test_support/factories"
 
 RSpec.describe Alchemy::JsonApi::EssenceTextSerializer do
   let(:element) { FactoryBot.create(:alchemy_element) }
   let(:content) { FactoryBot.create(:alchemy_content, element: element) }
-  let(:essence) { FactoryBot.create(:alchemy_essence_text, content: content, link: "/hello", link_target: '_blank', link_title: "Warm Greetings") }
+  let(:essence) { FactoryBot.create(:alchemy_essence_text, content: content, link: "/hello", link_target: "_blank", link_title: "Warm Greetings") }
   let(:options) { {} }
 
   subject(:serializer) { described_class.new(essence, options) }

@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require "fast_jsonapi"
 require "alchemy_cms"
 require "alchemy/json_api/engine"

@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require "rails_helper"
 require "alchemy/test_support/factories"
 
@@ -34,7 +35,7 @@ RSpec.describe Alchemy::JsonApi::PageSerializer do
     end
 
     context "with admin set to true" do
-      let(:options) { {params: {admin: true}} }
+      let(:options) { { params: { admin: true } } }
 
       it "includes admin-only attributes" do
         attributes = subject[:data][:attributes]
@@ -45,7 +46,7 @@ RSpec.describe Alchemy::JsonApi::PageSerializer do
             locked: false,
             restricted: false,
             visible: false,
-          }
+          },
         )
       end
     end

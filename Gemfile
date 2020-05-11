@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 source "https://rubygems.org"
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
@@ -15,4 +16,6 @@ gemspec
 # gem 'byebug', group: [:development, :test]
 gem "sqlite3"
 
-gem "alchemy_cms", github: 'AlchemyCMS/alchemy_cms', branch: "master"
+gem "alchemy_cms", github: "AlchemyCMS/alchemy_cms", branch: "master"
+gem "rufo"
+gem "rubocop"
