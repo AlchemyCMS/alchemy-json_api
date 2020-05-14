@@ -39,7 +39,7 @@ module Alchemy
         ::Alchemy::Page.
           with_language(Language.current).
           published.
-          preload(all_elements: [:parent_element, :nested_elements, { contents: { essence: :ingredient_association } }])
+          preload(language: {nodes: [:parent, :page]}, all_elements: [:parent_element, :nested_elements, { contents: { essence: :ingredient_association } }])
       end
 
       def jsonapi_serializer_class(_resource, _is_collection)
