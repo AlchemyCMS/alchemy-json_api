@@ -10,7 +10,8 @@ module Alchemy
         :locale,
       )
 
-      has_many :menu_items, record_type: :node, serializer: NodeSerializer, id_method_name: :node_ids
+      has_many :menu_items, record_type: :node, serializer: NodeSerializer, object_method_name: :nodes, id_method_name: :node_ids
+
       has_many :menus, record_type: :node, serializer: NodeSerializer do |language|
         language.nodes.select { |n| n.parent.nil? }
       end
