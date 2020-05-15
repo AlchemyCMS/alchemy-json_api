@@ -11,3 +11,4 @@ spec/dummy/db/schema.rb
 spec/dummy/db/migrate
 spec/dummy/db/*.sqlite3
 Gemfile.lock
+.ruby-version
