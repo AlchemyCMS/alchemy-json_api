@@ -56,16 +56,39 @@ RSpec.describe "Alchemy::JsonApi::Pages", type: :request do
   end
 
   describe "GET /alchemy/json_api/pages" do
-    let!(:layoutpage) { FactoryBot.create(:alchemy_page, :layoutpage, :public) }
-    let!(:non_public_layout_page) { FactoryBot.create(:alchemy_page, :layoutpage) }
-    let!(:public_page) { FactoryBot.create(:alchemy_page, :public) }
+    context "with contentpages and unpublished layout pages" do
+      let!(:layoutpage) { FactoryBot.create(:alchemy_page, :layoutpage, :public) }
+      let!(:non_public_layout_page) { FactoryBot.create(:alchemy_page, :layoutpage) }
+      let!(:public_page) { FactoryBot.create(:alchemy_page, :public) }
 
-    it "returns only public layout pages" do
-      get alchemy_json_api.layout_pages_path
-      document = JSON.parse(response.body)
-      expect(document["data"]).to include(have_id(layoutpage.id.to_s))
-      expect(document["data"]).not_to include(have_id(non_public_layout_page.id.to_s))
-      expect(document["data"]).not_to include(have_id(public_page.id.to_s))
+      it "returns only public layout pages" do
+        get alchemy_json_api.layout_pages_path
+        document = JSON.parse(response.body)
+        expect(document["data"]).to include(have_id(layoutpage.id.to_s))
+        expect(document["data"]).not_to include(have_id(non_public_layout_page.id.to_s))
+        expect(document["data"]).not_to include(have_id(public_page.id.to_s))
+      end
+    end
+
+    context "with pagination params" do
+      before do
+        FactoryBot.create_list(:alchemy_page, 3, :layoutpage, :public)
+      end
+
+      it "returns paginated result" do
+        get alchemy_json_api.layout_pages_path(page: { number: 2, size: 1 })
+        document = JSON.parse(response.body)
+        expect(document["data"].length).to eq(1)
+        expect(document["meta"]).to eq({
+          "pagination" => {
+            "current" => 2,
+            "first" => 1,
+            "last" => 3,
+            "next" => 3,
+            "prev" => 1,
+          },
+        })
+      end
     end
   end
 end

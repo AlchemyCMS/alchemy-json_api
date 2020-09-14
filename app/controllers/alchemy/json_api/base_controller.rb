@@ -6,6 +6,7 @@ module Alchemy
       include JSONAPI::Fetching
       include JSONAPI::Errors
       include JSONAPI::Filtering
+      include JSONAPI::Pagination
     end
   end
 end
