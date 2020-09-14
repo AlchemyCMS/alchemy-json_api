@@ -23,7 +23,10 @@ module Alchemy
       def jsonapi_meta(pages)
         pagination = jsonapi_pagination_meta(pages)
 
-        { pagination: pagination } if pagination.present?
+        {
+          pagination: pagination.presence,
+          total: page_scope.count
+        }.compact
       end
 
       def load_page
