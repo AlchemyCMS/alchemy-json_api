@@ -60,7 +60,7 @@ RSpec.describe "Alchemy::JsonApi::Pages", type: :request do
     let!(:non_public_layout_page) { FactoryBot.create(:alchemy_page, :layoutpage) }
     let!(:public_page) { FactoryBot.create(:alchemy_page, :public) }
 
-    it "displays the layoutpage and the public page" do
+    it "returns only public layout pages" do
       get alchemy_json_api.layout_pages_path
       document = JSON.parse(response.body)
       expect(document["data"]).to include(have_id(layoutpage.id.to_s))
