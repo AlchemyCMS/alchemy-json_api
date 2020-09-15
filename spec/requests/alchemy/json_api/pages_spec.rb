@@ -48,7 +48,7 @@ RSpec.describe "Alchemy::JsonApi::Pages", type: :request do
 
     context "when the language is incorrect" do
       let!(:language) { FactoryBot.create(:alchemy_language) }
-      let!(:other_language) { FactoryBot.create(:alchemy_language, :english) }
+      let!(:other_language) { FactoryBot.create(:alchemy_language, :german) }
       let(:page) { FactoryBot.create(:alchemy_page, :public, language: other_language) }
 
       it "returns a 404" do

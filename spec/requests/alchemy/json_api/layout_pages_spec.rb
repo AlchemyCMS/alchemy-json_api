@@ -8,9 +8,9 @@ RSpec.describe "Alchemy::JsonApi::Pages", type: :request do
     FactoryBot.create(
       :alchemy_page,
       :public,
+      :layoutpage,
       urlname: nil,
-      title: "Footer",
-      layoutpage: true,
+      title: "Footer"
     )
   end
 
@@ -45,8 +45,8 @@ RSpec.describe "Alchemy::JsonApi::Pages", type: :request do
 
     context "when the language is incorrect" do
       let!(:language) { FactoryBot.create(:alchemy_language) }
-      let!(:other_language) { FactoryBot.create(:alchemy_language, :english) }
-      let(:page) { FactoryBot.create(:alchemy_page, :public, layoutpage: true, language: other_language) }
+      let!(:other_language) { FactoryBot.create(:alchemy_language, :german) }
+      let(:page) { FactoryBot.create(:alchemy_page, :public, :layoutpage, language: other_language) }
 
       it "returns a 404" do
         get alchemy_json_api.layout_page_path(page.urlname)
