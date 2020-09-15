@@ -6,11 +6,7 @@ require "alchemy/test_support/factories/node_factory"
 
 RSpec.describe Alchemy::JsonApi::LanguageSerializer do
   let(:language) do
-    FactoryBot.create(
-      :alchemy_language,
-      country_code: "DE",
-      language_code: "de",
-    )
+    FactoryBot.create(:alchemy_language, :german, country_code: "DE")
   end
   let(:options) { {} }
 
