@@ -8,7 +8,9 @@ module Alchemy
         allowed = [:page_layout]
 
         jsonapi_filter(page_scope, allowed) do |filtered|
-          render jsonapi: filtered.result
+          jsonapi_paginate(filtered.result) do |paginated|
+            render jsonapi: paginated
+          end
         end
       end
 
@@ -17,6 +19,15 @@ module Alchemy
       end
 
       private
+
+      def jsonapi_meta(pages)
+        pagination = jsonapi_pagination_meta(pages)
+
+        {
+          pagination: pagination.presence,
+          total: page_scope.count
+        }.compact
+      end
 
       def load_page
         @page = load_page_by_id || load_page_by_urlname || raise(ActiveRecord::RecordNotFound)

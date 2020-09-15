@@ -59,16 +59,40 @@ RSpec.describe "Alchemy::JsonApi::Pages", type: :request do
   end
 
   describe "GET /alchemy/json_api/pages" do
-    let!(:layoutpage) { FactoryBot.create(:alchemy_page, :layoutpage, :public) }
-    let!(:non_public_page) { FactoryBot.create(:alchemy_page) }
-    let!(:public_page) { FactoryBot.create(:alchemy_page, :public) }
+    context "with layoutpages and unpublished pages" do
+      let!(:layoutpage) { FactoryBot.create(:alchemy_page, :layoutpage, :public) }
+      let!(:non_public_page) { FactoryBot.create(:alchemy_page) }
+      let!(:public_page) { FactoryBot.create(:alchemy_page, :public) }
 
-    it "displays the layoutpage and the public page" do
-      get alchemy_json_api.pages_path
-      document = JSON.parse(response.body)
-      expect(document["data"]).not_to include(have_id(layoutpage.id.to_s))
-      expect(document["data"]).not_to include(have_id(non_public_page.id.to_s))
-      expect(document["data"]).to include(have_id(public_page.id.to_s))
+      it "returns public content pages only" do
+        get alchemy_json_api.pages_path
+        document = JSON.parse(response.body)
+        expect(document["data"]).not_to include(have_id(layoutpage.id.to_s))
+        expect(document["data"]).not_to include(have_id(non_public_page.id.to_s))
+        expect(document["data"]).to include(have_id(public_page.id.to_s))
+      end
+    end
+
+    context "with pagination params" do
+      before do
+        FactoryBot.create_list(:alchemy_page, 3, :public)
+      end
+
+      it "returns paginated result" do
+        get alchemy_json_api.pages_path(page: { number: 2, size: 1 })
+        document = JSON.parse(response.body)
+        expect(document["data"].length).to eq(1)
+        expect(document["meta"]).to eq({
+          "pagination" => {
+            "current" => 2,
+            "first" => 1,
+            "last" => 4,
+            "next" => 3,
+            "prev" => 1,
+          },
+          "total" => 4,
+        })
+      end
     end
   end
 end
