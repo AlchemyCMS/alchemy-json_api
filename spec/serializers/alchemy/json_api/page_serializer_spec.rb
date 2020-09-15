@@ -44,8 +44,7 @@ RSpec.describe Alchemy::JsonApi::PageSerializer do
           {
             public: false,
             locked: false,
-            restricted: false,
-            visible: false,
+            restricted: false
           },
         )
       end
