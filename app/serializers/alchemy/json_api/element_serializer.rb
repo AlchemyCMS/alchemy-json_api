@@ -8,7 +8,7 @@ module Alchemy::JsonApi
       :updated_at,
     )
     attribute :element_type, &:name
-    belongs_to :parent_element, record_type: :element
+    belongs_to :parent_element, record_type: :element, serializer: self
 
     belongs_to :page
     has_many :essences, polymorphic: true do |element|
