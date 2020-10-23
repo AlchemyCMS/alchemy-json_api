@@ -14,7 +14,7 @@ RSpec.describe Alchemy::JsonApi::EssenceNodeSerializer do
 
   subject(:serializer) { described_class.new(essence, options) }
 
-  it_behaves_like "an essence"
+  it_behaves_like "an essence serializer"
 
   describe "attributes" do
     subject { serializer.serializable_hash[:data][:attributes] }
@@ -39,7 +39,7 @@ RSpec.describe Alchemy::JsonApi::EssenceNodeSerializer do
   context "With no node set" do
     let(:essence) { Alchemy::EssenceNode.create(node: nil, content: content) }
 
-    it_behaves_like "an essence"
+    it_behaves_like "an essence serializer"
 
     describe "attributes" do
       subject { serializer.serializable_hash[:data][:attributes] }
