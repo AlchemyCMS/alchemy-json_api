@@ -15,7 +15,7 @@
 #
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 
-Dir["./spec/support/**/*.rb"].sort.each { |f| require f }
+require "alchemy/json_api/test_support/essence_serializer_behaviour"
 
 RSpec.configure do |config|
   # rspec-expectations config goes here. You can use an alternate
