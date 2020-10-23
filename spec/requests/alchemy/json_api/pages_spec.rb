@@ -46,6 +46,21 @@ RSpec.describe "Alchemy::JsonApi::Pages", type: :request do
       end
     end
 
+    context "when requesting a nested URL" do
+      let(:page) do
+        FactoryBot.create(
+          :alchemy_page,
+          :public,
+          urlname: "a-nested/page",
+        )
+      end
+
+      it "finds the page" do
+        get alchemy_json_api.page_path(page.urlname)
+        expect(response).to have_http_status(200)
+      end
+    end
+
     context "when the language is incorrect" do
       let!(:language) { FactoryBot.create(:alchemy_language) }
       let!(:other_language) { FactoryBot.create(:alchemy_language, :german) }

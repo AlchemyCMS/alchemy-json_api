@@ -34,12 +34,11 @@ module Alchemy
       end
 
       def load_page_by_id
-        page_scope.find_by(id: params[:id])
+        page_scope.find_by(id: params[:path])
       end
 
       def load_page_by_urlname
-        # The route param is called :id although it might be a string
-        page_scope.find_by(urlname: params[:id])
+        page_scope.find_by(urlname: params[:path])
       end
 
       def page_scope
