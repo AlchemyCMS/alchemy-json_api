@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 require "alchemy/json_api/essence_serializer"
-require "alchemy/json_api/link_helper"
 
 module Alchemy::JsonApi
   class EssenceNodeSerializer
