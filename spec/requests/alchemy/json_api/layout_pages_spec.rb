@@ -3,7 +3,7 @@ require "rails_helper"
 require "alchemy/test_support/factories/page_factory"
 require "alchemy/test_support/factories/element_factory"
 
-RSpec.describe "Alchemy::JsonApi::Pages", type: :request do
+RSpec.describe "Alchemy::JsonApi::LayoutPagesController", type: :request do
   let(:page) do
     FactoryBot.create(
       :alchemy_page,
@@ -14,7 +14,7 @@ RSpec.describe "Alchemy::JsonApi::Pages", type: :request do
     )
   end
 
-  describe "GET /alchemy/json_api/pages/:id" do
+  describe "GET /alchemy/json_api/layout_pages/:id" do
     it "gets a valid JSON:API document" do
       get alchemy_json_api.layout_page_path(page)
       expect(response).to have_http_status(200)
@@ -55,7 +55,7 @@ RSpec.describe "Alchemy::JsonApi::Pages", type: :request do
     end
   end
 
-  describe "GET /alchemy/json_api/pages" do
+  describe "GET /alchemy/json_api/layout_pages" do
     context "with contentpages and unpublished layout pages" do
       let!(:layoutpage) { FactoryBot.create(:alchemy_page, :layoutpage, :public) }
       let!(:non_public_layout_page) { FactoryBot.create(:alchemy_page, :layoutpage) }
