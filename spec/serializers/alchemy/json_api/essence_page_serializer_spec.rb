@@ -18,7 +18,7 @@ RSpec.describe Alchemy::JsonApi::EssencePageSerializer do
 
   let(:serializer) { described_class.new(essence, options) }
 
-  it_behaves_like "an essence"
+  it_behaves_like "an essence serializer"
 
   subject { serializer.serializable_hash[:data][:attributes] }
 
@@ -53,7 +53,7 @@ RSpec.describe Alchemy::JsonApi::EssencePageSerializer do
       )
     end
 
-    it_behaves_like "an essence"
+    it_behaves_like "an essence serializer"
 
     describe "attributes" do
       it "has no ingredient" do
