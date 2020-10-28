@@ -17,7 +17,7 @@ RSpec.describe Alchemy::JsonApi::EssenceLinkSerializer do
 
   subject(:serializer) { described_class.new(essence, options) }
 
-  it_behaves_like "an essence"
+  it_behaves_like "an essence serializer"
 
   describe "attributes" do
     subject { serializer.serializable_hash[:data][:attributes] }
