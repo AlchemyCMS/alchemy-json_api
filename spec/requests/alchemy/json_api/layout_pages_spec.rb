@@ -27,9 +27,10 @@ RSpec.describe "Alchemy::JsonApi::LayoutPagesController", type: :request do
       let(:page) { FactoryBot.create(:alchemy_page, :public, elements: [element]) }
       let(:element) { FactoryBot.create(:alchemy_element, name: "article", autogenerate_contents: true) }
 
-      it "returns a 404" do
-        get alchemy_json_api.layout_page_path(page)
-        expect(response).to have_http_status(404)
+      it "raises 404 error" do
+        expect {
+          get alchemy_json_api.layout_page_path(page)
+        }.to raise_error(ActiveRecord::RecordNotFound)
       end
     end
 
@@ -48,9 +49,10 @@ RSpec.describe "Alchemy::JsonApi::LayoutPagesController", type: :request do
       let!(:other_language) { FactoryBot.create(:alchemy_language, :german) }
       let(:page) { FactoryBot.create(:alchemy_page, :public, :layoutpage, language: other_language) }
 
-      it "returns a 404" do
-        get alchemy_json_api.layout_page_path(page.urlname)
-        expect(response).to have_http_status(404)
+      it "raises 404 error" do
+        expect {
+          get alchemy_json_api.layout_page_path(page)
+        }.to raise_error(ActiveRecord::RecordNotFound)
       end
     end
   end
