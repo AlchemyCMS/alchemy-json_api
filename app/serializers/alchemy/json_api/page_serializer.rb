@@ -18,6 +18,7 @@ module Alchemy
       belongs_to :language
 
       has_many :elements
+      has_many :fixed_elements, record_type: :element, serializer: ElementSerializer
 
       has_many :all_elements, record_type: :element, serializer: ElementSerializer do |page|
         page.all_elements.select { |e| e.public? && !e.trashed? }
