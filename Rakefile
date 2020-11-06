@@ -26,3 +26,11 @@ task :test_setup do
     exit($?.exitstatus) unless $?.success?
   end
 end
+
+require "github_changelog_generator/task"
+require "alchemy/json_api/version"
+GitHubChangelogGenerator::RakeTask.new(:changelog) do |config|
+  config.user = "AlchemyCMS"
+  config.project = "alchemy-json_api"
+  config.future_release = "v#{Alchemy::JsonApi::VERSION}"
+end
