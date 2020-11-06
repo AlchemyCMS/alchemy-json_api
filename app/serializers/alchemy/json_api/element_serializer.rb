@@ -5,6 +5,7 @@ module Alchemy
       include FastJsonapi::ObjectSerializer
       attributes(
         :name,
+        :fixed,
         :position,
         :created_at,
         :updated_at,

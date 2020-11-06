@@ -23,6 +23,7 @@ RSpec.describe Alchemy::JsonApi::ElementSerializer do
 
     it "has the right keys and values" do
       expect(subject[:name]).to eq("article")
+      expect(subject[:fixed]).to eq(false)
       expect(subject[:created_at]).to eq(element.created_at)
       expect(subject[:updated_at]).to eq(element.updated_at)
       expect(subject[:position]).to eq(element.position)
