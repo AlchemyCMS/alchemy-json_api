@@ -44,7 +44,7 @@ RSpec.describe Alchemy::JsonApi::PageSerializer do
           {
             public: false,
             locked: false,
-            restricted: false
+            restricted: false,
           },
         )
       end
@@ -53,18 +53,21 @@ RSpec.describe Alchemy::JsonApi::PageSerializer do
 
   describe "relationships" do
     let(:element) { FactoryBot.create(:alchemy_element) }
+    let(:fixed_element) { FactoryBot.create(:alchemy_element, fixed: true) }
     let(:trashed_element) { FactoryBot.create(:alchemy_element, :trashed) }
     subject { serializer.serializable_hash[:data][:relationships] }
 
     before do
       page.all_elements << element
+      page.all_elements << fixed_element
       page.all_elements << trashed_element
       trashed_element.trash!
     end
 
     it "has the right keys and values, and does not include trashed elements" do
       expect(subject[:elements]).to eq(data: [{ id: element.id.to_s, type: :element }])
-      expect(subject[:all_elements]).to eq(data: [{ id: element.id.to_s, type: :element }])
+      expect(subject[:fixed_elements]).to eq(data: [{ id: fixed_element.id.to_s, type: :element }])
+      expect(subject[:all_elements]).to eq(data: [{ id: element.id.to_s, type: :element }, { id: fixed_element.id.to_s, type: :element }])
       expect(subject[:language]).to eq(data: { id: page.language_id.to_s, type: :language })
     end
   end
