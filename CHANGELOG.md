@@ -1,5 +1,13 @@
 # Changelog
 
+## [v0.6.0](https://github.com/AlchemyCMS/alchemy-json_api/tree/v0.6.0) (2020-11-12)
+
+[Full Changelog](https://github.com/AlchemyCMS/alchemy-json_api/compare/v0.5.0...v0.6.0)
+
+**Merged pull requests:**
+
+- Revert "Only include errors mixin in production mode" [\#15](https://github.com/AlchemyCMS/alchemy-json_api/pull/15) ([tvdeyen](https://github.com/tvdeyen))
+
 ## [v0.5.0](https://github.com/AlchemyCMS/alchemy-json_api/tree/v0.5.0) (2020-11-06)
 
 [Full Changelog](https://github.com/AlchemyCMS/alchemy-json_api/compare/v0.4.0...v0.5.0)
