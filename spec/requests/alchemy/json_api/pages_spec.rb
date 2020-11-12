@@ -66,10 +66,9 @@ RSpec.describe "Alchemy::JsonApi::Pages", type: :request do
       let!(:other_language) { FactoryBot.create(:alchemy_language, :german) }
       let(:page) { FactoryBot.create(:alchemy_page, :public, language: other_language) }
 
-      it "raises 404 error" do
-        expect {
-          get alchemy_json_api.page_path(page)
-        }.to raise_error(ActiveRecord::RecordNotFound)
+      it "returns a 404" do
+        get alchemy_json_api.page_path(page.urlname)
+        expect(response).to have_http_status(404)
       end
     end
   end
