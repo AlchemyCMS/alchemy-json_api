@@ -4,9 +4,7 @@ module Alchemy
     class BaseController < ::ApplicationController
       include Alchemy::ControllerActions
       include JSONAPI::Fetching
-      if Rails.env.production?
-        include JSONAPI::Errors
-      end
+      include JSONAPI::Errors
       include JSONAPI::Filtering
       include JSONAPI::Pagination
     end
