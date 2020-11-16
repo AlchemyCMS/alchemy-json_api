@@ -3,6 +3,7 @@ module Alchemy
   module JsonApi
     class BaseController < ::ApplicationController
       include Alchemy::ControllerActions
+      include Alchemy::AbilityHelper
       include JSONAPI::Fetching
       include JSONAPI::Errors
       include JSONAPI::Filtering

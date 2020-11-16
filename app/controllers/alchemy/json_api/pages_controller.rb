@@ -46,9 +46,14 @@ module Alchemy
       end
 
       def base_page_scope
-        ::Alchemy::Page.
+        # cancancan is not able to merge our complex AR scopes for logged in users
+        if can?(:edit_content, Page)
+          pages = Page.all
+        else
+          pages = Page.accessible_by(current_ability, :index)
+        end
+        pages.
           with_language(Language.current).
-          published.
           preload(language: {nodes: [:parent, :page]}, all_elements: [:parent_element, :nested_elements, { contents: { essence: :ingredient_association } }])
       end
 

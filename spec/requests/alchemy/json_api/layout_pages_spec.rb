@@ -2,6 +2,7 @@
 require "rails_helper"
 require "alchemy/test_support/factories/page_factory"
 require "alchemy/test_support/factories/element_factory"
+require "alchemy/devise/test_support/factories"
 
 RSpec.describe "Alchemy::JsonApi::LayoutPagesController", type: :request do
   let(:page) do
@@ -53,6 +54,30 @@ RSpec.describe "Alchemy::JsonApi::LayoutPagesController", type: :request do
         expect(response).to have_http_status(404)
       end
     end
+
+    context "when requesting an unpublished layout page" do
+      let(:page) { FactoryBot.create(:alchemy_page, :layoutpage) }
+
+      context "as anonymous user" do
+        it "returns a 404" do
+          get alchemy_json_api.layout_page_path(page.urlname)
+          expect(response).to have_http_status(404)
+        end
+      end
+
+      context "as admin" do
+        before do
+          allow_any_instance_of(ApplicationController).to receive(:current_user) do
+            FactoryBot.create(:alchemy_admin_user)
+          end
+        end
+
+        it "finds the page" do
+          get alchemy_json_api.layout_page_path(page.urlname)
+          expect(response).to have_http_status(200)
+        end
+      end
+    end
   end
 
   describe "GET /alchemy/json_api/layout_pages" do
@@ -61,12 +86,30 @@ RSpec.describe "Alchemy::JsonApi::LayoutPagesController", type: :request do
       let!(:non_public_layout_page) { FactoryBot.create(:alchemy_page, :layoutpage) }
       let!(:public_page) { FactoryBot.create(:alchemy_page, :public) }
 
-      it "returns only public layout pages" do
-        get alchemy_json_api.layout_pages_path
-        document = JSON.parse(response.body)
-        expect(document["data"]).to include(have_id(layoutpage.id.to_s))
-        expect(document["data"]).not_to include(have_id(non_public_layout_page.id.to_s))
-        expect(document["data"]).not_to include(have_id(public_page.id.to_s))
+      context "as anonymous user" do
+        it "returns only public layout pages" do
+          get alchemy_json_api.layout_pages_path
+          document = JSON.parse(response.body)
+          expect(document["data"]).to include(have_id(layoutpage.id.to_s))
+          expect(document["data"]).not_to include(have_id(non_public_layout_page.id.to_s))
+          expect(document["data"]).not_to include(have_id(public_page.id.to_s))
+        end
+      end
+
+      context "as admin user" do
+        before do
+          allow_any_instance_of(ApplicationController).to receive(:current_user) do
+            FactoryBot.create(:alchemy_admin_user)
+          end
+        end
+
+        it "returns all layout pages" do
+          get alchemy_json_api.layout_pages_path
+          document = JSON.parse(response.body)
+          expect(document["data"]).to include(have_id(layoutpage.id.to_s))
+          expect(document["data"]).to include(have_id(non_public_layout_page.id.to_s))
+          expect(document["data"]).not_to include(have_id(public_page.id.to_s))
+        end
       end
     end
 
