@@ -1,5 +1,13 @@
 # Changelog
 
+## [v0.7.1](https://github.com/AlchemyCMS/alchemy-json_api/tree/v0.7.1) (2020-11-16)
+
+[Full Changelog](https://github.com/AlchemyCMS/alchemy-json_api/compare/v0.7.0...v0.7.1)
+
+**Merged pull requests:**
+
+- Specify Record Type and Serializer Class for all relations [\#17](https://github.com/AlchemyCMS/alchemy-json_api/pull/17) ([mamhoff](https://github.com/mamhoff))
+
 ## [v0.7.0](https://github.com/AlchemyCMS/alchemy-json_api/tree/v0.7.0) (2020-11-16)
 
 [Full Changelog](https://github.com/AlchemyCMS/alchemy-json_api/compare/v0.6.0...v0.7.0)
