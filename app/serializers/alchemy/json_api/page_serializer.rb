@@ -15,9 +15,9 @@ module Alchemy
         :updated_at,
       )
 
-      belongs_to :language
+      belongs_to :language, record_type: :language, serializer: LanguageSerializer
 
-      has_many :elements
+      has_many :elements, record_type: :element, serializer: ElementSerializer
       has_many :fixed_elements, record_type: :element, serializer: ElementSerializer
 
       has_many :all_elements, record_type: :element, serializer: ElementSerializer do |page|

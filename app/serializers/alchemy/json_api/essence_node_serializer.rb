@@ -10,7 +10,7 @@ module Alchemy
         essence&.node&.name
       end
 
-      belongs_to :node
+      belongs_to :node, record_type: :node, serializer: NodeSerializer
 
       with_options if: proc { |essence| essence.node.present? } do
         attribute :name do |essence|
