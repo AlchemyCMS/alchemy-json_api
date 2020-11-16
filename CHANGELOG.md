@@ -1,5 +1,13 @@
 # Changelog
 
+## [v0.8.0](https://github.com/AlchemyCMS/alchemy-json_api/tree/v0.8.0) (2020-11-16)
+
+[Full Changelog](https://github.com/AlchemyCMS/alchemy-json_api/compare/v0.7.2...v0.8.0)
+
+**Merged pull requests:**
+
+- Add authorization [\#19](https://github.com/AlchemyCMS/alchemy-json_api/pull/19) ([tvdeyen](https://github.com/tvdeyen))
+
 ## [v0.7.2](https://github.com/AlchemyCMS/alchemy-json_api/tree/v0.7.2) (2020-11-16)
 
 [Full Changelog](https://github.com/AlchemyCMS/alchemy-json_api/compare/v0.7.1...v0.7.2)
