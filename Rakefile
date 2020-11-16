@@ -21,6 +21,7 @@ task :test_setup do
       export RAILS_ENV=test && \
       bin/rake db:environment:set db:drop && \
       bin/rake railties:install:migrations && \
+      bin/rails g alchemy:devise:install --force && \
       bin/rake db:migrate
     SETUP
     exit($?.exitstatus) unless $?.success?

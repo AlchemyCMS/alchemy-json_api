@@ -17,6 +17,7 @@ gemspec
 gem "sqlite3"
 
 gem "alchemy_cms", github: "AlchemyCMS/alchemy_cms", branch: "master"
+gem "alchemy-devise", github: "AlchemyCMS/alchemy-devise", branch: "master"
 gem "rufo"
 gem "rubocop"
 gem "pry-byebug"
