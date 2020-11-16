@@ -18,7 +18,7 @@ module Alchemy
         essence.page&.url_path
       end
 
-      has_one :page, record_type: :page, serializer: PageSerializer
+      has_one :page, record_type: :page, serializer: ::Alchemy::JsonApi::PageSerializer
     end
   end
 end
