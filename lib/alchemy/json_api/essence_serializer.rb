@@ -4,7 +4,7 @@ module Alchemy
     module EssenceSerializer
       def self.included(klass)
         klass.include FastJsonapi::ObjectSerializer
-        klass.has_one :element, record_type: :element, serializer: ElementSerializer do |essence|
+        klass.has_one :element, record_type: :element, serializer: ::Alchemy::JsonApi::ElementSerializer do |essence|
           essence.content.element
         end
         klass.attributes :ingredient
