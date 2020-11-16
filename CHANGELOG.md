@@ -1,5 +1,13 @@
 # Changelog
 
+## [v0.7.0](https://github.com/AlchemyCMS/alchemy-json_api/tree/v0.7.0) (2020-11-16)
+
+[Full Changelog](https://github.com/AlchemyCMS/alchemy-json_api/compare/v0.6.0...v0.7.0)
+
+**Merged pull requests:**
+
+- Log errors into standard out [\#16](https://github.com/AlchemyCMS/alchemy-json_api/pull/16) ([mamhoff](https://github.com/mamhoff))
+
 ## [v0.6.0](https://github.com/AlchemyCMS/alchemy-json_api/tree/v0.6.0) (2020-11-12)
 
 [Full Changelog](https://github.com/AlchemyCMS/alchemy-json_api/compare/v0.5.0...v0.6.0)
