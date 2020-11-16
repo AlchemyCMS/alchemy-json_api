@@ -12,7 +12,8 @@ module Alchemy
       )
       belongs_to :parent_element, record_type: :element, serializer: self
 
-      belongs_to :page
+      belongs_to :page, record_type: :page, serializer: PageSerializer
+
       has_many :essences, polymorphic: true do |element|
         element.contents.map(&:essence)
       end
