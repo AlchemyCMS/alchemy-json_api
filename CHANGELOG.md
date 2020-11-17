@@ -1,5 +1,13 @@
 # Changelog
 
+## [v0.8.1](https://github.com/AlchemyCMS/alchemy-json_api/tree/v0.8.1) (2020-11-17)
+
+[Full Changelog](https://github.com/AlchemyCMS/alchemy-json_api/compare/v0.8.0...v0.8.1)
+
+**Merged pull requests:**
+
+- Fix page base scope for anonymous users [\#20](https://github.com/AlchemyCMS/alchemy-json_api/pull/20) ([tvdeyen](https://github.com/tvdeyen))
+
 ## [v0.8.0](https://github.com/AlchemyCMS/alchemy-json_api/tree/v0.8.0) (2020-11-16)
 
 [Full Changelog](https://github.com/AlchemyCMS/alchemy-json_api/compare/v0.7.2...v0.8.0)
@@ -65,7 +73,6 @@
 **Merged pull requests:**
 
 - Add EssencePageSerializer [\#10](https://github.com/AlchemyCMS/alchemy-json_api/pull/10) ([tvdeyen](https://github.com/tvdeyen))
-- Remove link\_helper [\#9](https://github.com/AlchemyCMS/alchemy-json_api/pull/9) ([tvdeyen](https://github.com/tvdeyen))
 - Expose essence serializer behavior [\#8](https://github.com/AlchemyCMS/alchemy-json_api/pull/8) ([tvdeyen](https://github.com/tvdeyen))
 - Add support for nested urlnames [\#7](https://github.com/AlchemyCMS/alchemy-json_api/pull/7) ([tvdeyen](https://github.com/tvdeyen))
 
@@ -84,6 +91,7 @@
 
 **Merged pull requests:**
 
+- Remove link\_helper [\#9](https://github.com/AlchemyCMS/alchemy-json_api/pull/9) ([tvdeyen](https://github.com/tvdeyen))
 - Do not render trashed elements [\#4](https://github.com/AlchemyCMS/alchemy-json_api/pull/4) ([mamhoff](https://github.com/mamhoff))
 - Add Rufo and Rubocop [\#3](https://github.com/AlchemyCMS/alchemy-json_api/pull/3) ([mamhoff](https://github.com/mamhoff))
 - Add Layout Pages Controller [\#2](https://github.com/AlchemyCMS/alchemy-json_api/pull/2) ([mamhoff](https://github.com/mamhoff))
