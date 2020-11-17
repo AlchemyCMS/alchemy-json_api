@@ -50,7 +50,7 @@ module Alchemy
         if can?(:edit_content, Page)
           pages = Page.all
         else
-          pages = Page.accessible_by(current_ability, :index)
+          pages = Page.published
         end
         pages.
           with_language(Language.current).
