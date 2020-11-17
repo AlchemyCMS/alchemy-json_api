@@ -1,5 +1,13 @@
 # Changelog
 
+## [v0.8.1](https://github.com/AlchemyCMS/alchemy-json_api/tree/v0.8.1) (2020-11-17)
+
+[Full Changelog](https://github.com/AlchemyCMS/alchemy-json_api/compare/v0.8.0...v0.8.1)
+
+**Merged pull requests:**
+
+- Fix page base scope for anonymous users [\#20](https://github.com/AlchemyCMS/alchemy-json_api/pull/20) ([tvdeyen](https://github.com/tvdeyen))
+
 ## [v0.8.0](https://github.com/AlchemyCMS/alchemy-json_api/tree/v0.8.0) (2020-11-16)
 
 [Full Changelog](https://github.com/AlchemyCMS/alchemy-json_api/compare/v0.7.2...v0.8.0)
