@@ -2,7 +2,7 @@
 module Alchemy
   module JsonApi
     class NodeSerializer
-      include FastJsonapi::ObjectSerializer
+      include JSONAPI::Serializer
 
       attributes :name
       attribute :link_url, &:url
