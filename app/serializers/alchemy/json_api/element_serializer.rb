@@ -2,7 +2,8 @@
 module Alchemy
   module JsonApi
     class ElementSerializer
-      include FastJsonapi::ObjectSerializer
+      include JSONAPI::Serializer
+
       attributes(
         :name,
         :fixed,

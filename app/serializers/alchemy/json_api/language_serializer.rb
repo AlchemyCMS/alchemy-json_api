@@ -2,7 +2,8 @@
 module Alchemy
   module JsonApi
     class LanguageSerializer
-      include FastJsonapi::ObjectSerializer
+      include JSONAPI::Serializer
+
       attributes(
         :name,
         :language_code,

@@ -2,7 +2,8 @@
 module Alchemy
   module JsonApi
     class PageSerializer
-      include FastJsonapi::ObjectSerializer
+      include JSONAPI::Serializer
+
       attributes(
         :name,
         :urlname,
