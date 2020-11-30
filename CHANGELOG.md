@@ -1,5 +1,17 @@
 # Changelog
 
+## [v0.9.0](https://github.com/AlchemyCMS/alchemy-json_api/tree/v0.9.0) (2020-11-30)
+
+[Full Changelog](https://github.com/AlchemyCMS/alchemy-json_api/compare/v0.8.1...v0.9.0)
+
+**Closed issues:**
+
+- Use jsonapi-serializer instead of fast\_jsonapi [\#22](https://github.com/AlchemyCMS/alchemy-json_api/issues/22)
+
+**Merged pull requests:**
+
+- Switch from fast\_jsonapi to jsonapi-serializer [\#23](https://github.com/AlchemyCMS/alchemy-json_api/pull/23) ([tvdeyen](https://github.com/tvdeyen))
+
 ## [v0.8.1](https://github.com/AlchemyCMS/alchemy-json_api/tree/v0.8.1) (2020-11-17)
 
 [Full Changelog](https://github.com/AlchemyCMS/alchemy-json_api/compare/v0.8.0...v0.8.1)
