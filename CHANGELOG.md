@@ -1,5 +1,13 @@
 # Changelog
 
+## [v0.9.1](https://github.com/AlchemyCMS/alchemy-json_api/tree/v0.9.1) (2020-12-09)
+
+[Full Changelog](https://github.com/AlchemyCMS/alchemy-json_api/compare/v0.9.0...v0.9.1)
+
+**Merged pull requests:**
+
+- Return all layoutpages regardless of publication status [\#24](https://github.com/AlchemyCMS/alchemy-json_api/pull/24) ([tvdeyen](https://github.com/tvdeyen))
+
 ## [v0.9.0](https://github.com/AlchemyCMS/alchemy-json_api/tree/v0.9.0) (2020-11-30)
 
 [Full Changelog](https://github.com/AlchemyCMS/alchemy-json_api/compare/v0.8.1...v0.9.0)
