@@ -4,6 +4,10 @@ module Alchemy
     class LayoutPagesController < JsonApi::PagesController
       private
 
+      def base_page_scope
+        Page.all
+      end
+
       def page_scope
         page_scope_with_includes.layoutpages
       end
