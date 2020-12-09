@@ -42,19 +42,22 @@ module Alchemy
       end
 
       def page_scope
-        base_page_scope.contentpages
+        page_scope_with_includes.contentpages
+      end
+
+      def page_scope_with_includes
+        base_page_scope.
+          with_language(Language.current).
+          preload(language: {nodes: [:parent, :page]}, all_elements: [:parent_element, :nested_elements, { contents: { essence: :ingredient_association } }])
       end
 
       def base_page_scope
         # cancancan is not able to merge our complex AR scopes for logged in users
         if can?(:edit_content, Page)
-          pages = Page.all
+          Page.all
         else
-          pages = Page.published
+          Page.published
         end
-        pages.
-          with_language(Language.current).
-          preload(language: {nodes: [:parent, :page]}, all_elements: [:parent_element, :nested_elements, { contents: { essence: :ingredient_association } }])
       end
 
       def jsonapi_serializer_class(_resource, _is_collection)
