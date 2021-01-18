@@ -16,7 +16,9 @@ gemspec
 # gem 'byebug', group: [:development, :test]
 gem "sqlite3"
 
-gem "alchemy_cms", github: "AlchemyCMS/alchemy_cms", branch: "main"
+alchemy_branch = ENV.fetch("ALCHEMY_BRANCH", "main")
+gem "alchemy_cms", github: "AlchemyCMS/alchemy_cms", branch: alchemy_branch
+
 gem "alchemy-devise", github: "AlchemyCMS/alchemy-devise", branch: "main"
 gem "rufo"
 gem "rubocop"
