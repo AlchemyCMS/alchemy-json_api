@@ -1,5 +1,15 @@
 # Changelog
 
+## [v0.10.0](https://github.com/AlchemyCMS/alchemy-json_api/tree/v0.10.0) (2021-01-18)
+
+[Full Changelog](https://github.com/AlchemyCMS/alchemy-json_api/compare/v0.9.1...v0.10.0)
+
+**Merged pull requests:**
+
+- Test with all supported Alchemy versions [\#27](https://github.com/AlchemyCMS/alchemy-json_api/pull/27) ([tvdeyen](https://github.com/tvdeyen))
+- Do not include deprecated elements and essences [\#26](https://github.com/AlchemyCMS/alchemy-json_api/pull/26) ([tvdeyen](https://github.com/tvdeyen))
+- Allow Alchemy 6 [\#25](https://github.com/AlchemyCMS/alchemy-json_api/pull/25) ([tvdeyen](https://github.com/tvdeyen))
+
 ## [v0.9.1](https://github.com/AlchemyCMS/alchemy-json_api/tree/v0.9.1) (2020-12-09)
 
 [Full Changelog](https://github.com/AlchemyCMS/alchemy-json_api/compare/v0.9.0...v0.9.1)
