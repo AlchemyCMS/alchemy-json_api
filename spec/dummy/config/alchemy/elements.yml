@@ -107,6 +107,7 @@
     - name: essence_html
       type: EssenceHtml
       hint: true
+      deprecated: true
     - name: essence_link
       type: EssenceLink
       hint: true
@@ -160,3 +161,6 @@
   fixed: true
   unique: true
   nestable_elements: [text]
+
+- name: old
+  deprecated: true
