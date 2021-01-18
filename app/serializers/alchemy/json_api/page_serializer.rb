@@ -18,8 +18,13 @@ module Alchemy
 
       belongs_to :language, record_type: :language, serializer: ::Alchemy::JsonApi::LanguageSerializer
 
-      has_many :elements, record_type: :element, serializer: ::Alchemy::JsonApi::ElementSerializer
-      has_many :fixed_elements, record_type: :element, serializer: ::Alchemy::JsonApi::ElementSerializer
+      has_many :elements, record_type: :element, serializer: ::Alchemy::JsonApi::ElementSerializer do |page|
+        page.elements.reject { |e| !!e.try(:deprecated?) }
+      end
+
+      has_many :fixed_elements, record_type: :element, serializer: ::Alchemy::JsonApi::ElementSerializer do |page|
+        page.fixed_elements.reject { |c| !!c.try(:deprecated?) }
+      end
 
       has_many :all_elements, record_type: :element, serializer: ::Alchemy::JsonApi::ElementSerializer do |page|
         page.all_elements.select { |e| e.public? && !e.trashed? && !e.try(:deprecated?) }

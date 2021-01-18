@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 require "rails_helper"
 require "alchemy/test_support/factories"
+require "alchemy/version"
 
 RSpec.describe Alchemy::JsonApi::ElementSerializer do
   let(:element) do
@@ -8,12 +9,13 @@ RSpec.describe Alchemy::JsonApi::ElementSerializer do
       :alchemy_element,
       autogenerate_contents: true,
       tag_list: "Tag1,Tag2",
-      nested_elements: [nested_element],
+      nested_elements: [nested_element, deprecated_element],
       parent_element: parent_element,
     )
   end
   let(:nested_element) { FactoryBot.create(:alchemy_element) }
   let(:parent_element) { FactoryBot.create(:alchemy_element) }
+  let(:deprecated_element) { FactoryBot.create(:alchemy_element, name: "old") }
   let(:options) { {} }
 
   subject(:serializer) { described_class.new(element, options) }
@@ -46,7 +48,16 @@ RSpec.describe Alchemy::JsonApi::ElementSerializer do
     it "has the right keys and values" do
       expect(subject[:page]).to eq(data: { id: element.page_id.to_s, type: :page })
       expect(subject[:essences]).to eq(data: element.contents.map { |c| { id: c.essence_id.to_s, type: c.essence.class.name.demodulize.underscore.to_sym } })
-      expect(subject[:nested_elements]).to eq(data: [{ id: nested_element.id.to_s, type: :element }])
+      if Alchemy.gem_version >= Gem::Version.new("5.2.0.alpha")
+        expect(subject[:nested_elements]).to eq(data: [{ id: nested_element.id.to_s, type: :element }])
+      else
+        expect(subject[:nested_elements]).to eq(
+          data: [
+            { id: nested_element.id.to_s, type: :element },
+            { id: deprecated_element.id.to_s, type: :element },
+          ],
+        )
+      end
       expect(subject[:parent_element]).to eq(data: { id: parent_element.id.to_s, type: :element })
     end
   end
