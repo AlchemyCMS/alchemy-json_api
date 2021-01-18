@@ -3,6 +3,7 @@ require "rails_helper"
 require "alchemy/test_support/factories/page_factory"
 require "alchemy/test_support/factories/element_factory"
 require "alchemy/devise/test_support/factories"
+require "alchemy/version"
 
 RSpec.describe "Alchemy::JsonApi::Pages", type: :request do
   let(:page) do
@@ -44,7 +45,7 @@ RSpec.describe "Alchemy::JsonApi::Pages", type: :request do
 
         it "returns only public elements" do
           get alchemy_json_api.page_path(page, include: "all_elements.essences")
-          expect(included.length).to eq(5)
+          expect(included.length).to eq(Alchemy.gem_version >= Gem::Version.new("5.2.0.alpha") ? 5 : 6)
         end
       end
 
@@ -55,7 +56,7 @@ RSpec.describe "Alchemy::JsonApi::Pages", type: :request do
 
         it "returns only public essences" do
           get alchemy_json_api.page_path(page, include: "all_elements.essences")
-          expect(included.length).to eq(14)
+          expect(included.length).to eq(Alchemy.gem_version >= Gem::Version.new("5.2.0.alpha") ? 14 : 15)
         end
       end
     end
