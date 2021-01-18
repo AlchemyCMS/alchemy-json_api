@@ -22,7 +22,7 @@ module Alchemy
       has_many :fixed_elements, record_type: :element, serializer: ::Alchemy::JsonApi::ElementSerializer
 
       has_many :all_elements, record_type: :element, serializer: ::Alchemy::JsonApi::ElementSerializer do |page|
-        page.all_elements.select { |e| e.public? && !e.trashed? }
+        page.all_elements.select { |e| e.public? && !e.trashed? && !e.try(:deprecated?) }
       end
 
       with_options if: ->(_, params) { params[:admin] == true } do

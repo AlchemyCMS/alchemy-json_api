@@ -16,8 +16,8 @@ gemspec
 # gem 'byebug', group: [:development, :test]
 gem "sqlite3"
 
-gem "alchemy_cms", github: "AlchemyCMS/alchemy_cms", branch: "master"
-gem "alchemy-devise", github: "AlchemyCMS/alchemy-devise", branch: "master"
+gem "alchemy_cms", github: "AlchemyCMS/alchemy_cms", branch: "main"
+gem "alchemy-devise", github: "AlchemyCMS/alchemy-devise", branch: "main"
 gem "rufo"
 gem "rubocop"
 gem "pry-byebug"
