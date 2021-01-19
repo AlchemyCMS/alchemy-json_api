@@ -19,7 +19,9 @@ module Alchemy
         element.contents.reject { |c| !!c.try(:deprecated?) }.map!(&:essence)
       end
 
-      has_many :nested_elements, record_type: :element, serializer: self
+      has_many :nested_elements, record_type: :element, serializer: self do |element|
+        element.nested_elements.reject { |c| !!c.try(:deprecated?) }
+      end
 
       with_options if: ->(_, params) { params[:admin] == true } do
         attribute :tag_list
