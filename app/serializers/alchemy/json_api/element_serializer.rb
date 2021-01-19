@@ -11,6 +11,11 @@ module Alchemy
         :created_at,
         :updated_at,
       )
+
+      attribute :deprecated do |element|
+        !!element.definition[:deprecated]
+      end
+
       belongs_to :parent_element, record_type: :element, serializer: self
 
       belongs_to :page, record_type: :page, serializer: ::Alchemy::JsonApi::PageSerializer
