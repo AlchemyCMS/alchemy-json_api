@@ -14,6 +14,7 @@
   contents:
   - name: intro
     type: EssenceText
+    deprecated: true
   - name: headline
     type: EssenceText
     settings:

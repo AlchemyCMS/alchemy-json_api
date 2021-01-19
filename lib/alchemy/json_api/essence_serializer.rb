@@ -11,6 +11,9 @@ module Alchemy
         klass.attribute :role do |essence|
           essence.content.name
         end
+        klass.attribute :deprecated do |essence|
+          !!essence.content.definition[:deprecated]
+        end
       end
     end
   end

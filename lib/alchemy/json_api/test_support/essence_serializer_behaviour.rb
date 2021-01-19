@@ -5,6 +5,15 @@ RSpec.shared_examples "an essence serializer" do
 
     it "has the right keys and values" do
       expect(subject).to have_key(:ingredient)
+      expect(subject[:deprecated]).to be(false)
+    end
+
+    context "a deprecated content" do
+      let(:content) { FactoryBot.create(:alchemy_content, name: "intro", element: element) }
+
+      it "has deprecated attribute set to true" do
+        expect(subject[:deprecated]).to eq(true)
+      end
     end
   end
 
