@@ -3,7 +3,7 @@ require "rails_helper"
 require "alchemy/test_support/factories"
 
 RSpec.describe Alchemy::JsonApi::PageSerializer do
-  let(:page) do
+  let(:alchemy_page) do
     FactoryBot.create(
       :alchemy_page,
       urlname: "a-page",
@@ -14,6 +14,7 @@ RSpec.describe Alchemy::JsonApi::PageSerializer do
     )
   end
   let(:options) { {} }
+  let(:page) { Alchemy::JsonApi::Page.find(alchemy_page.id) }
 
   subject(:serializer) { described_class.new(page, options) }
 
@@ -36,22 +37,20 @@ RSpec.describe Alchemy::JsonApi::PageSerializer do
   end
 
   describe "relationships" do
-    let(:element) { FactoryBot.create(:alchemy_element) }
-    let(:fixed_element) { FactoryBot.create(:alchemy_element, fixed: true) }
-    let(:trashed_element) { FactoryBot.create(:alchemy_element, :trashed) }
+    let!(:element) { FactoryBot.create(:alchemy_element, page: alchemy_page) }
+    let!(:fixed_element) { FactoryBot.create(:alchemy_element, page: alchemy_page, fixed: true) }
+    let!(:non_public_element) { FactoryBot.create(:alchemy_element, page: alchemy_page, public: false) }
+    let!(:trashed_element) { FactoryBot.create(:alchemy_element, page: alchemy_page).tap(&:trash!) }
+
     subject { serializer.serializable_hash[:data][:relationships] }
 
-    before do
-      page.all_elements << element
-      page.all_elements << fixed_element
-      page.all_elements << trashed_element
-      trashed_element.trash!
-    end
-
-    it "has the right keys and values, and does not include trashed elements" do
-      expect(subject[:elements]).to eq(data: [{ id: element.id.to_s, type: :element }])
-      expect(subject[:fixed_elements]).to eq(data: [{ id: fixed_element.id.to_s, type: :element }])
-      expect(subject[:all_elements]).to eq(data: [{ id: element.id.to_s, type: :element }, { id: fixed_element.id.to_s, type: :element }])
+    it "has the right keys and values, and does not include trashed or hidden elements" do
+      expect(subject[:elements]).to eq(
+        data: [
+          { id: element.id.to_s, type: :element },
+          { id: fixed_element.id.to_s, type: :element },
+        ],
+      )
       expect(subject[:language]).to eq(data: { id: page.language_id.to_s, type: :language })
     end
   end
