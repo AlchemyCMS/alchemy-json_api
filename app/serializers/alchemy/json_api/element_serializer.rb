@@ -16,12 +16,10 @@ module Alchemy
       belongs_to :page, record_type: :page, serializer: ::Alchemy::JsonApi::PageSerializer
 
       has_many :essences, polymorphic: true do |element|
-        element.contents.reject { |c| !!c.try(:deprecated?) }.map!(&:essence)
+        element.contents.map(&:essence)
       end
 
-      has_many :nested_elements, record_type: :element, serializer: self do |element|
-        element.nested_elements.reject { |c| !!c.try(:deprecated?) }
-      end
+      has_many :nested_elements, record_type: :element, serializer: self
 
       with_options if: ->(_, params) { params[:admin] == true } do
         attribute :tag_list
