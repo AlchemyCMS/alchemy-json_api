@@ -1,5 +1,13 @@
 # Changelog
 
+## [v0.10.1](https://github.com/AlchemyCMS/alchemy-json_api/tree/v0.10.1) (2021-01-19)
+
+[Full Changelog](https://github.com/AlchemyCMS/alchemy-json_api/compare/v0.10.0...v0.10.1)
+
+**Merged pull requests:**
+
+- Remove deprecated elements from all element relations [\#28](https://github.com/AlchemyCMS/alchemy-json_api/pull/28) ([tvdeyen](https://github.com/tvdeyen))
+
 ## [v0.10.0](https://github.com/AlchemyCMS/alchemy-json_api/tree/v0.10.0) (2021-01-18)
 
 [Full Changelog](https://github.com/AlchemyCMS/alchemy-json_api/compare/v0.9.1...v0.10.0)
