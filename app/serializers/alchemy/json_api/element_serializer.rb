@@ -16,7 +16,7 @@ module Alchemy
       belongs_to :page, record_type: :page, serializer: ::Alchemy::JsonApi::PageSerializer
 
       has_many :essences, polymorphic: true do |element|
-        element.contents.reject { |c| !!c.try(:deprecated?) }.map!(&:essence)
+        element.contents.map(&:essence)
       end
 
       has_many :nested_elements, record_type: :element, serializer: self

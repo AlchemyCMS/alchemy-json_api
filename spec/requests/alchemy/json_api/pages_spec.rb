@@ -30,34 +30,11 @@ RSpec.describe "Alchemy::JsonApi::Pages", type: :request do
     context "when including elements and essences" do
       let(:page) { FactoryBot.create(:alchemy_page, :public, elements: [element]) }
       let(:element) { FactoryBot.create(:alchemy_element, name: "article", autogenerate_contents: true) }
-      let(:included) { JSON.parse(response.body)["included"] }
 
       it "includes the data" do
         get alchemy_json_api.page_path(page, include: "all_elements.essences")
+        included = JSON.parse(response.body)["included"]
         expect(included).to include(have_type("element").and(have_id(element.id.to_s)))
-        expect(included.length).to eq(5)
-      end
-
-      context "if deprecated elements are present" do
-        let!(:deprecated_element) do
-          FactoryBot.create(:alchemy_element, page: page, name: "old", autogenerate_contents: true)
-        end
-
-        it "returns only public elements" do
-          get alchemy_json_api.page_path(page, include: "all_elements.essences")
-          expect(included.length).to eq(Alchemy.gem_version >= Gem::Version.new("5.2.0.alpha") ? 5 : 6)
-        end
-      end
-
-      context "if deprecated contents in public elements are present" do
-        let!(:deprecated_element) do
-          FactoryBot.create(:alchemy_element, page: page, name: "all_you_can_eat", autogenerate_contents: true)
-        end
-
-        it "returns only public essences" do
-          get alchemy_json_api.page_path(page, include: "all_elements.essences")
-          expect(included.length).to eq(Alchemy.gem_version >= Gem::Version.new("5.2.0.alpha") ? 14 : 15)
-        end
       end
     end
 
