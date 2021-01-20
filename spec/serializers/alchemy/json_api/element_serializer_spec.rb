@@ -40,15 +40,6 @@ RSpec.describe Alchemy::JsonApi::ElementSerializer do
         expect(subject[:deprecated]).to eq(true)
       end
     end
-
-    context "with admin set to true" do
-      let(:options) { { params: { admin: true } } }
-
-      it "includes admin-only attributes" do
-        expect(subject[:tag_list]).to eq(["Tag1", "Tag2"])
-        expect(subject[:display_name]).to eq("Article: ")
-      end
-    end
   end
 
   describe "relationships" do

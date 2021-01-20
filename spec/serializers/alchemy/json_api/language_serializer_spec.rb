@@ -22,17 +22,6 @@ RSpec.describe Alchemy::JsonApi::LanguageSerializer do
       expect(attributes[:country_code]).to eq("DE")
       expect(attributes[:locale]).to eq("de")
     end
-
-    context "with admin set to true" do
-      let(:options) { { params: { admin: true } } }
-
-      it "includes admin-only attributes" do
-        attributes = subject[:data][:attributes]
-        expect(attributes[:created_at]).to be_present
-        expect(attributes[:updated_at]).to be_present
-        expect(attributes[:public]).to be true
-      end
-    end
   end
 
   describe "relationships" do
