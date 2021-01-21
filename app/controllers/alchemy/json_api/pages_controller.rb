@@ -35,6 +35,7 @@ module Alchemy
       end
 
       def load_page_by_id
+        return unless params[:path] =~ /\A\d+\z/
         page_scope.find_by(id: params[:path])
       end
 
