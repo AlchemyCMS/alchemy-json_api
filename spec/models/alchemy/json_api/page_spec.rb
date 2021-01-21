@@ -116,6 +116,7 @@ RSpec.describe Alchemy::JsonApi::Page, type: :model do
     let!(:element_1) { FactoryBot.create(:alchemy_element, page: page) }
     let!(:element_2) { FactoryBot.create(:alchemy_element, page: page) }
     let!(:element_3) { FactoryBot.create(:alchemy_element, page: page) }
+    let!(:fixed_element) { FactoryBot.create(:alchemy_element, page: page, fixed: true) }
 
     before do
       element_3.move_to_top
@@ -128,25 +129,15 @@ RSpec.describe Alchemy::JsonApi::Page, type: :model do
     end
 
     context "with nestable elements" do
-      let(:nestable_element) { FactoryBot.create(:alchemy_element, :with_nestable_elements) }
-
-      before do
-        nestable_element.nested_elements << FactoryBot.create(:alchemy_element, name: "slide")
-        page.elements << nestable_element
-      end
+      let!(:nested_element) { FactoryBot.create(:alchemy_element, page: page, parent_element: element_3) }
 
       it "does not contain nested elements of an element" do
-        expect(nestable_element.nested_elements).to_not be_empty
-        expect(element_ids).to_not include(nestable_element.nested_elements.first.id)
+        expect(element_ids).to_not include(nested_element.id)
       end
     end
 
     context "with trashed elements" do
-      let(:trashed_element) { FactoryBot.create(:alchemy_element, page: page) }
-
-      before do
-        trashed_element.trash!
-      end
+      let!(:trashed_element) { FactoryBot.create(:alchemy_element, page: page).tap(&:trash!) }
 
       it "does not contain trashed elements" do
         expect(element_ids).to_not include(trashed_element.id)
@@ -167,6 +158,7 @@ RSpec.describe Alchemy::JsonApi::Page, type: :model do
     let!(:element_1) { FactoryBot.create(:alchemy_element, fixed: true, page: page) }
     let!(:element_2) { FactoryBot.create(:alchemy_element, fixed: true, page: page) }
     let!(:element_3) { FactoryBot.create(:alchemy_element, fixed: true, page: page) }
+    let!(:not_fixed) { FactoryBot.create(:alchemy_element, fixed: false, page: page) }
 
     before do
       element_3.move_to_top
@@ -179,11 +171,7 @@ RSpec.describe Alchemy::JsonApi::Page, type: :model do
     end
 
     context "with trashed fixed elements" do
-      let(:trashed_element) { FactoryBot.create(:alchemy_element, page: page, fixed: true) }
-
-      before do
-        trashed_element.trash!
-      end
+      let!(:trashed_element) { FactoryBot.create(:alchemy_element, page: page, fixed: true).tap(&:trash!) }
 
       it "does not contain trashed fixed elements" do
         expect(fixed_elements).to_not include(trashed_element.id)
@@ -191,7 +179,7 @@ RSpec.describe Alchemy::JsonApi::Page, type: :model do
     end
 
     context "with hidden fixed elements" do
-      let(:hidden_element) { FactoryBot.create(:alchemy_element, page: page, fixed: true, public: false) }
+      let!(:hidden_element) { FactoryBot.create(:alchemy_element, page: page, fixed: true, public: false) }
 
       it "does not contain hidden fixed elements" do
         expect(fixed_elements).to_not include(hidden_element.id)

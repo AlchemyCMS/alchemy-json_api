@@ -44,14 +44,26 @@ RSpec.describe Alchemy::JsonApi::PageSerializer do
 
     subject { serializer.serializable_hash[:data][:relationships] }
 
-    it "has the right keys and values, and does not include trashed or hidden elements" do
-      expect(subject[:elements]).to eq(
-        data: [
-          { id: element.id.to_s, type: :element },
-          { id: fixed_element.id.to_s, type: :element },
-        ],
-      )
-      expect(subject[:language]).to eq(data: { id: page.language_id.to_s, type: :language })
+    describe "elements" do
+      it "does not include trashed, fixed or hidden elements" do
+        expect(subject[:elements]).to eq(
+          data: [
+            { id: element.id.to_s, type: :element },
+          ],
+        )
+        expect(subject[:language]).to eq(data: { id: page.language_id.to_s, type: :language })
+      end
+    end
+
+    describe "fixed_elements" do
+      it "does not include trashed, non-fixed or hidden elements" do
+        expect(subject[:fixed_elements]).to eq(
+          data: [
+            { id: fixed_element.id.to_s, type: :element },
+          ],
+        )
+        expect(subject[:language]).to eq(data: { id: page.language_id.to_s, type: :language })
+      end
     end
   end
 end

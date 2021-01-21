@@ -23,17 +23,13 @@ module Alchemy
       # The top level public, non-fixed elements of this page that - if present -
       # contains their nested_elements.
       def elements
-        @_elements ||= all_elements.select do |element|
-          !element.fixed? || element.parent_element_id.nil?
-        end
+        @_elements ||= first_level_elements.reject(&:fixed?)
       end
 
       # The top level public, fixed elements of this page that - if present -
       # contains their nested_elements.
       def fixed_elements
-        @_fixed_elements ||= all_elements.select do |element|
-          element.fixed? || element.parent_element_id.nil?
-        end
+        @_fixed_elements ||= first_level_elements.select(&:fixed?)
       end
 
       def element_ids
@@ -42,6 +38,12 @@ module Alchemy
 
       def fixed_element_ids
         @_fixed_element_ids ||= fixed_elements.map(&:id)
+      end
+
+      private
+
+      def first_level_elements
+        @_first_level_elements ||= all_elements.reject(&:parent_element_id)
       end
     end
   end
