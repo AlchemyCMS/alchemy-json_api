@@ -18,12 +18,6 @@ module Alchemy
       end
       has_many :pages
       has_one :root_page, record_type: :page, serializer: ::Alchemy::JsonApi::PageSerializer
-
-      with_options if: ->(_, params) { params[:admin] == true } do
-        attribute :created_at
-        attribute :updated_at
-        attribute :public
-      end
     end
   end
 end
