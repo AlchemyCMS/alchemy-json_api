@@ -24,4 +24,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "github_changelog_generator"
   spec.add_development_dependency "jsonapi-rspec"
   spec.add_development_dependency "rspec-rails"
+  spec.add_development_dependency "shoulda-matchers"
 end

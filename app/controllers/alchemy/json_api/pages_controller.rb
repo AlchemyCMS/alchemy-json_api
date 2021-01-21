@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module Alchemy
   module JsonApi
     class PagesController < JsonApi::BaseController
@@ -34,6 +35,7 @@ module Alchemy
       end
 
       def load_page_by_id
+        return unless params[:path] =~ /\A\d+\z/
         page_scope.find_by(id: params[:path])
       end
 
@@ -48,15 +50,15 @@ module Alchemy
       def page_scope_with_includes
         base_page_scope.
           with_language(Language.current).
-          preload(language: {nodes: [:parent, :page]}, all_elements: [:parent_element, :nested_elements, { contents: { essence: :ingredient_association } }])
+          preload(language: { nodes: [:parent, :page] }, all_elements: { contents: { essence: :ingredient_association } })
       end
 
       def base_page_scope
         # cancancan is not able to merge our complex AR scopes for logged in users
-        if can?(:edit_content, Page)
-          Page.all
+        if can?(:edit_content, ::Alchemy::Page)
+          ::Alchemy::JsonApi::Page.all
         else
-          Page.published
+          ::Alchemy::JsonApi::Page.published
         end
       end
 
