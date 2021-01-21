@@ -1,5 +1,16 @@
 # Changelog
 
+## [v0.11.0](https://github.com/AlchemyCMS/alchemy-json_api/tree/v0.11.0) (2021-01-21)
+
+[Full Changelog](https://github.com/AlchemyCMS/alchemy-json_api/compare/v0.10.1...v0.11.0)
+
+**Merged pull requests:**
+
+- Remove admin features from serializers [\#32](https://github.com/AlchemyCMS/alchemy-json_api/pull/32) ([tvdeyen](https://github.com/tvdeyen))
+- Optimize elements loading [\#31](https://github.com/AlchemyCMS/alchemy-json_api/pull/31) ([tvdeyen](https://github.com/tvdeyen))
+- Add deprecated attribute to elements and contents [\#30](https://github.com/AlchemyCMS/alchemy-json_api/pull/30) ([tvdeyen](https://github.com/tvdeyen))
+- Revert removal of deprecated elements [\#29](https://github.com/AlchemyCMS/alchemy-json_api/pull/29) ([tvdeyen](https://github.com/tvdeyen))
+
 ## [v0.10.1](https://github.com/AlchemyCMS/alchemy-json_api/tree/v0.10.1) (2021-01-19)
 
 [Full Changelog](https://github.com/AlchemyCMS/alchemy-json_api/compare/v0.10.0...v0.10.1)
