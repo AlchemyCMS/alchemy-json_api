@@ -12,14 +12,14 @@ module Alchemy
       scope :available, -> { where(public: true).where.not(position: nil) }
 
       def parent_element
-        page.elements.detect do |element|
+        page.all_elements.detect do |element|
           element.id == parent_element_id
         end
       end
 
       def nested_elements
         @_nested_elements ||= begin
-          page.elements.select do |element|
+          page.all_elements.select do |element|
             element.parent_element_id == id
           end
         end
