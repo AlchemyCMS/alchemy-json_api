@@ -27,7 +27,18 @@ RSpec.describe Alchemy::JsonApi::ElementSerializer do
       expect(subject[:created_at]).to eq(element.created_at)
       expect(subject[:updated_at]).to eq(element.updated_at)
       expect(subject[:position]).to eq(element.position)
+      expect(subject[:deprecated]).to eq(false)
       expect(subject.keys).not_to include(:tag_list, :display_name)
+    end
+
+    context "a deprecated element" do
+      let(:element) do
+        FactoryBot.create(:alchemy_element, name: "old")
+      end
+
+      it "has deprecated attribute set to true" do
+        expect(subject[:deprecated]).to eq(true)
+      end
     end
 
     context "with admin set to true" do
