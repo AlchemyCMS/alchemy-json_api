@@ -17,6 +17,7 @@ RSpec.describe Alchemy::JsonApi::LanguageSerializer do
 
     it "has the right keys and values" do
       attributes = subject[:data][:attributes]
+      expect(subject[:id]).to eq(language.id)
       expect(attributes[:name]).to eq("Deutsch")
       expect(attributes[:language_code]).to eq("de")
       expect(attributes[:country_code]).to eq("DE")

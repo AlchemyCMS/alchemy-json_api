@@ -21,6 +21,7 @@ RSpec.describe Alchemy::JsonApi::NodeSerializer do
 
     it "has the right keys and values" do
       attributes = subject[:data][:attributes]
+      expect(attributes[:id]).to eq(node.id)
       expect(attributes[:name]).to eq("A Node")
       expect(attributes[:link_title]).to eq("Pop-up explanation")
       expect(attributes[:link_url]).to eq("/acdc")

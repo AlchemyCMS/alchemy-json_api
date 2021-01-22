@@ -23,6 +23,7 @@ RSpec.describe Alchemy::JsonApi::PageSerializer do
 
     it "has the right keys and values" do
       attributes = subject[:data][:attributes]
+      expect(attributes[:id]).to eq(alchemy_page.id)
       expect(attributes[:urlname]).to eq("a-page")
       expect(attributes[:name]).to eq(page.name)
       expect(attributes[:page_layout]).to eq("standard")

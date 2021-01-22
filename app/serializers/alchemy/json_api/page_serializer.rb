@@ -7,6 +7,7 @@ module Alchemy
       ELEMENT_SERIALIZER = ::Alchemy::JsonApi::ElementSerializer
 
       attributes(
+        :id,
         :name,
         :urlname,
         :page_layout,

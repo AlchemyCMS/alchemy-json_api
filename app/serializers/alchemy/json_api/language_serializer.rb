@@ -5,6 +5,7 @@ module Alchemy
       include JSONAPI::Serializer
 
       attributes(
+        :id,
         :name,
         :language_code,
         :country_code,

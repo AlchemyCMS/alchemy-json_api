@@ -7,7 +7,7 @@ module Alchemy
         klass.has_one :element, record_type: :element, serializer: ::Alchemy::JsonApi::ElementSerializer do |essence|
           essence.content.element
         end
-        klass.attributes :ingredient
+        klass.attributes :id, :ingredient
         klass.attribute :role do |essence|
           essence.content.name
         end

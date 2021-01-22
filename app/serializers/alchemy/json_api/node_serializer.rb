@@ -4,7 +4,7 @@ module Alchemy
     class NodeSerializer
       include JSONAPI::Serializer
 
-      attributes :name
+      attributes :id, :name
       attribute :link_url, &:url
       attribute :link_title, &:title
       attribute :link_nofollow, &:nofollow
