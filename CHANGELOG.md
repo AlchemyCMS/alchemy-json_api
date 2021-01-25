@@ -1,5 +1,14 @@
 # Changelog
 
+## [v0.12.0](https://github.com/AlchemyCMS/alchemy-json_api/tree/v0.12.0) (2021-01-25)
+
+[Full Changelog](https://github.com/AlchemyCMS/alchemy-json_api/compare/v0.11.0...v0.12.0)
+
+**Merged pull requests:**
+
+- Eager load nodes children [\#34](https://github.com/AlchemyCMS/alchemy-json_api/pull/34) ([tvdeyen](https://github.com/tvdeyen))
+- Fixes element filtering for nested elements [\#33](https://github.com/AlchemyCMS/alchemy-json_api/pull/33) ([tvdeyen](https://github.com/tvdeyen))
+
 ## [v0.11.0](https://github.com/AlchemyCMS/alchemy-json_api/tree/v0.11.0) (2021-01-21)
 
 [Full Changelog](https://github.com/AlchemyCMS/alchemy-json_api/compare/v0.10.1...v0.11.0)
