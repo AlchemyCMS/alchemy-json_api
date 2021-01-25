@@ -5,7 +5,7 @@ module Alchemy
       private
 
       def base_page_scope
-        Page.all
+        ::Alchemy::JsonApi::Page.all
       end
 
       def page_scope
