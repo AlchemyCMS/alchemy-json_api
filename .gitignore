@@ -13,3 +13,4 @@ spec/dummy/db/*.sqlite3
 spec/dummy/public
 Gemfile.lock
 .ruby-version
+.idea
