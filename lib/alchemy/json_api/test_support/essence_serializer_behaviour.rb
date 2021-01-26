@@ -11,6 +11,15 @@ RSpec.shared_examples "an essence serializer" do
     context "a deprecated content" do
       let(:content) { FactoryBot.create(:alchemy_content, name: "intro", element: element) }
 
+      before do
+        expect(content).to receive(:definition).at_least(:once) do
+          {
+            name: "intro",
+            deprecated: true,
+          }
+        end
+      end
+
       it "has deprecated attribute set to true" do
         expect(subject[:deprecated]).to eq(true)
       end
