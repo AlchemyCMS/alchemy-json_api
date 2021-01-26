@@ -1,5 +1,13 @@
 # Changelog
 
+## [v0.12.1](https://github.com/AlchemyCMS/alchemy-json_api/tree/v0.12.1) (2021-01-26)
+
+[Full Changelog](https://github.com/AlchemyCMS/alchemy-json_api/compare/v0.12.0...v0.12.1)
+
+**Merged pull requests:**
+
+- Fix essence serializer RSpec behavior [\#36](https://github.com/AlchemyCMS/alchemy-json_api/pull/36) ([tvdeyen](https://github.com/tvdeyen))
+
 ## [v0.12.0](https://github.com/AlchemyCMS/alchemy-json_api/tree/v0.12.0) (2021-01-25)
 
 [Full Changelog](https://github.com/AlchemyCMS/alchemy-json_api/compare/v0.11.0...v0.12.0)
