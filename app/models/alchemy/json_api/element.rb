@@ -1,6 +1,7 @@
 module Alchemy
   module JsonApi
     class Element < BaseRecord
+      include Alchemy::Logger
       include Alchemy::Element::Definitions
       include Alchemy::Element::ElementContents
 
