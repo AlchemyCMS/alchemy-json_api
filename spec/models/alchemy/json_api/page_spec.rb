@@ -86,14 +86,6 @@ RSpec.describe Alchemy::JsonApi::Page, type: :model do
       end
     end
 
-    context "with trashed elements" do
-      let!(:trashed_element) { FactoryBot.create(:alchemy_element, page: page).tap(&:trash!) }
-
-      it "does not contain trashed elements" do
-        expect(all_element_ids).to_not include(trashed_element.id)
-      end
-    end
-
     context "with hidden elements" do
       let!(:hidden_element) { FactoryBot.create(:alchemy_element, page: page, public: false) }
 
@@ -136,14 +128,6 @@ RSpec.describe Alchemy::JsonApi::Page, type: :model do
       end
     end
 
-    context "with trashed elements" do
-      let!(:trashed_element) { FactoryBot.create(:alchemy_element, page: page).tap(&:trash!) }
-
-      it "does not contain trashed elements" do
-        expect(element_ids).to_not include(trashed_element.id)
-      end
-    end
-
     context "with hidden elements" do
       let(:hidden_element) { FactoryBot.create(:alchemy_element, page: page, public: false) }
 
@@ -168,14 +152,6 @@ RSpec.describe Alchemy::JsonApi::Page, type: :model do
 
     it "returns a ordered active record collection of fixed elements on that page" do
       expect(fixed_elements).to eq([element_3.id, element_1.id, element_2.id])
-    end
-
-    context "with trashed fixed elements" do
-      let!(:trashed_element) { FactoryBot.create(:alchemy_element, page: page, fixed: true).tap(&:trash!) }
-
-      it "does not contain trashed fixed elements" do
-        expect(fixed_elements).to_not include(trashed_element.id)
-      end
     end
 
     context "with hidden fixed elements" do

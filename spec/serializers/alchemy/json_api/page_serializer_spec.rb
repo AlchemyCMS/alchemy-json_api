@@ -40,12 +40,11 @@ RSpec.describe Alchemy::JsonApi::PageSerializer do
     let!(:element) { FactoryBot.create(:alchemy_element, page: alchemy_page) }
     let!(:fixed_element) { FactoryBot.create(:alchemy_element, page: alchemy_page, fixed: true) }
     let!(:non_public_element) { FactoryBot.create(:alchemy_element, page: alchemy_page, public: false) }
-    let!(:trashed_element) { FactoryBot.create(:alchemy_element, page: alchemy_page).tap(&:trash!) }
 
     subject { serializer.serializable_hash[:data][:relationships] }
 
     describe "elements" do
-      it "does not include trashed, fixed or hidden elements" do
+      it "does not include fixed or hidden elements" do
         expect(subject[:elements]).to eq(
           data: [
             { id: element.id.to_s, type: :element },
@@ -56,7 +55,7 @@ RSpec.describe Alchemy::JsonApi::PageSerializer do
     end
 
     describe "fixed_elements" do
-      it "does not include trashed, non-fixed or hidden elements" do
+      it "does not include non-fixed or hidden elements" do
         expect(subject[:fixed_elements]).to eq(
           data: [
             { id: fixed_element.id.to_s, type: :element },

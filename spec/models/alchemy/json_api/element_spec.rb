@@ -11,13 +11,11 @@ RSpec.describe Alchemy::JsonApi::Element, type: :model do
 
       let!(:public_one) { FactoryBot.create(:alchemy_element, public: true) }
       let!(:non_public) { FactoryBot.create(:alchemy_element, public: false) }
-      let!(:trashed) { FactoryBot.create(:alchemy_element, public: true).tap(&:trash!) }
 
       it "returns public available elements" do
         # expecting the ids here because the factorys class is not our decorator class
         expect(available).to include(public_one.id)
         expect(available).to_not include(non_public.id)
-        expect(available).to_not include(trashed.id)
       end
     end
   end
