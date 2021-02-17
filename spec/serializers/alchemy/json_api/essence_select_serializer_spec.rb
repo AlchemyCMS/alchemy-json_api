@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 require "rails_helper"
-require "alchemy/test_support/factories"
 
 RSpec.describe Alchemy::JsonApi::EssenceSelectSerializer do
   let(:element) { FactoryBot.create(:alchemy_element) }

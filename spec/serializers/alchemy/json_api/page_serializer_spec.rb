@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 require "rails_helper"
-require "alchemy/test_support/factories"
 
 RSpec.describe Alchemy::JsonApi::PageSerializer do
   let(:alchemy_page) do

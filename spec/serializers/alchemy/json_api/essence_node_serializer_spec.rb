@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 require "rails_helper"
-require "alchemy/test_support/factories"
 require "alchemy/essence_node"
 
 RSpec.describe Alchemy::JsonApi::EssenceNodeSerializer do

@@ -18,6 +18,17 @@ Shoulda::Matchers.configure do |config|
   end
 end
 
+require "alchemy/version"
+if Alchemy.gem_version >= Gem::Version.new("5.2.0")
+  require "factory_bot"
+  require "alchemy/test_support"
+
+  FactoryBot.definition_file_paths.concat(Alchemy::TestSupport.factory_paths)
+  FactoryBot.reload
+else
+  require "alchemy/test_support/factories"
+end
+
 # Requires supporting ruby files with custom matchers and macros, etc, in
 # spec/support/ and its subdirectories. Files matching `spec/**/*_spec.rb` are
 # run as spec files by default. This means that files in spec/support that end
