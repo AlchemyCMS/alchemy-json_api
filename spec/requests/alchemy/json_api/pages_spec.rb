@@ -146,6 +146,7 @@ RSpec.describe "Alchemy::JsonApi::Pages", type: :request do
             "last" => 4,
             "next" => 3,
             "prev" => 1,
+            "records" => 4,
           },
           "total" => 4,
         })
