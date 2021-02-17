@@ -39,7 +39,6 @@ RSpec.describe Alchemy::JsonApi::PageSerializer do
     let!(:element) { FactoryBot.create(:alchemy_element, page: alchemy_page) }
     let!(:fixed_element) { FactoryBot.create(:alchemy_element, page: alchemy_page, fixed: true) }
     let!(:non_public_element) { FactoryBot.create(:alchemy_element, page: alchemy_page, public: false) }
-    let!(:trashed_element) { FactoryBot.create(:alchemy_element, page: alchemy_page).tap(&:trash!) }
 
     subject { serializer.serializable_hash[:data][:relationships] }
 
