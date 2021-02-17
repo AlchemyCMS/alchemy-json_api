@@ -1,8 +1,5 @@
 # frozen_string_literal: true
 require "rails_helper"
-require "alchemy/test_support/factories/language_factory"
-require "alchemy/test_support/factories/page_factory"
-require "alchemy/test_support/factories/node_factory"
 
 RSpec.describe Alchemy::JsonApi::LanguageSerializer do
   let(:language) do

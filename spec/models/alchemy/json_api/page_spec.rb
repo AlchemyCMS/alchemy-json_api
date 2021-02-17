@@ -1,5 +1,4 @@
 require "rails_helper"
-require "alchemy/test_support/factories"
 
 RSpec.describe Alchemy::JsonApi::Page, type: :model do
   it { should belong_to(:language).class_name("Alchemy::Language") }
