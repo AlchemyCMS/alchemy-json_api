@@ -19,8 +19,8 @@ Shoulda::Matchers.configure do |config|
 end
 
 require "alchemy/version"
+require "factory_bot"
 if Alchemy.gem_version >= Gem::Version.new("5.2.0")
-  require "factory_bot"
   require "alchemy/test_support"
 
   FactoryBot.definition_file_paths.concat(Alchemy::TestSupport.factory_paths)

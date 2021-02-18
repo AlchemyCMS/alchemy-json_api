@@ -9,7 +9,7 @@ RSpec.describe "Alchemy::JsonApi::LayoutPagesController", type: :request do
       :public,
       :layoutpage,
       urlname: nil,
-      title: "Footer"
+      title: "Footer",
     )
   end
 
@@ -94,6 +94,7 @@ RSpec.describe "Alchemy::JsonApi::LayoutPagesController", type: :request do
             "last" => 3,
             "next" => 3,
             "prev" => 1,
+            "records" => 3,
           },
           "total" => 3,
         })
