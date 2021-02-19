@@ -18,6 +18,10 @@ module Alchemy
         :updated_at,
       )
 
+      attribute :legacy_urls do |page|
+        page.legacy_urls.map(&:urlname)
+      end
+
       belongs_to :language, record_type: :language, serializer: ::Alchemy::JsonApi::LanguageSerializer
 
       # All public elements of this page regardless of if they are fixed or nested.

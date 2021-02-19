@@ -12,6 +12,7 @@ RSpec.describe Alchemy::JsonApi::PageSerializer do
       tag_list: "Tag1,Tag2",
     )
   end
+  let!(:legacy_url) { Alchemy::LegacyPageUrl.create(urlname: "/other", page: alchemy_page) }
   let(:options) { {} }
   let(:page) { Alchemy::JsonApi::Page.find(alchemy_page.id) }
 
@@ -31,6 +32,7 @@ RSpec.describe Alchemy::JsonApi::PageSerializer do
       expect(attributes[:meta_description]).to eq("Meta Description")
       expect(attributes[:created_at]).to eq(page.created_at)
       expect(attributes[:updated_at]).to eq(page.updated_at)
+      expect(attributes[:legacy_urls]).to eq(["/other"])
       expect(attributes.keys).not_to include(:tag_list, :status)
     end
   end
