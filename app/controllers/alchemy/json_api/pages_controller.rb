@@ -50,7 +50,10 @@ module Alchemy
       def page_scope_with_includes
         base_page_scope.
           with_language(Language.current).
-          preload(language: { nodes: [:parent, :page, :children] }, all_elements: { contents: { essence: :ingredient_association } })
+          preload(
+            language: { nodes: [:parent, :page, :children] },
+            all_elements: { contents: { essence: :ingredient_association } }
+          )
       end
 
       def base_page_scope
