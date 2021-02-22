@@ -10,6 +10,8 @@ module Alchemy
         class_name: "Alchemy::JsonApi::Element",
         inverse_of: :page
 
+      has_many :legacy_urls, class_name: "Alchemy::LegacyPageUrl"
+
       scope :published, -> {
           where("#{table_name}.public_on <= :time AND " \
                 "(#{table_name}.public_until IS NULL " \

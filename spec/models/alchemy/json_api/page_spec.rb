@@ -102,6 +102,20 @@ RSpec.describe Alchemy::JsonApi::Page, type: :model do
     end
   end
 
+  describe "#legacy_urls" do
+    let(:page) { FactoryBot.create(:alchemy_page) }
+    let!(:legacy_url_1) { Alchemy::LegacyPageUrl.create(page: page, urlname: "/one") }
+    let!(:legacy_url_2) { Alchemy::LegacyPageUrl.create(page: page, urlname: "/two") }
+
+    subject(:all_legacy_url_ids) do
+      described_class.find(page.id).legacy_urls.map(&:id)
+    end
+
+    it "returns a active record collection of legacy URLs on that page" do
+      expect(all_legacy_url_ids).to eq([legacy_url_1.id, legacy_url_2.id])
+    end
+  end
+
   describe "#elements" do
     let(:page) { FactoryBot.create(:alchemy_page) }
     let!(:element_1) { FactoryBot.create(:alchemy_element, page: page) }
