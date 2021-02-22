@@ -51,6 +51,7 @@ module Alchemy
         base_page_scope.
           with_language(Language.current).
           preload(
+            :legacy_urls,
             language: { nodes: [:parent, :page, :children] },
             all_elements: { contents: { essence: :ingredient_association } }
           )
