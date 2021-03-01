@@ -45,7 +45,6 @@ RSpec.describe Alchemy::JsonApi::ElementSerializer do
     subject { serializer.serializable_hash[:data][:relationships] }
 
     it "has the right keys and values" do
-      expect(subject[:page]).to eq(data: { id: element.page_id.to_s, type: :page })
       expect(subject[:essences]).to eq(data: element.contents.map { |c| { id: c.essence_id.to_s, type: c.essence.class.name.demodulize.underscore.to_sym } })
       expect(subject[:nested_elements]).to eq(data: [{ id: nested_element.id.to_s, type: :element }])
       expect(subject[:parent_element]).to eq(data: { id: parent_element.id.to_s, type: :element })
