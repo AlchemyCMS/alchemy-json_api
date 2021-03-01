@@ -23,8 +23,8 @@ RSpec.describe "Alchemy::JsonApi::LayoutPagesController", type: :request do
     end
 
     context "when requesting a content page" do
-      let(:page) { FactoryBot.create(:alchemy_page, :public, elements: [element]) }
-      let(:element) { FactoryBot.create(:alchemy_element, name: "article", autogenerate_contents: true) }
+      let(:page) { FactoryBot.create(:alchemy_page, :public) }
+      let!(:element) { FactoryBot.create(:alchemy_element, page_version: page.public_version, name: "article", autogenerate_contents: true) }
 
       it "returns a 404" do
         get alchemy_json_api.layout_page_path(page)

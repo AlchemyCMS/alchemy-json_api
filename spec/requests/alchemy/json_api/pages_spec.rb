@@ -26,11 +26,10 @@ RSpec.describe "Alchemy::JsonApi::Pages", type: :request do
     end
 
     context "when including elements and essences" do
-      let(:page) { FactoryBot.create(:alchemy_page, :public, elements: [element]) }
-      let(:element) { FactoryBot.create(:alchemy_element, name: "article", autogenerate_contents: true) }
+      let!(:element) { FactoryBot.create(:alchemy_element, page_version: page.public_version, name: "article", autogenerate_contents: true) }
 
       it "includes the data" do
-        get alchemy_json_api.page_path(page, include: "all_elements.essences")
+        get alchemy_json_api.page_path(page, include: "elements.essences")
         included = JSON.parse(response.body)["included"]
         expect(included).to include(have_type("element").and(have_id(element.id.to_s)))
       end
