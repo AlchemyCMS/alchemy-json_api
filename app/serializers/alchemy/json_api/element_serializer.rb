@@ -16,8 +16,6 @@ module Alchemy
         !!element.definition[:deprecated]
       end
 
-      belongs_to :parent_element, record_type: :element, serializer: self
-
       has_many :essences, polymorphic: true do |element|
         element.contents.map(&:essence)
       end
