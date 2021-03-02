@@ -28,7 +28,7 @@ module Alchemy
 
         {
           pagination: pagination.presence,
-          total: page_scope.count
+          total: page_scope.count,
         }.compact
       end
 
@@ -52,9 +52,19 @@ module Alchemy
       def page_scope_with_includes
         base_page_scope.
           where(language: Language.current).
-          preload(
-            language: { nodes: [:parent, :page, :children] },
-            public_version: { elements: { contents: { essence: :ingredient_association } } },
+          includes(
+            [
+              :legacy_urls,
+              { language: { nodes: [:parent, :children, { page: { language: { site: :languages } } }] } },
+              {
+                public_version: {
+                  elements: [
+                    :nested_elements,
+                    { contents: { essence: :ingredient_association } },
+                  ],
+                },
+              },
+            ]
           )
       end
 

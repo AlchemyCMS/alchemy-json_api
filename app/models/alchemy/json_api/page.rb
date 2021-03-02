@@ -38,7 +38,8 @@ module Alchemy
       def element_repository
         return Alchemy::ElementsRepository.none unless @page_version
 
-        Alchemy::ElementsRepository.new(@page_version.elements.published)
+        # Need to use select here, otherwise rails would not eager load the elements correctly
+        Alchemy::ElementsRepository.new(@page_version.elements.select(&:public))
       end
     end
   end
