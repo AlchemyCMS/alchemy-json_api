@@ -3,8 +3,6 @@ module Alchemy
   module JsonApi
     module Admin
       class PagesController < JsonApi::PagesController
-        authorize_resource
-
         def show
           render jsonapi: Alchemy::JsonApi::Page.new(@page, page_version: :draft_version)
         end
@@ -13,10 +11,6 @@ module Alchemy
 
         def load_page
           @page = page_scope.find(params[:id])
-        end
-
-        def base_page_scope
-          ::Alchemy::Page.all
         end
 
         def page_scope_with_includes
