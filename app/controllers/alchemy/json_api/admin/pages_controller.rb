@@ -9,13 +9,8 @@ module Alchemy
 
         private
 
-        def page_scope_with_includes
-          base_page_scope.
-            where(language: Language.current).
-            preload(
-              language: { nodes: [:parent, :page, :children] },
-              draft_version: { elements: { contents: { essence: :ingredient_association } } },
-            )
+        def page_scope
+          page_scope_with_includes(page_version: :draft_version).contentpages
         end
       end
     end

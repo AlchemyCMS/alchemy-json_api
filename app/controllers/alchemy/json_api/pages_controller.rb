@@ -49,7 +49,7 @@ module Alchemy
         page_scope_with_includes.contentpages
       end
 
-      def page_scope_with_includes
+      def page_scope_with_includes(page_version: :public_version)
         base_page_scope.
           where(language: Language.current).
           includes(
@@ -57,7 +57,7 @@ module Alchemy
               :legacy_urls,
               { language: { nodes: [:parent, :children, { page: { language: { site: :languages } } }] } },
               {
-                public_version: {
+                page_version => {
                   elements: [
                     :nested_elements,
                     { contents: { essence: :ingredient_association } },
