@@ -6,6 +6,6 @@ Alchemy::JsonApi::Engine.routes.draw do
   get "layout_pages/*path" => "layout_pages#show", as: :layout_page
 
   namespace :admin do
-    resources :pages, only: [:show]
+    get "pages/*path" => "pages#show", as: :page
   end
 end

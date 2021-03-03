@@ -48,4 +48,21 @@ RSpec.describe "Alchemy::JsonApi::Admin::PagesController", type: :request do
       end
     end
   end
+
+  describe "GET /alchemy/json_api/admin/pages/:urlpath" do
+    subject { get alchemy_json_api.admin_page_path(page.urlname) }
+
+    context "as author user" do
+      before do
+        allow_any_instance_of(ApplicationController).to receive(:current_user) do
+          FactoryBot.create(:alchemy_author_user)
+        end
+      end
+
+      it "gets a valid JSON:API document" do
+        subject
+        expect(response).to have_http_status(200)
+      end
+    end
+  end
 end

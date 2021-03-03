@@ -9,10 +9,6 @@ module Alchemy
 
         private
 
-        def load_page
-          @page = page_scope.find(params[:id])
-        end
-
         def page_scope_with_includes
           base_page_scope.
             where(language: Language.current).
