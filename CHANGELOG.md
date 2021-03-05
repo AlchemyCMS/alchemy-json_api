@@ -1,5 +1,19 @@
 # Changelog
 
+## [v0.13.0](https://github.com/AlchemyCMS/alchemy-json_api/tree/v0.13.0) (2021-03-05)
+
+[Full Changelog](https://github.com/AlchemyCMS/alchemy-json_api/compare/v0.12.2...v0.13.0)
+
+**Merged pull requests:**
+
+- Fix loading of alchemy factories [\#45](https://github.com/AlchemyCMS/alchemy-json_api/pull/45) ([tvdeyen](https://github.com/tvdeyen))
+- Add support for page versions [\#44](https://github.com/AlchemyCMS/alchemy-json_api/pull/44) ([tvdeyen](https://github.com/tvdeyen))
+- Preload legacy page URLs [\#43](https://github.com/AlchemyCMS/alchemy-json_api/pull/43) ([pelargir](https://github.com/pelargir))
+- Add legacy URLs to page serializer [\#42](https://github.com/AlchemyCMS/alchemy-json_api/pull/42) ([pelargir](https://github.com/pelargir))
+- Fix pagination related specs [\#41](https://github.com/AlchemyCMS/alchemy-json_api/pull/41) ([tvdeyen](https://github.com/tvdeyen))
+- Remove tests for trashed elements [\#40](https://github.com/AlchemyCMS/alchemy-json_api/pull/40) ([tvdeyen](https://github.com/tvdeyen))
+- Fix factory loading [\#39](https://github.com/AlchemyCMS/alchemy-json_api/pull/39) ([tvdeyen](https://github.com/tvdeyen))
+
 ## [v0.12.2](https://github.com/AlchemyCMS/alchemy-json_api/tree/v0.12.2) (2021-01-27)
 
 [Full Changelog](https://github.com/AlchemyCMS/alchemy-json_api/compare/v0.12.1...v0.12.2)
