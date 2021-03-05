@@ -3,6 +3,8 @@ module Alchemy
   module JsonApi
     module Admin
       class PagesController < JsonApi::PagesController
+        prepend_before_action { authorize! :edit_content, Alchemy::Page }
+
         def show
           render jsonapi: Alchemy::JsonApi::Page.new(@page, page_version: :draft_version)
         end

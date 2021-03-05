@@ -11,9 +11,9 @@ RSpec.describe "Alchemy::JsonApi::Admin::PagesController", type: :request do
     subject { get alchemy_json_api.admin_page_path(page) }
 
     context "as anonymous user" do
-      it "returns 404" do
+      it "returns 401" do
         subject
-        expect(response).to have_http_status(404)
+        expect(response).to have_http_status(401)
       end
     end
 
