@@ -23,8 +23,8 @@ RSpec.describe "Alchemy::JsonApi::LayoutPagesController", type: :request do
     end
 
     context "when requesting a content page" do
-      let(:page) { FactoryBot.create(:alchemy_page, :public, elements: [element]) }
-      let(:element) { FactoryBot.create(:alchemy_element, name: "article", autogenerate_contents: true) }
+      let(:page) { FactoryBot.create(:alchemy_page, :public) }
+      let!(:element) { FactoryBot.create(:alchemy_element, page_version: page.public_version, name: "article", autogenerate_contents: true) }
 
       it "returns a 404" do
         get alchemy_json_api.layout_page_path(page)
@@ -56,9 +56,24 @@ RSpec.describe "Alchemy::JsonApi::LayoutPagesController", type: :request do
     context "when requesting an unpublished layout page" do
       let(:page) { FactoryBot.create(:alchemy_page, :layoutpage) }
 
-      it "finds the page" do
-        get alchemy_json_api.layout_page_path(page.urlname)
-        expect(response).to have_http_status(200)
+      context "for normal users" do
+        it "does not find the page" do
+          get alchemy_json_api.layout_page_path(page.urlname)
+          expect(response).to have_http_status(404)
+        end
+      end
+
+      context "for author users" do
+        before do
+          allow_any_instance_of(ApplicationController).to receive(:current_user) do
+            FactoryBot.create(:alchemy_author_user)
+          end
+        end
+
+        it "finds the page" do
+          get alchemy_json_api.layout_page_path(page.urlname)
+          expect(response).to have_http_status(200)
+        end
       end
     end
   end
@@ -69,12 +84,30 @@ RSpec.describe "Alchemy::JsonApi::LayoutPagesController", type: :request do
       let!(:non_public_layout_page) { FactoryBot.create(:alchemy_page, :layoutpage) }
       let!(:public_page) { FactoryBot.create(:alchemy_page, :public) }
 
-      it "returns all layout pages" do
-        get alchemy_json_api.layout_pages_path
-        document = JSON.parse(response.body)
-        expect(document["data"]).to include(have_id(layoutpage.id.to_s))
-        expect(document["data"]).to include(have_id(non_public_layout_page.id.to_s))
-        expect(document["data"]).not_to include(have_id(public_page.id.to_s))
+      context "for normal users" do
+        it "returns all public layout pages" do
+          get alchemy_json_api.layout_pages_path
+          document = JSON.parse(response.body)
+          expect(document["data"]).to include(have_id(layoutpage.id.to_s))
+          expect(document["data"]).not_to include(have_id(non_public_layout_page.id.to_s))
+          expect(document["data"]).not_to include(have_id(public_page.id.to_s))
+        end
+      end
+
+      context "for author users" do
+        before do
+          allow_any_instance_of(ApplicationController).to receive(:current_user) do
+            FactoryBot.create(:alchemy_author_user)
+          end
+        end
+
+        it "returns all layout pages" do
+          get alchemy_json_api.layout_pages_path
+          document = JSON.parse(response.body)
+          expect(document["data"]).to include(have_id(layoutpage.id.to_s))
+          expect(document["data"]).to include(have_id(non_public_layout_page.id.to_s))
+          expect(document["data"]).not_to include(have_id(public_page.id.to_s))
+        end
       end
     end
 

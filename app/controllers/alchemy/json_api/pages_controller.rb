@@ -9,14 +9,16 @@ module Alchemy
         allowed = [:page_layout]
 
         jsonapi_filter(page_scope, allowed) do |filtered|
-          jsonapi_paginate(filtered.result) do |paginated|
+          # decorate with our page model that has a eager loaded elements collection
+          pages = filtered.result.map { |p| Alchemy::JsonApi::Page.new(p) }
+          jsonapi_paginate(pages) do |paginated|
             render jsonapi: paginated
           end
         end
       end
 
       def show
-        render jsonapi: @page
+        render jsonapi: Alchemy::JsonApi::Page.new(@page)
       end
 
       private
@@ -26,7 +28,7 @@ module Alchemy
 
         {
           pagination: pagination.presence,
-          total: page_scope.count
+          total: page_scope.count,
         }.compact
       end
 
@@ -47,22 +49,31 @@ module Alchemy
         page_scope_with_includes.contentpages
       end
 
-      def page_scope_with_includes
+      def page_scope_with_includes(page_version: :public_version)
         base_page_scope.
-          with_language(Language.current).
-          preload(
-            :legacy_urls,
-            language: { nodes: [:parent, :page, :children] },
-            all_elements: { contents: { essence: :ingredient_association } }
+          where(language: Language.current).
+          includes(
+            [
+              :legacy_urls,
+              { language: { nodes: [:parent, :children, { page: { language: { site: :languages } } }] } },
+              {
+                page_version => {
+                  elements: [
+                    :nested_elements,
+                    { contents: { essence: :ingredient_association } },
+                  ],
+                },
+              },
+            ]
           )
       end
 
       def base_page_scope
         # cancancan is not able to merge our complex AR scopes for logged in users
         if can?(:edit_content, ::Alchemy::Page)
-          ::Alchemy::JsonApi::Page.all
+          Alchemy::Page.all
         else
-          ::Alchemy::JsonApi::Page.published
+          Alchemy::Page.published
         end
       end
 

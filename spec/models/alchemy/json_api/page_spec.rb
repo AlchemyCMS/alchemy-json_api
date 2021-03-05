@@ -1,178 +1,99 @@
 require "rails_helper"
 
 RSpec.describe Alchemy::JsonApi::Page, type: :model do
-  it { should belong_to(:language).class_name("Alchemy::Language") }
-  it { should have_many(:all_elements).class_name("Alchemy::JsonApi::Element") }
+  let(:json_api_page) { described_class.new(page) }
 
-  describe "scopes" do
-    describe ".published" do
-      subject(:published) { described_class.published.map(&:id) }
+  shared_context "with page version present" do
+    let(:page) { FactoryBot.create(:alchemy_page, :public) }
+    let!(:element_1) { FactoryBot.create(:alchemy_element, page_version: page.public_version) }
+    let!(:element_2) { FactoryBot.create(:alchemy_element, page_version: page.public_version) }
+    let!(:element_3) { FactoryBot.create(:alchemy_element, page_version: page.public_version) }
+    let!(:fixed_element) { FactoryBot.create(:alchemy_element, page_version: page.public_version, fixed: true) }
+    let!(:nested_element) { FactoryBot.create(:alchemy_element, page_version: page.public_version, parent_element: element_3) }
+    let!(:hidden_element) { FactoryBot.create(:alchemy_element, page_version: page.draft_version, public: false) }
 
-      let!(:public_one) { FactoryBot.create(:alchemy_page, :public) }
-      let!(:public_two) { FactoryBot.create(:alchemy_page, :public) }
-      let!(:non_public_page) { FactoryBot.create(:alchemy_page) }
-
-      it "returns public available pages" do
-        # expecting the ids here because the factorys class is not our decorator class
-        expect(published).to include(public_one.id)
-        expect(published).to include(public_two.id)
-        expect(published).to_not include(non_public_page.id)
-      end
-    end
-
-    describe ".contentpages" do
-      let!(:layoutpage) { FactoryBot.create(:alchemy_page, :layoutpage) }
-      let!(:contentpage) { FactoryBot.create(:alchemy_page) }
-
-      it "should return contentpages" do
-        # expecting the attribute here because the factorys class is not our decorator class
-        expect(described_class.contentpages.map(&:layoutpage)).to eq([false, false]) # page plus root page
-      end
-    end
-
-    describe ".layoutpages" do
-      let!(:layoutpage) { FactoryBot.create(:alchemy_page, :layoutpage) }
-      let!(:contentpage) { FactoryBot.create(:alchemy_page) }
-
-      it "should return layoutpages" do
-        # expecting the attribute here because the factorys class is not our decorator class
-        expect(described_class.layoutpages.map(&:layoutpage)).to eq([true])
-      end
-    end
-
-    describe ".with_language" do
-      let(:english) { FactoryBot.create(:alchemy_language, :english) }
-      let(:german) { FactoryBot.create(:alchemy_language, :german) }
-      let!(:page_en) { FactoryBot.create(:alchemy_page, language: english) }
-      let!(:page_de) { FactoryBot.create(:alchemy_page, language: german) }
-
-      it "should return layoutpages" do
-        # expecting the attribute here because the factorys class is not our decorator class
-        expect(described_class.with_language(german.id).map(&:language_id)).to eq([german.id, german.id]) # page plus root page
-      end
+    before do
+      element_3.move_to_top
     end
   end
 
   describe "#all_elements" do
-    let(:page) { FactoryBot.create(:alchemy_page) }
-    let!(:element_1) { FactoryBot.create(:alchemy_element, page: page) }
-    let!(:element_2) { FactoryBot.create(:alchemy_element, page: page) }
-    let!(:element_3) { FactoryBot.create(:alchemy_element, page: page) }
+    subject(:elements) { json_api_page.all_elements }
 
-    before do
-      element_3.move_to_top
-    end
+    context "with page version present" do
+      include_context "with page version present"
 
-    subject(:all_element_ids) do
-      described_class.find(page.id).all_elements.map(&:id)
-    end
-
-    it "returns a ordered active record collection of elements on that page" do
-      expect(all_element_ids).to eq([element_3.id, element_1.id, element_2.id])
-    end
-
-    context "with nestable elements" do
-      let!(:nestable_element) do
-        FactoryBot.create(:alchemy_element, page: page)
+      it "returns a ordered active record collection of all visible elements on that page" do
+        is_expected.to match([element_3, fixed_element, nested_element, element_1, element_2])
       end
 
-      let!(:nested_element) do
-        FactoryBot.create(:alchemy_element, name: "slide", parent_element: nestable_element, page: page)
-      end
+      context "with draft_version passed as page_version" do
+        let(:json_api_page) { described_class.new(page, page_version: :draft_version) }
+        let!(:element_4) { FactoryBot.create(:alchemy_element, page_version: page.draft_version) }
 
-      it "contains nested elements of an element" do
-        expect(all_element_ids).to include(nested_element.id)
+        it "contains elements only from draft version" do
+          is_expected.to match([element_4])
+        end
       end
     end
 
-    context "with hidden elements" do
-      let!(:hidden_element) { FactoryBot.create(:alchemy_element, page: page, public: false) }
+    context "with page_version not present" do
+      let(:page) { FactoryBot.create(:alchemy_page) }
+      let(:json_api_page) { described_class.new(page, page_version: :public_version) }
 
-      it "does not contain hidden elements" do
-        expect(all_element_ids).to_not include(hidden_element.id)
-      end
-    end
-
-    context "with fixed elements" do
-      let!(:fixed_element) { FactoryBot.create(:alchemy_element, page: page, fixed: true) }
-
-      it "contains fixed elements" do
-        expect(all_element_ids).to include(fixed_element.id)
+      it "contains elements only from draft version" do
+        is_expected.to match([])
       end
     end
   end
 
-  describe "#legacy_urls" do
-    let(:page) { FactoryBot.create(:alchemy_page) }
-    let!(:legacy_url_1) { Alchemy::LegacyPageUrl.create(page: page, urlname: "/one") }
-    let!(:legacy_url_2) { Alchemy::LegacyPageUrl.create(page: page, urlname: "/two") }
+  describe "#all_element_ids" do
+    subject(:all_element_ids) { json_api_page.all_element_ids }
 
-    subject(:all_legacy_url_ids) do
-      described_class.find(page.id).legacy_urls.map(&:id)
-    end
+    include_context "with page version present"
 
-    it "returns a active record collection of legacy URLs on that page" do
-      expect(all_legacy_url_ids).to eq([legacy_url_1.id, legacy_url_2.id])
+    it "returns a ordered active record collection of element ids on that page" do
+      is_expected.to match([element_3.id, fixed_element.id, nested_element.id, element_1.id, element_2.id])
     end
   end
 
   describe "#elements" do
-    let(:page) { FactoryBot.create(:alchemy_page) }
-    let!(:element_1) { FactoryBot.create(:alchemy_element, page: page) }
-    let!(:element_2) { FactoryBot.create(:alchemy_element, page: page) }
-    let!(:element_3) { FactoryBot.create(:alchemy_element, page: page) }
-    let!(:fixed_element) { FactoryBot.create(:alchemy_element, page: page, fixed: true) }
+    subject(:elements) { json_api_page.elements }
 
-    before do
-      element_3.move_to_top
+    include_context "with page version present"
+
+    it "returns a ordered active record collection of top level not fixed visible elements on that page" do
+      is_expected.to match([element_3, element_1, element_2])
     end
+  end
 
-    subject(:element_ids) { described_class.find(page.id).elements.map(&:id) }
+  describe "#element_ids" do
+    subject(:element_ids) { json_api_page.element_ids }
 
-    it "returns a ordered active record collection of elements on that page" do
-      expect(element_ids).to eq([element_3.id, element_1.id, element_2.id])
-    end
+    include_context "with page version present"
 
-    context "with nestable elements" do
-      let!(:nested_element) { FactoryBot.create(:alchemy_element, page: page, parent_element: element_3) }
-
-      it "does not contain nested elements of an element" do
-        expect(element_ids).to_not include(nested_element.id)
-      end
-    end
-
-    context "with hidden elements" do
-      let(:hidden_element) { FactoryBot.create(:alchemy_element, page: page, public: false) }
-
-      it "does not contain hidden elements" do
-        expect(element_ids).to_not include(hidden_element.id)
-      end
+    it "returns a ordered active record collection of top level not fixed visible element ids on that page" do
+      is_expected.to match([element_3.id, element_1.id, element_2.id])
     end
   end
 
   describe "#fixed_elements" do
-    let(:page) { FactoryBot.create(:alchemy_page) }
-    let!(:element_1) { FactoryBot.create(:alchemy_element, fixed: true, page: page) }
-    let!(:element_2) { FactoryBot.create(:alchemy_element, fixed: true, page: page) }
-    let!(:element_3) { FactoryBot.create(:alchemy_element, fixed: true, page: page) }
-    let!(:not_fixed) { FactoryBot.create(:alchemy_element, fixed: false, page: page) }
+    subject(:fixed_elements) { json_api_page.fixed_elements }
 
-    before do
-      element_3.move_to_top
+    include_context "with page version present"
+
+    it "returns a ordered active record collection of top level fixed visible elements on that page" do
+      is_expected.to match([fixed_element])
     end
+  end
 
-    subject(:fixed_elements) { described_class.find(page.id).fixed_elements.map(&:id) }
+  describe "#fixed_element_ids" do
+    subject(:fixed_element_ids) { json_api_page.fixed_element_ids }
 
-    it "returns a ordered active record collection of fixed elements on that page" do
-      expect(fixed_elements).to eq([element_3.id, element_1.id, element_2.id])
-    end
+    include_context "with page version present"
 
-    context "with hidden fixed elements" do
-      let!(:hidden_element) { FactoryBot.create(:alchemy_element, page: page, fixed: true, public: false) }
-
-      it "does not contain hidden fixed elements" do
-        expect(fixed_elements).to_not include(hidden_element.id)
-      end
+    it "returns a ordered active record collection of top level fixed visible element ids on that page" do
+      is_expected.to match([fixed_element.id])
     end
   end
 end

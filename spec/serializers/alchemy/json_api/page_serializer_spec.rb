@@ -5,6 +5,7 @@ RSpec.describe Alchemy::JsonApi::PageSerializer do
   let(:alchemy_page) do
     FactoryBot.create(
       :alchemy_page,
+      :public,
       urlname: "a-page",
       title: "Page Title",
       meta_keywords: "Meta Keywords",
@@ -14,7 +15,7 @@ RSpec.describe Alchemy::JsonApi::PageSerializer do
   end
   let!(:legacy_url) { Alchemy::LegacyPageUrl.create(urlname: "/other", page: alchemy_page) }
   let(:options) { {} }
-  let(:page) { Alchemy::JsonApi::Page.find(alchemy_page.id) }
+  let(:page) { Alchemy::JsonApi::Page.new(alchemy_page) }
 
   subject(:serializer) { described_class.new(page, options) }
 
@@ -38,9 +39,9 @@ RSpec.describe Alchemy::JsonApi::PageSerializer do
   end
 
   describe "relationships" do
-    let!(:element) { FactoryBot.create(:alchemy_element, page: alchemy_page) }
-    let!(:fixed_element) { FactoryBot.create(:alchemy_element, page: alchemy_page, fixed: true) }
-    let!(:non_public_element) { FactoryBot.create(:alchemy_element, page: alchemy_page, public: false) }
+    let!(:element) { FactoryBot.create(:alchemy_element, page_version: alchemy_page.public_version) }
+    let!(:fixed_element) { FactoryBot.create(:alchemy_element, page_version: alchemy_page.public_version, fixed: true) }
+    let!(:non_public_element) { FactoryBot.create(:alchemy_element, page_version: alchemy_page.public_version, public: false) }
 
     subject { serializer.serializable_hash[:data][:relationships] }
 

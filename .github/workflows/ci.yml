@@ -11,9 +11,6 @@ jobs:
       fail-fast: false
       matrix:
         alchemy_branch:
-          - 5.0-stable
-          - 5.1-stable
-          - 5.2-stable
           - main
     env:
       ALCHEMY_BRANCH: ${{ matrix.alchemy_branch }}
