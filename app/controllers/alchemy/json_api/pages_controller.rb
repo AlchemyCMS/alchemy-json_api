@@ -18,7 +18,7 @@ module Alchemy
       end
 
       def show
-        render jsonapi: Alchemy::JsonApi::Page.new(@page)
+        render jsonapi: Alchemy::JsonApi::Page.new(@page, page_version: page_version)
       end
 
       private
@@ -49,7 +49,7 @@ module Alchemy
         page_scope_with_includes.contentpages
       end
 
-      def page_scope_with_includes(page_version: :public_version)
+      def page_scope_with_includes
         base_page_scope.
           where(language: Language.current).
           includes(
@@ -66,6 +66,10 @@ module Alchemy
               },
             ]
           )
+      end
+
+      def page_version
+        :public_version
       end
 
       def base_page_scope
