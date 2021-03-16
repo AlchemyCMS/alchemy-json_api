@@ -2,7 +2,7 @@
 module Alchemy
   module JsonApi
     module Admin
-      class LayoutPagesController < PagesController
+      class LayoutPagesController < JsonApi::Admin::PagesController
         private
 
         def page_scope
