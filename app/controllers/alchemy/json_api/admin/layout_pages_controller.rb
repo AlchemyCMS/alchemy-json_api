@@ -2,11 +2,11 @@
 module Alchemy
   module JsonApi
     module Admin
-      class LayoutPagesController < PagesController
+      class LayoutPagesController < JsonApi::Admin::PagesController
         private
 
         def page_scope
-          page_scope_with_includes(page_version: :draft_version).layoutpages
+          page_scope_with_includes.layoutpages
         end
       end
     end

@@ -10,7 +10,7 @@ module Alchemy
 
         jsonapi_filter(page_scope, allowed) do |filtered|
           # decorate with our page model that has a eager loaded elements collection
-          pages = filtered.result.map { |p| Alchemy::JsonApi::Page.new(p) }
+          pages = filtered.result.map { |page| api_page(page) }
           jsonapi_paginate(pages) do |paginated|
             render jsonapi: paginated
           end
@@ -18,7 +18,7 @@ module Alchemy
       end
 
       def show
-        render jsonapi: Alchemy::JsonApi::Page.new(@page)
+        render jsonapi: api_page(@page)
       end
 
       private
@@ -49,7 +49,7 @@ module Alchemy
         page_scope_with_includes.contentpages
       end
 
-      def page_scope_with_includes(page_version: :public_version)
+      def page_scope_with_includes
         base_page_scope.
           where(language: Language.current).
           includes(
@@ -66,6 +66,14 @@ module Alchemy
               },
             ]
           )
+      end
+
+      def page_version
+        :public_version
+      end
+
+      def api_page(page)
+        Alchemy::JsonApi::Page.new(page, page_version: page_version)
       end
 
       def base_page_scope
