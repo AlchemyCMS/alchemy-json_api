@@ -6,8 +6,7 @@ RSpec.describe Alchemy::JsonApi::EssenceRichtextSerializer do
   let(:content) { FactoryBot.create(:alchemy_content, element: element) }
   let(:essence) do
     Alchemy::EssenceRichtext.create(
-      body: "<h3>Hello</h3>",
-      stripped_body: "Hello",
+      body: "<h3 style=\"color: red;\">Hello</h3>",
       content: content,
     )
   end
@@ -21,7 +20,8 @@ RSpec.describe Alchemy::JsonApi::EssenceRichtextSerializer do
     subject { serializer.serializable_hash[:data][:attributes] }
 
     it "has the right keys and values" do
-      expect(subject[:body]).to eq("<h3>Hello</h3>")
+      expect(subject[:body]).to eq("<h3 style=\"color: red;\">Hello</h3>")
+      expect(subject[:sanitized_body]).to eq("<h3>Hello</h3>")
       expect(subject[:stripped_body]).to eq("Hello")
     end
   end
