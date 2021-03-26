@@ -7,6 +7,7 @@ module Alchemy
       include EssenceSerializer
       attributes(
         :body,
+        :sanitized_body,
         :stripped_body,
       )
     end
