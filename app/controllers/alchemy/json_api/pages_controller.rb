@@ -79,9 +79,9 @@ module Alchemy
       def base_page_scope
         # cancancan is not able to merge our complex AR scopes for logged in users
         if can?(:edit_content, ::Alchemy::Page)
-          Alchemy::Page.all
+          Alchemy::Page.all.joins(page_version)
         else
-          Alchemy::Page.published
+          Alchemy::Page.published.joins(page_version)
         end
       end
 

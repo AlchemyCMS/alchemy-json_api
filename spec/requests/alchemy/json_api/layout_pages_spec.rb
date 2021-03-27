@@ -70,9 +70,9 @@ RSpec.describe "Alchemy::JsonApi::LayoutPagesController", type: :request do
           end
         end
 
-        it "finds the page" do
+        it "does not find the page" do
           get alchemy_json_api.layout_page_path(page.urlname)
-          expect(response).to have_http_status(200)
+          expect(response).to have_http_status(404)
         end
       end
     end
@@ -101,11 +101,11 @@ RSpec.describe "Alchemy::JsonApi::LayoutPagesController", type: :request do
           end
         end
 
-        it "returns all layout pages" do
+        it "returns all published layout pages" do
           get alchemy_json_api.layout_pages_path
           document = JSON.parse(response.body)
           expect(document["data"]).to include(have_id(layoutpage.id.to_s))
-          expect(document["data"]).to include(have_id(non_public_layout_page.id.to_s))
+          expect(document["data"]).not_to include(have_id(non_public_layout_page.id.to_s))
           expect(document["data"]).not_to include(have_id(public_page.id.to_s))
         end
       end
