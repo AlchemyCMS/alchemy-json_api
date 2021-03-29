@@ -90,9 +90,9 @@ RSpec.describe "Alchemy::JsonApi::Pages", type: :request do
           end
         end
 
-        it "finds the page" do
+        it "does not find the page" do
           get alchemy_json_api.page_path(page.urlname)
-          expect(response).to have_http_status(200)
+          expect(response).to have_http_status(404)
         end
       end
     end
@@ -121,11 +121,11 @@ RSpec.describe "Alchemy::JsonApi::Pages", type: :request do
           end
         end
 
-        it "returns all content pages" do
+        it "returns all published content pages" do
           get alchemy_json_api.pages_path
           document = JSON.parse(response.body)
           expect(document["data"]).not_to include(have_id(layoutpage.id.to_s))
-          expect(document["data"]).to include(have_id(non_public_page.id.to_s))
+          expect(document["data"]).not_to include(have_id(non_public_page.id.to_s))
           expect(document["data"]).to include(have_id(public_page.id.to_s))
         end
       end
