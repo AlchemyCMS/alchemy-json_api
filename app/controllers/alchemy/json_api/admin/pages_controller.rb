@@ -7,7 +7,7 @@ module Alchemy
 
         private
 
-        def page_version
+        def page_version_type
           :draft_version
         end
       end

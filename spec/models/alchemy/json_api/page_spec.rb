@@ -28,7 +28,7 @@ RSpec.describe Alchemy::JsonApi::Page, type: :model do
       end
 
       context "with draft_version passed as page_version" do
-        let(:json_api_page) { described_class.new(page, page_version: :draft_version) }
+        let(:json_api_page) { described_class.new(page, page_version_type: :draft_version) }
         let!(:element_4) { FactoryBot.create(:alchemy_element, page_version: page.draft_version) }
 
         it "contains elements only from draft version" do
@@ -39,7 +39,7 @@ RSpec.describe Alchemy::JsonApi::Page, type: :model do
 
     context "with page_version not present" do
       let(:page) { FactoryBot.create(:alchemy_page) }
-      let(:json_api_page) { described_class.new(page, page_version: :public_version) }
+      let(:json_api_page) { described_class.new(page, page_version_type: :public_version) }
 
       it "contains elements only from draft version" do
         is_expected.to match([])

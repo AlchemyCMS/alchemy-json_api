@@ -1,8 +1,11 @@
 module Alchemy
   module JsonApi
     class Page < SimpleDelegator
-      def initialize(page, page_version: :public_version)
-        @page_version = page.public_send(page_version)
+      attr_reader :page_version_type, :page_version
+
+      def initialize(page, page_version_type: :public_version)
+        @page_version_type = page_version_type
+        @page_version = page.public_send(page_version_type)
         super(page)
       end
 
@@ -36,10 +39,10 @@ module Alchemy
       private
 
       def element_repository
-        return Alchemy::ElementsRepository.none unless @page_version
+        return Alchemy::ElementsRepository.none unless page_version
 
         # Need to use select here, otherwise rails would not eager load the elements correctly
-        Alchemy::ElementsRepository.new(@page_version.elements.select(&:public))
+        Alchemy::ElementsRepository.new(page_version.elements.select(&:public))
       end
     end
   end
