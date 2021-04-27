@@ -57,7 +57,7 @@ module Alchemy
               :legacy_urls,
               { language: { nodes: [:parent, :children, { page: { language: { site: :languages } } }] } },
               {
-                page_version => {
+                page_version_type => {
                   elements: [
                     :nested_elements,
                     { contents: { essence: :ingredient_association } },
@@ -68,20 +68,20 @@ module Alchemy
           )
       end
 
-      def page_version
+      def page_version_type
         :public_version
       end
 
       def api_page(page)
-        Alchemy::JsonApi::Page.new(page, page_version: page_version)
+        Alchemy::JsonApi::Page.new(page, page_version_type: page_version_type)
       end
 
       def base_page_scope
         # cancancan is not able to merge our complex AR scopes for logged in users
         if can?(:edit_content, ::Alchemy::Page)
-          Alchemy::Page.all.joins(page_version)
+          Alchemy::Page.all.joins(page_version_type)
         else
-          Alchemy::Page.published.joins(page_version)
+          Alchemy::Page.published.joins(page_version_type)
         end
       end
 
