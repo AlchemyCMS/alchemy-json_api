@@ -1,5 +1,16 @@
 # Changelog
 
+## [v0.14.0](https://github.com/AlchemyCMS/alchemy-json_api/tree/v0.14.0) (2021-04-27)
+
+[Full Changelog](https://github.com/AlchemyCMS/alchemy-json_api/compare/v0.13.0...v0.14.0)
+
+**Merged pull requests:**
+
+- Add ancestors relationship to page serializer [\#49](https://github.com/AlchemyCMS/alchemy-json_api/pull/49) ([tvdeyen](https://github.com/tvdeyen))
+- Join to page version in PagesController [\#48](https://github.com/AlchemyCMS/alchemy-json_api/pull/48) ([mamhoff](https://github.com/mamhoff))
+- Serialize the new sanitized\_body column from Alchemy [\#47](https://github.com/AlchemyCMS/alchemy-json_api/pull/47) ([mamhoff](https://github.com/mamhoff))
+- Admin controller fixes [\#46](https://github.com/AlchemyCMS/alchemy-json_api/pull/46) ([tvdeyen](https://github.com/tvdeyen))
+
 ## [v0.13.0](https://github.com/AlchemyCMS/alchemy-json_api/tree/v0.13.0) (2021-03-05)
 
 [Full Changelog](https://github.com/AlchemyCMS/alchemy-json_api/compare/v0.12.2...v0.13.0)
