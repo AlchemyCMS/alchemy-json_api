@@ -36,6 +36,10 @@ module Alchemy
         @_fixed_element_ids ||= fixed_elements.map(&:id)
       end
 
+      def ancestor_ids
+        @_ancestor_ids ||= ancestors.map(&:id)
+      end
+
       private
 
       def element_repository

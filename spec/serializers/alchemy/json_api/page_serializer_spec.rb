@@ -66,5 +66,13 @@ RSpec.describe Alchemy::JsonApi::PageSerializer do
         expect(subject[:language]).to eq(data: { id: page.language_id.to_s, type: :language })
       end
     end
+
+    it "has ancestors relationship" do
+      expect(subject[:ancestors]).to eq(
+        data: [
+          { id: page.parent_id.to_s, type: :page },
+        ],
+      )
+    end
   end
 end

@@ -24,6 +24,12 @@ module Alchemy
 
       belongs_to :language, record_type: :language, serializer: ::Alchemy::JsonApi::LanguageSerializer
 
+      has_many :ancestors, record_type: :page, serializer: self do |page|
+        page.ancestors.map do |ancestor|
+          Alchemy::JsonApi::Page.new(ancestor, page_version_type: page.page_version_type)
+        end
+      end
+
       # All public elements of this page regardless of if they are fixed or nested.
       # Used for eager loading and should be used as the +include+ parameter of your query
       has_many :all_elements, record_type: :element, serializer: ELEMENT_SERIALIZER
