@@ -1,5 +1,13 @@
 # Changelog
 
+## [v0.15.0](https://github.com/AlchemyCMS/alchemy-json_api/tree/v0.15.0) (2021-05-19)
+
+[Full Changelog](https://github.com/AlchemyCMS/alchemy-json_api/compare/v0.14.0...v0.15.0)
+
+**Merged pull requests:**
+
+- Return real image dimensions [\#50](https://github.com/AlchemyCMS/alchemy-json_api/pull/50) ([tvdeyen](https://github.com/tvdeyen))
+
 ## [v0.14.0](https://github.com/AlchemyCMS/alchemy-json_api/tree/v0.14.0) (2021-04-27)
 
 [Full Changelog](https://github.com/AlchemyCMS/alchemy-json_api/compare/v0.13.0...v0.14.0)
