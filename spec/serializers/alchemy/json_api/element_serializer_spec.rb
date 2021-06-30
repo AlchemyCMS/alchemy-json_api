@@ -46,7 +46,30 @@ RSpec.describe Alchemy::JsonApi::ElementSerializer do
 
     it "has the right keys and values" do
       expect(subject[:essences]).to eq(data: element.contents.map { |c| { id: c.essence_id.to_s, type: c.essence.class.name.demodulize.underscore.to_sym } })
+      expect(subject[:ingredients]).to eq(data: [])
       expect(subject[:nested_elements]).to eq(data: [{ id: nested_element.id.to_s, type: :element }])
+    end
+
+    context "with ingredients" do
+      before do
+        expect(element).to receive(:ingredients) do
+          [
+            FactoryBot.build_stubbed(:alchemy_ingredient_text, element: element),
+            FactoryBot.build_stubbed(:alchemy_ingredient_richtext, element: element),
+            FactoryBot.build_stubbed(:alchemy_ingredient_picture, element: element),
+          ]
+        end
+      end
+
+      it "has the right keys and values" do
+        expect(subject[:ingredients]).to eq(
+          data: [
+            { id: "1001", type: :ingredient_text },
+            { id: "1002", type: :ingredient_richtext },
+            { id: "1003", type: :ingredient_picture },
+          ],
+        )
+      end
     end
   end
 end
