@@ -4,12 +4,14 @@ require "rails_helper"
 RSpec.describe Alchemy::JsonApi::EssencePictureSerializer do
   let(:element) { FactoryBot.create(:alchemy_element) }
   let(:content) { FactoryBot.create(:alchemy_content, element: element) }
+  let(:picture) { FactoryBot.create(:alchemy_picture, image_file_size: 301) }
   let(:essence) do
     FactoryBot.create(
       :alchemy_essence_picture,
       title: "Picture",
       content: content,
       link: "/hello",
+      picture: picture
     )
   end
   let(:options) { {} }
@@ -27,7 +29,7 @@ RSpec.describe Alchemy::JsonApi::EssencePictureSerializer do
       expect(subject[:image_name]).to eq("image")
       expect(subject[:image_file_name]).to eq("image.png")
       expect(subject[:image_mime_type]).to eq("image/png")
-      expect(subject[:image_file_size]).to eq(70)
+      expect(subject[:image_file_size]).to eq(301)
       expect(subject[:image_dimensions]).to eq(width: 1, height: 1)
     end
 
@@ -35,15 +37,7 @@ RSpec.describe Alchemy::JsonApi::EssencePictureSerializer do
       let(:image_dimensions) { subject[:image_dimensions] }
 
       context "without image" do
-        let(:essence) do
-          FactoryBot.create(
-            :alchemy_essence_picture,
-            title: "Picture",
-            content: content,
-            link: "/hello",
-            picture: nil,
-          )
-        end
+        let(:picture) { nil }
 
         it { expect(image_dimensions).to be_nil }
       end
@@ -91,15 +85,7 @@ RSpec.describe Alchemy::JsonApi::EssencePictureSerializer do
   end
 
   context "With no picture set" do
-    let(:essence) do
-      FactoryBot.create(
-        :alchemy_essence_picture,
-        content: content,
-        picture: nil,
-      )
-    end
-
-    it_behaves_like "an essence serializer"
+    let(:picture) { nil }
 
     describe "attributes" do
       subject { serializer.serializable_hash[:data][:attributes] }
