@@ -61,6 +61,7 @@ module Alchemy
                   elements: [
                     :nested_elements,
                     { contents: { essence: :ingredient_association } },
+                    { ingredients: :related_object },
                   ],
                 },
               },

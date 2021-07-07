@@ -20,6 +20,11 @@ module Alchemy
         element.contents.map(&:essence)
       end
 
+      has_many :ingredients,
+        serializer: ->(record) do
+          "Alchemy::JsonApi::Ingredient#{record.type.demodulize}Serializer".constantize
+        end
+
       has_many :nested_elements, record_type: :element, serializer: self
     end
   end
