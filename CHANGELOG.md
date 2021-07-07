@@ -1,5 +1,14 @@
 # Changelog
 
+## [v0.20.0](https://github.com/AlchemyCMS/alchemy-json_api/tree/v0.20.0) (2021-07-07)
+
+[Full Changelog](https://github.com/AlchemyCMS/alchemy-json_api/compare/v0.15.0...v0.20.0)
+
+**Merged pull requests:**
+
+- More essence serializers [\#52](https://github.com/AlchemyCMS/alchemy-json_api/pull/52) ([tvdeyen](https://github.com/tvdeyen))
+- Add support for Alchemy Ingredients [\#51](https://github.com/AlchemyCMS/alchemy-json_api/pull/51) ([tvdeyen](https://github.com/tvdeyen))
+
 ## [v0.15.0](https://github.com/AlchemyCMS/alchemy-json_api/tree/v0.15.0) (2021-05-19)
 
 [Full Changelog](https://github.com/AlchemyCMS/alchemy-json_api/compare/v0.14.0...v0.15.0)
