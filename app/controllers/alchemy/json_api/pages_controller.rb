@@ -6,7 +6,7 @@ module Alchemy
       before_action :load_page, only: :show
 
       def index
-        allowed = [:page_layout]
+        allowed = [:page_layout, :urlname]
 
         jsonapi_filter(page_scope, allowed) do |filtered|
           # decorate with our page model that has a eager loaded elements collection
