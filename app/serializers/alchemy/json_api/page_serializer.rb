@@ -18,6 +18,8 @@ module Alchemy
         :updated_at,
       )
 
+      cache_options store: Rails.cache, namespace: "alchemy-jsonapi"
+
       attribute :legacy_urls do |page|
         page.legacy_urls.map(&:urlname)
       end
