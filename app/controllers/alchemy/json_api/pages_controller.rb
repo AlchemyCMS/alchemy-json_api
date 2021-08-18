@@ -3,7 +3,7 @@
 module Alchemy
   module JsonApi
     class PagesController < JsonApi::BaseController
-      before_action :load_page, only: :show
+      before_action :load_page_for_cache_key, only: :show
 
       def index
         allowed = [:page_layout, :urlname]
@@ -18,10 +18,23 @@ module Alchemy
       end
 
       def show
-        render jsonapi: api_page(@page)
+        if stale?(last_modified: last_modified_for(@page), etag: @page.cache_key)
+          # Only load page with all includes when browser cache is stale
+          render jsonapi: api_page(load_page)
+        end
       end
 
       private
+
+      # Get page w/o includes to get cache key
+      def load_page_for_cache_key
+        @page = page_scope.where(id: params[:path]).
+          or(page_scope.where(urlname: params[:path])).first!
+      end
+
+      def last_modified_for(page)
+        page.published_at
+      end
 
       def jsonapi_meta(pages)
         pagination = jsonapi_pagination_meta(pages)
@@ -38,20 +51,19 @@ module Alchemy
 
       def load_page_by_id
         return unless params[:path] =~ /\A\d+\z/
-        page_scope.find_by(id: params[:path])
+        page_scope_with_includes.find_by(id: params[:path])
       end
 
       def load_page_by_urlname
-        page_scope.find_by(urlname: params[:path])
+        page_scope_with_includes.find_by(urlname: params[:path])
       end
 
       def page_scope
-        page_scope_with_includes.contentpages
+        base_page_scope.contentpages
       end
 
       def page_scope_with_includes
-        base_page_scope.
-          where(language: Language.current).
+        page_scope.
           includes(
             [
               :legacy_urls,
@@ -80,9 +92,9 @@ module Alchemy
       def base_page_scope
         # cancancan is not able to merge our complex AR scopes for logged in users
         if can?(:edit_content, ::Alchemy::Page)
-          Alchemy::Page.all.joins(page_version_type)
+          Alchemy::Language.current.pages.joins(page_version_type)
         else
-          Alchemy::Page.published.joins(page_version_type)
+          Alchemy::Language.current.pages.published.joins(page_version_type)
         end
       end
 

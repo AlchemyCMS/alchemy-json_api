@@ -17,6 +17,36 @@ RSpec.describe "Alchemy::JsonApi::Pages", type: :request do
   end
 
   describe "GET /alchemy/json_api/pages/:id" do
+    context "a published page" do
+      let(:page) do
+        FactoryBot.create(
+          :alchemy_page,
+          :public,
+          published_at: DateTime.yesterday,
+        )
+      end
+
+      it "sets cache headers" do
+        get alchemy_json_api.page_path(page)
+        expect(response.headers["Last-Modified"]).to eq(page.published_at.utc.httpdate)
+        expect(response.headers["ETag"]).to match(/W\/".+"/)
+        expect(response.headers["Cache-Control"]).to eq("max-age=0, private, must-revalidate")
+      end
+
+      context "if browser sends fresh cache headers" do
+        it "returns not modified" do
+          get alchemy_json_api.page_path(page)
+          etag = response.headers["ETag"]
+          get alchemy_json_api.page_path(page),
+              headers: {
+                "If-Modified-Since" => page.published_at.utc.httpdate,
+                "If-None-Match" => etag,
+              }
+          expect(response.status).to eq(304)
+        end
+      end
+    end
+
     it "gets a valid JSON:API document" do
       get alchemy_json_api.page_path(page)
       expect(response).to have_http_status(200)
@@ -63,7 +93,7 @@ RSpec.describe "Alchemy::JsonApi::Pages", type: :request do
     end
 
     context "when the language is incorrect" do
-      let!(:language) { FactoryBot.create(:alchemy_language) }
+      let!(:language) { Alchemy::Language.first || FactoryBot.create(:alchemy_language) }
       let!(:other_language) { FactoryBot.create(:alchemy_language, :german) }
       let(:page) { FactoryBot.create(:alchemy_page, :public, language: other_language) }
 
