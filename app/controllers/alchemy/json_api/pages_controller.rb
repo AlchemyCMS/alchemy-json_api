@@ -21,6 +21,8 @@ module Alchemy
             end
           end
         end
+
+        expires_in cache_duration, caching_options.merge(public: @pages.none?(&:restricted?))
       end
 
       def show
@@ -28,9 +30,19 @@ module Alchemy
           # Only load page with all includes when browser cache is stale
           render jsonapi: api_page(load_page)
         end
+
+        expires_in cache_duration, caching_options.merge(public: !@page.restricted?)
       end
 
       private
+
+      def cache_duration
+        ENV.fetch("ALCHEMY_JSON_API_CACHE_DURATION", 3).to_i.hours
+      end
+
+      def caching_options
+        { must_revalidate: true }
+      end
 
       # Get page w/o includes to get cache key
       def load_page_for_cache_key
