@@ -8,6 +8,14 @@ module Alchemy
 
         private
 
+        def cache_duration
+          0
+        end
+
+        def caching_options
+          { public: false, must_revalidate: true }
+        end
+
         def set_current_preview
           Alchemy::Page.current_preview = @page
         end

@@ -22,7 +22,7 @@ module Alchemy
           end
         end
 
-        expires_in cache_duration, caching_options.merge(public: @pages.none?(&:restricted?))
+        expires_in cache_duration, { public: @pages.none?(&:restricted?) }.merge(caching_options)
       end
 
       def show
@@ -31,7 +31,7 @@ module Alchemy
           render jsonapi: api_page(load_page)
         end
 
-        expires_in cache_duration, caching_options.merge(public: !@page.restricted?)
+        expires_in cache_duration, { public: !@page.restricted? }.merge(caching_options)
       end
 
       private
