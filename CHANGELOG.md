@@ -1,5 +1,14 @@
 # Changelog
 
+## [v0.21.0](https://github.com/AlchemyCMS/alchemy-json_api/tree/v0.21.0) (2021-09-17)
+
+[Full Changelog](https://github.com/AlchemyCMS/alchemy-json_api/compare/v0.20.0...v0.21.0)
+
+**Merged pull requests:**
+
+- Add caching [\#54](https://github.com/AlchemyCMS/alchemy-json_api/pull/54) ([tvdeyen](https://github.com/tvdeyen))
+- Allow urlname as page filter [\#53](https://github.com/AlchemyCMS/alchemy-json_api/pull/53) ([tvdeyen](https://github.com/tvdeyen))
+
 ## [v0.20.0](https://github.com/AlchemyCMS/alchemy-json_api/tree/v0.20.0) (2021-07-07)
 
 [Full Changelog](https://github.com/AlchemyCMS/alchemy-json_api/compare/v0.15.0...v0.20.0)
