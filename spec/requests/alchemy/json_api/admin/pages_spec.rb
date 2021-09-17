@@ -26,6 +26,26 @@ RSpec.describe "Alchemy::JsonApi::Admin::PagesController", type: :request do
 
       let(:document) { JSON.parse(response.body) }
 
+      it "sets cache headers" do
+        get alchemy_json_api.admin_page_path(page)
+        expect(response.headers["Last-Modified"]).to eq(page.updated_at.utc.httpdate)
+        expect(response.headers["ETag"]).to match(/W\/".+"/)
+        expect(response.headers["Cache-Control"]).to eq("max-age=0, private, must-revalidate")
+      end
+
+      context "if browser sends fresh cache headers" do
+        it "returns not modified" do
+          get alchemy_json_api.admin_page_path(page)
+          etag = response.headers["ETag"]
+          get alchemy_json_api.admin_page_path(page),
+              headers: {
+                "If-Modified-Since" => page.updated_at.utc.httpdate,
+                "If-None-Match" => etag,
+              }
+          expect(response.status).to eq(304)
+        end
+      end
+
       it "gets a valid JSON:API document" do
         subject
         expect(response).to have_http_status(200)

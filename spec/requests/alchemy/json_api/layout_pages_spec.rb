@@ -43,7 +43,7 @@ RSpec.describe "Alchemy::JsonApi::LayoutPagesController", type: :request do
     end
 
     context "when the language is incorrect" do
-      let!(:language) { FactoryBot.create(:alchemy_language) }
+      let!(:language) { Alchemy::Language.first || FactoryBot.create(:alchemy_language) }
       let!(:other_language) { FactoryBot.create(:alchemy_language, :german) }
       let(:page) { FactoryBot.create(:alchemy_page, :public, :layoutpage, language: other_language) }
 
