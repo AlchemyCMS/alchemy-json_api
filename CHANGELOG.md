@@ -1,5 +1,13 @@
 # Changelog
 
+## [v0.22.0](https://github.com/AlchemyCMS/alchemy-json_api/tree/v0.22.0) (2021-10-25)
+
+[Full Changelog](https://github.com/AlchemyCMS/alchemy-json_api/compare/v0.21.0...v0.22.0)
+
+**Merged pull requests:**
+
+- Add url\_path attribute to page serializer [\#55](https://github.com/AlchemyCMS/alchemy-json_api/pull/55) ([tvdeyen](https://github.com/tvdeyen))
+
 ## [v0.21.0](https://github.com/AlchemyCMS/alchemy-json_api/tree/v0.21.0) (2021-09-17)
 
 [Full Changelog](https://github.com/AlchemyCMS/alchemy-json_api/compare/v0.20.0...v0.21.0)
