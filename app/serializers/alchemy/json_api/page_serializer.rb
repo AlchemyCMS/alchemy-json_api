@@ -9,6 +9,7 @@ module Alchemy
       attributes(
         :name,
         :urlname,
+        :url_path,
         :page_layout,
         :title,
         :language_code,
