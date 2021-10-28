@@ -1,5 +1,13 @@
 # Changelog
 
+## [v0.23.0](https://github.com/AlchemyCMS/alchemy-json_api/tree/v0.23.0) (2021-10-28)
+
+[Full Changelog](https://github.com/AlchemyCMS/alchemy-json_api/compare/v0.22.0...v0.23.0)
+
+**Merged pull requests:**
+
+- Do not throw error if filter returns empty result [\#56](https://github.com/AlchemyCMS/alchemy-json_api/pull/56) ([tvdeyen](https://github.com/tvdeyen))
+
 ## [v0.22.0](https://github.com/AlchemyCMS/alchemy-json_api/tree/v0.22.0) (2021-10-25)
 
 [Full Changelog](https://github.com/AlchemyCMS/alchemy-json_api/compare/v0.21.0...v0.22.0)
