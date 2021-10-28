@@ -10,7 +10,7 @@ module Alchemy
 
         jsonapi_filter(page_scope, allowed) do |filtered_pages|
           @pages = filtered_pages.result
-          if stale?(last_modified: @pages.maximum(:published_at), etag: @pages.max_by(&:cache_key).cache_key)
+          if stale?(last_modified: @pages.maximum(:published_at), etag: @pages.max_by(&:cache_key)&.cache_key)
             # Only load pages with all includes when browser cache is stale
             jsonapi_filter(page_scope_with_includes, allowed) do |filtered|
               # decorate with our page model that has a eager loaded elements collection

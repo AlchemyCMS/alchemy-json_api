@@ -228,6 +228,13 @@ RSpec.describe "Alchemy::JsonApi::Pages", type: :request do
         expect(document["data"]).to include(have_id(news_page2.id.to_s))
       end
 
+      context "if no pages returned for filter params" do
+        it "does not throw error" do
+          get alchemy_json_api.pages_path(filter: { page_layout_eq: "not-found" })
+          expect(response).to be_successful
+        end
+      end
+
       it "sets cache headers of latest matching page" do
         get alchemy_json_api.pages_path(filter: { page_layout_eq: "news" })
         expect(response.headers["Last-Modified"]).to eq(news_page2.published_at.utc.httpdate)
