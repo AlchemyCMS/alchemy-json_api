@@ -1,5 +1,13 @@
 # Changelog
 
+## [v0.24.0](https://github.com/AlchemyCMS/alchemy-json_api/tree/v0.24.0) (2021-11-05)
+
+[Full Changelog](https://github.com/AlchemyCMS/alchemy-json_api/compare/v0.23.0...v0.24.0)
+
+**Merged pull requests:**
+
+- Add srcset support [\#57](https://github.com/AlchemyCMS/alchemy-json_api/pull/57) ([tvdeyen](https://github.com/tvdeyen))
+
 ## [v0.23.0](https://github.com/AlchemyCMS/alchemy-json_api/tree/v0.23.0) (2021-10-28)
 
 [Full Changelog](https://github.com/AlchemyCMS/alchemy-json_api/compare/v0.22.0...v0.23.0)
