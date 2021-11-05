@@ -39,6 +39,27 @@ module Alchemy
           }
         end
 
+        attribute :srcset do |ingredient|
+          ingredient.settings.fetch(:srcset, []).map do |src|
+            case src
+            when Hash
+              url = ingredient.picture_url(src)
+              size = src[:size]
+            else
+              url = ingredient.picture_url(size: src)
+              size = src
+            end
+            width, height = size.split("x", 2)
+
+            {
+              url: url,
+              desc: "#{width}w",
+              width: width,
+              height: height,
+            }
+          end
+        end
+
         attribute :image_name do |ingredient|
           ingredient.picture.name
         end
