@@ -11,7 +11,7 @@ RSpec.describe Alchemy::JsonApi::EssencePictureSerializer do
       title: "Picture",
       content: content,
       link: "/hello",
-      picture: picture
+      picture: picture,
     )
   end
   let(:options) { {} }
@@ -43,27 +43,19 @@ RSpec.describe Alchemy::JsonApi::EssencePictureSerializer do
       end
 
       context "with image" do
-        it do
-          expect(image_dimensions).to eq(width: 1, height: 1)
-        end
+        it { expect(image_dimensions).to eq(width: 1, height: 1) }
 
         context "with content settings[:size]" do
           before do
             expect(content).to receive(:settings).at_least(:once) { size }
           end
 
-          let(:size) do
-            { size: "100x100" }
-          end
+          let(:size) { { size: "100x100" } }
 
-          it do
-            expect(image_dimensions).to eq(width: 100, height: 100)
-          end
+          it { expect(image_dimensions).to eq(width: 100, height: 100) }
 
           context "without y dimension" do
-            let(:size) do
-              { size: "100x" }
-            end
+            let(:size) { { size: "100x" } }
 
             it "infers height from ratio" do
               expect(image_dimensions).to eq(width: 100, height: 100)
@@ -71,13 +63,90 @@ RSpec.describe Alchemy::JsonApi::EssencePictureSerializer do
           end
 
           context "without x dimension" do
-            let(:size) do
-              { size: "x50" }
-            end
+            let(:size) { { size: "x50" } }
 
             it "infers width from ratio" do
               expect(image_dimensions).to eq(width: 50, height: 50)
             end
+          end
+        end
+      end
+    end
+
+    describe "srcset" do
+      let(:srcset) { subject[:srcset] }
+
+      context "without image" do
+        let(:picture) { nil }
+
+        it { expect(srcset).to be_nil }
+      end
+
+      context "with srcset defined" do
+        before do
+          expect(content).to receive(:settings).at_least(:once) do
+            {
+              srcset: srcset_definition,
+            }
+          end
+        end
+
+        context "as strings" do
+          let(:srcset_definition) do
+            %w[100x100 200x100]
+          end
+
+          it "returns src sets objects" do
+            expect(srcset).to match_array(
+              [
+                {
+                  url: instance_of(String),
+                  desc: "100w",
+                  width: "100",
+                  height: "100",
+                },
+                {
+                  url: instance_of(String),
+                  desc: "200w",
+                  width: "200",
+                  height: "100",
+                },
+              ]
+            )
+          end
+        end
+
+        context "as hash" do
+          let(:srcset_definition) do
+            [
+              {
+                size: "100x100",
+                crop: true,
+              },
+              {
+                size: "200x100",
+                format: "jpg",
+              },
+            ]
+          end
+
+          it "returns src sets objects" do
+            expect(srcset).to match_array(
+              [
+                {
+                  url: instance_of(String),
+                  desc: "100w",
+                  width: "100",
+                  height: "100",
+                },
+                {
+                  url: a_string_matching(%r{.jpg}),
+                  desc: "200w",
+                  width: "200",
+                  height: "100",
+                },
+              ]
+            )
           end
         end
       end

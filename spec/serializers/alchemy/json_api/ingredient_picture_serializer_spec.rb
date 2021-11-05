@@ -80,6 +80,85 @@ RSpec.describe Alchemy::JsonApi::IngredientPictureSerializer do
         end
       end
     end
+
+    describe "srcset" do
+      let(:srcset) { subject[:srcset] }
+
+      context "without image" do
+        let(:picture) { nil }
+
+        it { expect(srcset).to be_nil }
+      end
+
+      context "with srcset defined" do
+        before do
+          expect(ingredient).to receive(:settings).at_least(:once) do
+            {
+              srcset: srcset_definition,
+            }
+          end
+        end
+
+        context "as strings" do
+          let(:srcset_definition) do
+            %w[100x100 200x100]
+          end
+
+          it "returns src sets objects" do
+            expect(srcset).to match_array(
+              [
+                {
+                  url: instance_of(String),
+                  desc: "100w",
+                  width: "100",
+                  height: "100",
+                },
+                {
+                  url: instance_of(String),
+                  desc: "200w",
+                  width: "200",
+                  height: "100",
+                },
+              ]
+            )
+          end
+        end
+
+        context "as hash" do
+          let(:srcset_definition) do
+            [
+              {
+                size: "100x100",
+                crop: true,
+              },
+              {
+                size: "200x100",
+                format: "jpg",
+              },
+            ]
+          end
+
+          it "returns src sets objects" do
+            expect(srcset).to match_array(
+              [
+                {
+                  url: instance_of(String),
+                  desc: "100w",
+                  width: "100",
+                  height: "100",
+                },
+                {
+                  url: a_string_matching(%r{.jpg}),
+                  desc: "200w",
+                  width: "200",
+                  height: "100",
+                },
+              ]
+            )
+          end
+        end
+      end
+    end
   end
 
   context "With no picture set" do
