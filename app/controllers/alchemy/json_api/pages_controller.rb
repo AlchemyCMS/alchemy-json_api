@@ -10,15 +10,10 @@ module Alchemy
 
         jsonapi_filter(page_scope, allowed) do |filtered_pages|
           @pages = filtered_pages.result
-          if stale?(last_modified: @pages.maximum(:published_at), etag: @pages.max_by(&:cache_key)&.cache_key)
-            # Only load pages with all includes when browser cache is stale
-            jsonapi_filter(page_scope_with_includes, allowed) do |filtered|
-              # decorate with our page model that has a eager loaded elements collection
-              filtered_pages = filtered.result.map { |page| api_page(page) }
-              jsonapi_paginate(filtered_pages) do |paginated|
-                render jsonapi: paginated
-              end
-            end
+          if !@pages.all?(&:cache_page?)
+            render_pages_json(allowed) && return
+          elsif stale?(last_modified: @pages.maximum(:published_at), etag: @pages.max_by(&:cache_key)&.cache_key)
+            render_pages_json(allowed)
           end
         end
 
@@ -26,6 +21,10 @@ module Alchemy
       end
 
       def show
+        if !@page.cache_page?
+          render(jsonapi: api_page(load_page)) && return
+        end
+
         if stale?(last_modified: last_modified_for(@page), etag: @page.cache_key)
           # Only load page with all includes when browser cache is stale
           render jsonapi: api_page(load_page)
@@ -35,6 +34,17 @@ module Alchemy
       end
 
       private
+
+      def render_pages_json(allowed)
+        # Only load pages with all includes when browser cache is stale
+        jsonapi_filter(page_scope_with_includes, allowed) do |filtered|
+          # decorate with our page model that has a eager loaded elements collection
+          filtered_pages = filtered.result.map { |page| api_page(page) }
+          jsonapi_paginate(filtered_pages) do |paginated|
+            render jsonapi: paginated
+          end
+        end
+      end
 
       def cache_duration
         ENV.fetch("ALCHEMY_JSON_API_CACHE_DURATION", 3).to_i.hours
