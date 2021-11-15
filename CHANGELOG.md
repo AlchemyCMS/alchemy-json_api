@@ -1,5 +1,13 @@
 # Changelog
 
+## [v0.25.0](https://github.com/AlchemyCMS/alchemy-json_api/tree/v0.25.0) (2021-11-15)
+
+[Full Changelog](https://github.com/AlchemyCMS/alchemy-json_api/compare/v0.24.0...v0.25.0)
+
+**Merged pull requests:**
+
+- Add support for disabled cache per page [\#58](https://github.com/AlchemyCMS/alchemy-json_api/pull/58) ([tvdeyen](https://github.com/tvdeyen))
+
 ## [v0.24.0](https://github.com/AlchemyCMS/alchemy-json_api/tree/v0.24.0) (2021-11-05)
 
 [Full Changelog](https://github.com/AlchemyCMS/alchemy-json_api/compare/v0.23.0...v0.24.0)
