@@ -26,39 +26,62 @@ RSpec.describe "Alchemy::JsonApi::Pages", type: :request do
         )
       end
 
-      it "sets public cache headers" do
-        get alchemy_json_api.page_path(page)
-        expect(response.headers["Last-Modified"]).to eq(page.published_at.utc.httpdate)
-        expect(response.headers["ETag"]).to match(/W\/".+"/)
-        expect(response.headers["Cache-Control"]).to eq("max-age=10800, public, must-revalidate")
-      end
-
-      context "if page is restricted" do
-        let(:page) do
-          FactoryBot.create(
-            :alchemy_page,
-            :public,
-            :restricted,
-            published_at: DateTime.yesterday,
-          )
+      context "with caching enabled" do
+        before do
+          allow(Rails.application.config.action_controller).to receive(:perform_caching) { true }
+          stub_alchemy_config(:cache_pages, true)
         end
 
-        it "sets private cache headers" do
+        it "sets public cache headers" do
           get alchemy_json_api.page_path(page)
-          expect(response.headers["Cache-Control"]).to eq("max-age=10800, private, must-revalidate")
+          expect(response.headers["Last-Modified"]).to eq(page.published_at.utc.httpdate)
+          expect(response.headers["ETag"]).to match(/W\/".+"/)
+          expect(response.headers["Cache-Control"]).to eq("max-age=10800, public, must-revalidate")
         end
-      end
 
-      context "if browser sends fresh cache headers" do
-        it "returns not modified" do
-          get alchemy_json_api.page_path(page)
-          etag = response.headers["ETag"]
-          get alchemy_json_api.page_path(page),
-              headers: {
-                "If-Modified-Since" => page.published_at.utc.httpdate,
-                "If-None-Match" => etag,
-              }
-          expect(response.status).to eq(304)
+        context "if page is restricted" do
+          let(:page) do
+            FactoryBot.create(
+              :alchemy_page,
+              :public,
+              :restricted,
+              published_at: DateTime.yesterday,
+            )
+          end
+
+          it "sets private cache headers" do
+            get alchemy_json_api.page_path(page)
+            expect(response.headers["Cache-Control"]).to eq("max-age=10800, private, must-revalidate")
+          end
+        end
+
+        context "if cache for page is disabled" do
+          let(:page) do
+            FactoryBot.create(
+              :alchemy_page,
+              :public,
+              page_layout: "contact",
+              published_at: DateTime.yesterday,
+            )
+          end
+
+          it "sets no cache headers" do
+            get alchemy_json_api.page_path(page)
+            expect(response.headers["Cache-Control"]).to eq("max-age=0, private, must-revalidate")
+          end
+        end
+
+        context "if browser sends fresh cache headers" do
+          it "returns not modified" do
+            get alchemy_json_api.page_path(page)
+            etag = response.headers["ETag"]
+            get alchemy_json_api.page_path(page),
+                headers: {
+                  "If-Modified-Since" => page.published_at.utc.httpdate,
+                  "If-None-Match" => etag,
+                }
+            expect(response.status).to eq(304)
+          end
         end
       end
     end
@@ -153,39 +176,62 @@ RSpec.describe "Alchemy::JsonApi::Pages", type: :request do
       context "as anonymous user" do
         let!(:pages) { [public_page] }
 
-        it "sets public cache headers of latest published page" do
-          get alchemy_json_api.pages_path
-          expect(response.headers["Last-Modified"]).to eq(pages.max_by(&:published_at).published_at.utc.httpdate)
-          expect(response.headers["ETag"]).to match(/W\/".+"/)
-          expect(response.headers["Cache-Control"]).to eq("max-age=10800, public, must-revalidate")
-        end
-
-        context "if one page is restricted" do
-          let!(:restricted_page) do
-            FactoryBot.create(
-              :alchemy_page,
-              :public,
-              :restricted,
-              published_at: DateTime.yesterday,
-            )
+        context "with caching enabled" do
+          before do
+            allow(Rails.application.config.action_controller).to receive(:perform_caching) { true }
+            stub_alchemy_config(:cache_pages, true)
           end
 
-          it "sets private cache headers" do
+          it "sets public cache headers of latest published page" do
             get alchemy_json_api.pages_path
-            expect(response.headers["Cache-Control"]).to eq("max-age=10800, private, must-revalidate")
+            expect(response.headers["Last-Modified"]).to eq(pages.max_by(&:published_at).published_at.utc.httpdate)
+            expect(response.headers["ETag"]).to match(/W\/".+"/)
+            expect(response.headers["Cache-Control"]).to eq("max-age=10800, public, must-revalidate")
           end
-        end
 
-        context "if browser sends fresh cache headers" do
-          it "returns not modified" do
-            get alchemy_json_api.pages_path
-            etag = response.headers["ETag"]
-            get alchemy_json_api.pages_path,
-                headers: {
-                  "If-Modified-Since" => pages.max_by(&:published_at).published_at.utc.httpdate,
-                  "If-None-Match" => etag,
-                }
-            expect(response.status).to eq(304)
+          context "if one page is restricted" do
+            let!(:restricted_page) do
+              FactoryBot.create(
+                :alchemy_page,
+                :public,
+                :restricted,
+                published_at: DateTime.yesterday,
+              )
+            end
+
+            it "sets private cache headers" do
+              get alchemy_json_api.pages_path
+              expect(response.headers["Cache-Control"]).to eq("max-age=10800, private, must-revalidate")
+            end
+          end
+
+          context "if for one page caching is disabled" do
+            let!(:no_cache_page) do
+              FactoryBot.create(
+                :alchemy_page,
+                :public,
+                page_layout: "contact",
+                published_at: DateTime.yesterday,
+              )
+            end
+
+            it "sends no cache headers" do
+              get alchemy_json_api.pages_path
+              expect(response.headers["Cache-Control"]).to eq("max-age=0, private, must-revalidate")
+            end
+          end
+
+          context "if browser sends fresh cache headers" do
+            it "returns not modified" do
+              get alchemy_json_api.pages_path
+              etag = response.headers["ETag"]
+              get alchemy_json_api.pages_path,
+                  headers: {
+                    "If-Modified-Since" => pages.max_by(&:published_at).published_at.utc.httpdate,
+                    "If-None-Match" => etag,
+                  }
+              expect(response.status).to eq(304)
+            end
           end
         end
 
@@ -235,11 +281,18 @@ RSpec.describe "Alchemy::JsonApi::Pages", type: :request do
         end
       end
 
-      it "sets cache headers of latest matching page" do
-        get alchemy_json_api.pages_path(filter: { page_layout_eq: "news" })
-        expect(response.headers["Last-Modified"]).to eq(news_page2.published_at.utc.httpdate)
-        expect(response.headers["ETag"]).to match(/W\/".+"/)
-        expect(response.headers["Cache-Control"]).to eq("max-age=10800, public, must-revalidate")
+      context "with caching enabled" do
+        before do
+          allow(Rails.application.config.action_controller).to receive(:perform_caching) { true }
+          stub_alchemy_config(:cache_pages, true)
+        end
+
+        it "sets cache headers of latest matching page" do
+          get alchemy_json_api.pages_path(filter: { page_layout_eq: "news" })
+          expect(response.headers["Last-Modified"]).to eq(news_page2.published_at.utc.httpdate)
+          expect(response.headers["ETag"]).to match(/W\/".+"/)
+          expect(response.headers["Cache-Control"]).to eq("max-age=10800, public, must-revalidate")
+        end
       end
     end
 
