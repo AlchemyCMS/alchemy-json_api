@@ -112,12 +112,14 @@ RSpec.describe Alchemy::JsonApi::IngredientPictureSerializer do
                   desc: "100w",
                   width: "100",
                   height: "100",
+                  type: "image/png",
                 },
                 {
                   url: instance_of(String),
                   desc: "200w",
                   width: "200",
                   height: "100",
+                  type: "image/png",
                 },
               ]
             )
@@ -146,12 +148,14 @@ RSpec.describe Alchemy::JsonApi::IngredientPictureSerializer do
                   desc: "100w",
                   width: "100",
                   height: "100",
+                  type: "image/png",
                 },
                 {
                   url: a_string_matching(%r{.jpg}),
                   desc: "200w",
                   width: "200",
                   height: "100",
+                  type: "image/jpeg",
                 },
               ]
             )
