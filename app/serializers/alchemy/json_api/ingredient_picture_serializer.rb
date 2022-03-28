@@ -45,9 +45,11 @@ module Alchemy
             when Hash
               url = ingredient.picture_url(src)
               size = src[:size]
+              type = Mime::Type.lookup_by_extension(src[:format] || ingredient.picture.default_render_format)
             else
               url = ingredient.picture_url(size: src)
               size = src
+              type = Mime::Type.lookup_by_extension(ingredient.picture.default_render_format)
             end
             width, height = size.split("x", 2)
 
@@ -56,6 +58,7 @@ module Alchemy
               desc: "#{width}w",
               width: width,
               height: height,
+              type: type.to_s,
             }
           end
         end
