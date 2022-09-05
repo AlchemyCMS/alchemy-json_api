@@ -3,11 +3,27 @@
 module Alchemy
   module JsonApi
     class NodesController < JsonApi::BaseController
+      ALLOWED_FILTERS = %i[
+        page_page_layout
+        page_elements_name
+        page_all_elements_name
+        page_fixed_elements_name
+      ]
+
       def index
-        @nodes = node_scope.select(:id, :updated_at)
-        if stale?(last_modified: @nodes.maximum(:updated_at), etag: @nodes)
-          jsonapi_paginate(node_scope_with_includes) do |paginated|
-            render jsonapi: paginated
+        jsonapi_filter(node_scope, ALLOWED_FILTERS) do |filtered_nodes|
+          @nodes = filtered_nodes.result
+
+          puts "===========SQL============"
+          puts @nodes.to_sql
+          puts "===========SQL============"
+
+          if stale?(last_modified: @nodes.maximum(:updated_at), etag: @nodes)
+            jsonapi_filter(node_scope_with_includes, ALLOWED_FILTERS) do |nodes|
+              jsonapi_paginate(nodes.result) do |paginated|
+                render jsonapi: paginated
+              end
+            end
           end
         end
 
