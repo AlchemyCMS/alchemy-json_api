@@ -28,23 +28,45 @@ RSpec.describe Alchemy::JsonApi::NodeSerializer do
   end
 
   describe "relationships" do
-    let(:node) do
-      FactoryBot.create(
-        :alchemy_node,
-        name: "A Node",
-        url: "/acdc",
-        title: "Pop-up explanation",
-        nofollow: true,
-        children: [child_node],
-      )
-    end
-    let(:child_node) { FactoryBot.create(:alchemy_node, children: [child_of_child_node]) }
-    let(:child_of_child_node) { FactoryBot.create(:alchemy_node) }
-
     subject { serializer.serializable_hash[:data][:relationships] }
 
-    it "has the right keys and values" do
-      expect(subject[:children]).to eq(data: [{ id: child_node.id.to_s, type: :node }])
+    context "with children" do
+      let(:node) do
+        FactoryBot.create(
+          :alchemy_node,
+          name: "A Node",
+          url: "/acdc",
+          title: "Pop-up explanation",
+          nofollow: true,
+          children: [child_node],
+        )
+      end
+
+      let(:child_node) { FactoryBot.create(:alchemy_node, children: [child_of_child_node]) }
+      let(:child_of_child_node) { FactoryBot.create(:alchemy_node) }
+
+      it "has children" do
+        expect(subject[:children]).to eq(data: [{ id: child_node.id.to_s, type: :node }])
+      end
+    end
+
+    context "with page assigned" do
+      let(:node) do
+        FactoryBot.create(
+          :alchemy_node,
+          name: "A Node",
+          url: "/acdc",
+          title: "Pop-up explanation",
+          nofollow: true,
+          page: page,
+        )
+      end
+
+      let(:page) { FactoryBot.create(:alchemy_page) }
+
+      it "has page" do
+        expect(subject[:page]).to eq(data: { id: page.id.to_s, type: :page })
+      end
     end
   end
 end

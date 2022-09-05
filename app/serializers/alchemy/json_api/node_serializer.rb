@@ -11,6 +11,15 @@ module Alchemy
 
       belongs_to :parent, record_type: :node, serializer: self
 
+      belongs_to(
+        :page,
+        record_type: :page,
+        if: ->(node) { node.page },
+        serializer: ::Alchemy::JsonApi::PageSerializer,
+      ) do |node|
+        ::Alchemy::JsonApi::Page.new(node.page)
+      end
+
       has_many :children, record_type: :node, serializer: self
     end
   end
