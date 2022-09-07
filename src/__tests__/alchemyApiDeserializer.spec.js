@@ -7,22 +7,22 @@ describe("deserializePage", () => {
         type: "page",
         id: "1",
         attributes: {
-          name: "Homepage",
+          name: "Homepage"
         },
         relationships: {
           elements: {
             data: [
               {
                 type: "element",
-                id: "1",
+                id: "1"
               },
               {
                 type: "element",
-                id: "2",
-              },
-            ],
-          },
-        },
+                id: "2"
+              }
+            ]
+          }
+        }
       },
       included: [
         {
@@ -30,100 +30,79 @@ describe("deserializePage", () => {
           id: "1",
           attributes: {
             name: "article",
-            deprecated: false,
+            deprecated: false
           },
           relationships: {
             essences: {
               data: [
                 {
                   id: "1",
-                  type: "essence_text",
+                  type: "essence_text"
                 },
                 {
                   id: "1",
-                  type: "essence_picture",
-                },
-              ],
+                  type: "essence_picture"
+                }
+              ]
             },
             nested_elements: {
               data: [
                 {
                   id: "3",
-                  type: "element",
+                  type: "element"
                 },
                 {
                   id: "4",
-                  type: "element",
-                },
-              ],
-            },
-          },
+                  type: "element"
+                }
+              ]
+            }
+          }
         },
         {
           type: "element",
           id: "2",
           attributes: {
             name: "old",
-            deprecated: true,
+            deprecated: true
           },
-          relationships: {
-            essences: {
-              data: [],
-            },
-            nested_elements: {
-              data: [],
-            },
-          },
+          relationships: {}
         },
         {
           type: "element",
           id: "3",
           attributes: {
             name: "image",
-            deprecated: true,
+            deprecated: true
           },
-          relationships: {
-            essences: {
-              data: [],
-            },
-            nested_elements: {
-              data: [],
-            },
-          },
+          relationships: {}
         },
         {
           type: "element",
           id: "4",
           attributes: {
             name: "text",
-            deprecated: false,
+            deprecated: false
           },
-          relationships: {
-            essences: {
-              data: [],
-            },
-            nested_elements: {
-              data: [],
-            },
-          },
+          relationships: {}
         },
         {
           type: "essence_text",
           id: "1",
           attributes: {
             name: "text",
-            deprecated: true,
-          },
+            deprecated: true
+          }
         },
         {
           type: "essence_picture",
           id: "1",
           attributes: {
             name: "image",
-            deprecated: false,
-          },
-        },
-      ],
+            deprecated: false
+          }
+        }
+      ]
     }
     const page = deserializePage(pageData)
     expect(page.elements).toEqual([
@@ -135,19 +114,17 @@ describe("deserializePage", () => {
           {
             id: "1",
             name: "image",
-            deprecated: false,
-          },
+            deprecated: false
+          }
         ],
         nested_elements: [
           {
             id: "4",
             name: "text",
-            deprecated: false,
-            essences: [],
-            nested_elements: [],
-          },
-        ],
-      },
+            deprecated: false
+          }
+        ]
+      }
     ])
   })
 
@@ -158,23 +135,23 @@ describe("deserializePage", () => {
           type: "page",
           id: "1",
           attributes: {
-            name: "Homepage",
+            name: "Homepage"
           },
           relationships: {
             elements: {
               data: [
                 {
                   type: "element",
-                  id: "1",
+                  id: "1"
                 },
                 {
                   type: "element",
-                  id: "2",
-                },
-              ],
-            },
-          },
-        },
+                  id: "2"
+                }
+              ]
+            }
+          }
+        }
       ],
       included: [
         {
@@ -182,100 +159,79 @@ describe("deserializePage", () => {
           id: "1",
           attributes: {
             name: "article",
-            deprecated: false,
+            deprecated: false
           },
           relationships: {
             essences: {
               data: [
                 {
                   id: "1",
-                  type: "essence_text",
+                  type: "essence_text"
                 },
                 {
                   id: "1",
-                  type: "essence_picture",
-                },
-              ],
+                  type: "essence_picture"
+                }
+              ]
             },
             nested_elements: {
               data: [
                 {
                   id: "3",
-                  type: "element",
+                  type: "element"
                 },
                 {
                   id: "4",
-                  type: "element",
-                },
-              ],
-            },
-          },
+                  type: "element"
+                }
+              ]
+            }
+          }
         },
         {
           type: "element",
           id: "2",
           attributes: {
             name: "old",
-            deprecated: true,
+            deprecated: true
           },
-          relationships: {
-            essences: {
-              data: [],
-            },
-            nested_elements: {
-              data: [],
-            },
-          },
+          relationships: {}
         },
         {
           type: "element",
           id: "3",
           attributes: {
             name: "image",
-            deprecated: true,
+            deprecated: true
           },
-          relationships: {
-            essences: {
-              data: [],
-            },
-            nested_elements: {
-              data: [],
-            },
-          },
+          relationships: {}
         },
         {
           type: "element",
           id: "4",
           attributes: {
             name: "text",
-            deprecated: false,
+            deprecated: false
           },
-          relationships: {
-            essences: {
-              data: [],
-            },
-            nested_elements: {
-              data: [],
-            },
-          },
+          relationships: {}
         },
         {
           type: "essence_text",
           id: "1",
           attributes: {
             name: "text",
-            deprecated: true,
-          },
+            deprecated: true
+          }
         },
         {
           type: "essence_picture",
           id: "1",
           attributes: {
             name: "image",
-            deprecated: false,
-          },
-        },
-      ],
+            deprecated: false
+          }
+        }
+      ]
     }
     const pages = deserializePages(pageData)
     expect(pages[0].elements).toEqual([
@@ -287,19 +243,17 @@ describe("deserializePage", () => {
           {
             id: "1",
             name: "image",
-            deprecated: false,
-          },
+            deprecated: false
+          }
         ],
         nested_elements: [
           {
             id: "4",
             name: "text",
-            deprecated: false,
-            essences: [],
-            nested_elements: [],
-          },
-        ],
-      },
+            deprecated: false
+          }
+        ]
+      }
     ])
   })
 })

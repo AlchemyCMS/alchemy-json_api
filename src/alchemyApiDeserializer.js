@@ -5,12 +5,12 @@ function filterDeprecatedElements(elements) {
   const els = []
 
   elements.forEach((element) => {
-    if (element.nested_elements.length > 0) {
+    if (element.nested_elements?.length > 0) {
       element.nested_elements = filterDeprecatedElements(
         element.nested_elements
       )
     }
-    if (element.essences.length > 0) {
+    if (element.essences?.length > 0) {
       element.essences = element.essences.filter((essence) => {
         return !essence.deprecated
       })
