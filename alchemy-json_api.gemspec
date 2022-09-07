@@ -8,7 +8,7 @@ require "alchemy/json_api/version"
 Gem::Specification.new do |spec|
   spec.name = "alchemy-json_api"
   spec.version = Alchemy::JsonApi::VERSION
-  spec.authors = ["Martin Meyerhoff"]
+  spec.authors = ["Martin Meyerhoff", "Thomas von Deyen"]
   spec.email = ["mamhoff@gmail.com"]
   spec.homepage = "https://github.com/AlchemyCMS/alchemy-json_api"
   spec.summary = "A JSONAPI compliant API for AlchemyCMS"
