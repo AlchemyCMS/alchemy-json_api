@@ -2,7 +2,7 @@
   "name": "@alchemy_cms/json_api",
   "version": "0.26.0",
   "description": "JSON API deserializer for AlchemyCMS",
-  "license": "MIT",
+  "license": "BSD-3-Clause",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/AlchemyCMS/alchemy-json_api.git"
