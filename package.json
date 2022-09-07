@@ -1,0 +1,40 @@
+{
+  "name": "@alchemy_cms/json_api",
+  "version": "0.26.0",
+  "description": "JSON API deserializer for AlchemyCMS",
+  "license": "BSD-3-Clause",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AlchemyCMS/alchemy-json_api.git"
+  },
+  "keywords": [
+    "AlchemyCMS",
+    "json:api",
+    "cms",
+    "headless"
+  ],
+  "authors": [
+    "Martin Meyerhoff",
+    "Thomas von Deyen"
+  ],
+  "main": "dist/alchemy-json_api.js",
+  "files": [
+    "dist"
+  ],
+  "dependencies": {
+    "@ungap/structured-clone": "^1.0.1"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.19.0",
+    "@babel/preset-env": "^7.19.0",
+    "@rollup/plugin-babel": "^5.3.1",
+    "babel-jest": "^29.0.2",
+    "jest": "^29.0.2",
+    "prettier": "^2.7.1",
+    "rollup": "^2.79.0"
+  },
+  "scripts": {
+    "build": "rollup --config",
+    "test": "jest"
+  }
+}
