@@ -2,15 +2,10 @@
 
 A JSON-API based API for AlchemyCMS
 
-## Usage
-
-Mount the engine in your `config/routes.rb` file where you want, like this:
-
-```rb
-  mount Alchemy::JsonApi::Engine => "/jsonapi/"
-```
-
 ## Installation
+
+### In your Alchemy Rails project
+
 Add this line to your application's Gemfile:
 
 ```ruby
@@ -25,6 +20,41 @@ $ bundle
 Or install it yourself as:
 ```bash
 $ gem install alchemy-json_api
+```
+
+### In your JS/Frontend app
+
+Run this in your application:
+
+```
+yarn add "@alchemy_cms/json_api"
+```
+
+## Usage
+
+### In your Rails app
+
+Mount the engine in your Alchemy Rails app like this:
+
+```rb
+# config/routes.rb
+mount Alchemy::JsonApi::Engine => "/jsonapi/"
+```
+
+> __NOTE__ Pick any path you like. This will be the **prefix** of your API URLs
+
+### In your frontend app
+
+This repo provides an NPM package with deserializers to help you convert the response into JS objects.
+
+```js
+import { deserializePages } from "@alchemy_cms/json_api"
+
+const response = await fetch("/jsonapi/pages.json")
+const data = await response.json()
+const pages = deserializePages(data)
+
+console.log(pages[0].name) // => Homepage
 ```
 
 ## Contributing
