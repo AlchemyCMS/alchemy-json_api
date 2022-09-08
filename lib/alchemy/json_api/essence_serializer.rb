@@ -3,7 +3,6 @@ module Alchemy
   module JsonApi
     module EssenceSerializer
       def self.included(klass)
-        klass.include JSONAPI::Serializer
         klass.has_one :element, record_type: :element, serializer: ::Alchemy::JsonApi::ElementSerializer do |essence|
           essence.content.element
         end

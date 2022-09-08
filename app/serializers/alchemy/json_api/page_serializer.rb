@@ -1,9 +1,7 @@
 # frozen_string_literal: true
 module Alchemy
   module JsonApi
-    class PageSerializer
-      include JSONAPI::Serializer
-
+    class PageSerializer < BaseSerializer
       ELEMENT_SERIALIZER = ::Alchemy::JsonApi::ElementSerializer
 
       attributes(

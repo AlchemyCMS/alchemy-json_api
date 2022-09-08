@@ -3,7 +3,7 @@ require "alchemy/json_api/essence_serializer"
 
 module Alchemy
   module JsonApi
-    class EssenceRichtextSerializer
+    class EssenceRichtextSerializer < BaseSerializer
       include EssenceSerializer
       attributes(
         :body,

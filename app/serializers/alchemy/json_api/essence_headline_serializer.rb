@@ -4,7 +4,7 @@ require "alchemy/json_api/essence_serializer"
 
 module Alchemy
   module JsonApi
-    class EssenceHeadlineSerializer
+    class EssenceHeadlineSerializer < BaseSerializer
       include EssenceSerializer
 
       attributes :level, :size

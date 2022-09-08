@@ -4,7 +4,7 @@ require "alchemy/json_api/ingredient_serializer"
 
 module Alchemy
   module JsonApi
-    class IngredientSelectSerializer
+    class IngredientSelectSerializer < BaseSerializer
       include IngredientSerializer
     end
   end

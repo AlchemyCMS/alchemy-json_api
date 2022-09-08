@@ -4,7 +4,7 @@ require "alchemy/json_api/essence_serializer"
 
 module Alchemy
   module JsonApi
-    class EssenceVideoSerializer
+    class EssenceVideoSerializer < BaseSerializer
       include EssenceSerializer
 
       attributes(
