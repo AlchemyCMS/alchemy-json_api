@@ -12,7 +12,7 @@ module Alchemy
 
       def index
         jsonapi_filter(node_scope, ALLOWED_FILTERS) do |filtered_nodes|
-          @nodes = filtered_nodes.result
+          @nodes = filtered_nodes.result(distinct: true)
 
           puts "===========SQL============"
           puts @nodes.to_sql
@@ -20,7 +20,7 @@ module Alchemy
 
           if stale?(last_modified: @nodes.maximum(:updated_at), etag: @nodes)
             jsonapi_filter(node_scope_with_includes, ALLOWED_FILTERS) do |nodes|
-              jsonapi_paginate(nodes.result) do |paginated|
+              jsonapi_paginate(nodes.result(distinct: true)) do |paginated|
                 render jsonapi: paginated
               end
             end
