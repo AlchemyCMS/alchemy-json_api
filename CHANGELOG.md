@@ -1,5 +1,16 @@
 # Changelog
 
+## [v1.0.0](https://github.com/AlchemyCMS/alchemy-json_api/tree/v1.0.0) (2022-09-09)
+
+[Full Changelog](https://github.com/AlchemyCMS/alchemy-json_api/compare/v0.26.0...v1.0.0)
+
+**Merged pull requests:**
+
+- Allow key transforms [\#64](https://github.com/AlchemyCMS/alchemy-json_api/pull/64) ([tvdeyen](https://github.com/tvdeyen))
+- Add deserializer JS files [\#63](https://github.com/AlchemyCMS/alchemy-json_api/pull/63) ([tvdeyen](https://github.com/tvdeyen))
+- Add nodes API controller [\#61](https://github.com/AlchemyCMS/alchemy-json_api/pull/61) ([tvdeyen](https://github.com/tvdeyen))
+- Add a session store to dummy app [\#60](https://github.com/AlchemyCMS/alchemy-json_api/pull/60) ([tvdeyen](https://github.com/tvdeyen))
+
 ## [v0.26.0](https://github.com/AlchemyCMS/alchemy-json_api/tree/v0.26.0) (2022-05-10)
 
 [Full Changelog](https://github.com/AlchemyCMS/alchemy-json_api/compare/v0.25.0...v0.26.0)
