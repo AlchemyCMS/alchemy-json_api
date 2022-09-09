@@ -3,7 +3,7 @@ require "alchemy/json_api/essence_serializer"
 
 module Alchemy
   module JsonApi
-    class EssenceFileSerializer
+    class EssenceFileSerializer < BaseSerializer
       include EssenceSerializer
 
       attribute :link_title, &:title

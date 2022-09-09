@@ -57,6 +57,16 @@ const pages = deserializePages(data)
 console.log(pages[0].name) // => Homepage
 ```
 
+## Key transforms
+
+If you ever want to change how Alchemy serializes attributes you can set
+
+```rb
+Alchemy::JsonApi.key_transform = :camel_lower
+```
+
+It defaults to `:underscore`.
+
 ## Contributing
 Contribution directions go here.
 

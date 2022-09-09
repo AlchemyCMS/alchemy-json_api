@@ -4,7 +4,7 @@ require "alchemy/json_api/ingredient_serializer"
 
 module Alchemy
   module JsonApi
-    class IngredientPictureSerializer
+    class IngredientPictureSerializer < BaseSerializer
       include IngredientSerializer
 
       attributes(

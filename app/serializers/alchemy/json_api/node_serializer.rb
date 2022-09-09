@@ -1,9 +1,7 @@
 # frozen_string_literal: true
 module Alchemy
   module JsonApi
-    class NodeSerializer
-      include JSONAPI::Serializer
-
+    class NodeSerializer < BaseSerializer
       attributes :name
       attribute :link_url, &:url
       attribute :link_title, &:title

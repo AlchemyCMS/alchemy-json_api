@@ -1,9 +1,7 @@
 # frozen_string_literal: true
 module Alchemy
   module JsonApi
-    class LanguageSerializer
-      include JSONAPI::Serializer
-
+    class LanguageSerializer < BaseSerializer
       attributes(
         :name,
         :language_code,
