@@ -10,6 +10,9 @@ function filterDeprecatedElements(elements) {
         element.nested_elements
       )
     }
+    if (element.nestedElements?.length > 0) {
+      element.nestedElements = filterDeprecatedElements(element.nestedElements)
+    }
     if (element.essences?.length > 0) {
       element.essences = element.essences.filter((essence) => {
         return !essence.deprecated
