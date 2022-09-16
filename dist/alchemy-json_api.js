@@ -86,13 +86,15 @@ function findJsonApiIncluded(included, type, id, options) {
 function filterDeprecatedElements(elements) {
   const els = [];
   elements.forEach(element => {
-    var _element$nested_eleme, _element$essences;
-
-    if (((_element$nested_eleme = element.nested_elements) === null || _element$nested_eleme === void 0 ? void 0 : _element$nested_eleme.length) > 0) {
+    if (element.nested_elements?.length > 0) {
       element.nested_elements = filterDeprecatedElements(element.nested_elements);
     }
 
-    if (((_element$essences = element.essences) === null || _element$essences === void 0 ? void 0 : _element$essences.length) > 0) {
+    if (element.nestedElements?.length > 0) {
+      element.nestedElements = filterDeprecatedElements(element.nestedElements);
+    }
+
+    if (element.essences?.length > 0) {
       element.essences = element.essences.filter(essence => {
         return !essence.deprecated;
       });

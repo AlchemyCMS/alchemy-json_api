@@ -1,5 +1,13 @@
 # Changelog
 
+## [v1.1.0](https://github.com/AlchemyCMS/alchemy-json_api/tree/v1.0.0) (2022-09-16)
+
+[Full Changelog](https://github.com/AlchemyCMS/alchemy-json_api/compare/v1.0.0...v1.1.0)
+
+**Merged pull requests:**
+
+- JS: Add support for deserializing camelCased attributes [\#65](https://github.com/AlchemyCMS/alchemy-json_api/pull/65) ([tvdeyen](https://github.com/tvdeyen))
+
 ## [v1.0.0](https://github.com/AlchemyCMS/alchemy-json_api/tree/v1.0.0) (2022-09-09)
 
 [Full Changelog](https://github.com/AlchemyCMS/alchemy-json_api/compare/v0.26.0...v1.0.0)
