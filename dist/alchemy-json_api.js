@@ -8,17 +8,13 @@ function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'defau
 
 var structuredClone__default = /*#__PURE__*/_interopDefaultLegacy(structuredClone);
 
-function deserialize(originalResponse, options = {}) {
-  const response = structuredClone__default["default"](originalResponse);
+function deserialize(originalResponse) {
+  var response = structuredClone__default["default"](originalResponse);
 
-  if (!options) {
-    options = {};
-  }
-
-  const included = response.included || [];
+  var included = response.included || [];
 
   if (Array.isArray(response.data)) {
-    return response.data.map(data => {
+    return response.data.map(function (data) {
       return parseJsonApiSimpleResourceData(data, included, false);
     });
   } else {
@@ -39,22 +35,25 @@ function parseJsonApiSimpleResourceData(data, included, useCache, options) {
     return included.cached[data.type][data.id];
   }
 
-  const attributes = data.attributes || {};
-  const resource = attributes;
+  var attributes = data.attributes || {};
+  var resource = attributes;
   resource.id = data.id;
   included.cached[data.type][data.id] = resource;
 
   if (data.relationships) {
-    for (const relationName of Object.keys(data.relationships)) {
-      const relationRef = data.relationships[relationName];
+    for (var _i = 0, _Object$keys = Object.keys(data.relationships); _i < _Object$keys.length; _i++) {
+      var relationName = _Object$keys[_i];
+      var relationRef = data.relationships[relationName];
 
       if (Array.isArray(relationRef.data)) {
-        const items = [];
-        relationRef.data.forEach(relationData => {
-          const item = findJsonApiIncluded(included, relationData.type, relationData.id);
-          items.push(item);
-        });
-        resource[relationName] = items;
+        (function () {
+          var items = [];
+          relationRef.data.forEach(function (relationData) {
+            var item = findJsonApiIncluded(included, relationData.type, relationData.id);
+            items.push(item);
+          });
+          resource[relationName] = items;
+        })();
       } else if (relationRef && relationRef.data) {
         resource[relationName] = findJsonApiIncluded(included, relationRef.data.type, relationRef.data.id);
       } else {
@@ -67,8 +66,8 @@ function parseJsonApiSimpleResourceData(data, included, useCache, options) {
 }
 
 function findJsonApiIncluded(included, type, id, options) {
-  let found = null;
-  included.forEach(item => {
+  var found = null;
+  included.forEach(function (item) {
     if (item.type === type && item.id === id) {
       found = parseJsonApiSimpleResourceData(item, included, true);
     }
@@ -76,7 +75,7 @@ function findJsonApiIncluded(included, type, id, options) {
 
   if (!found) {
     found = {
-      id
+      id: id
     };
   }
 
@@ -84,18 +83,20 @@ function findJsonApiIncluded(included, type, id, options) {
 }
 
 function filterDeprecatedElements(elements) {
-  const els = [];
-  elements.forEach(element => {
-    if (element.nested_elements?.length > 0) {
+  var els = [];
+  elements.forEach(function (element) {
+    var _element$nested_eleme, _element$nestedElemen, _element$essences;
+
+    if (((_element$nested_eleme = element.nested_elements) === null || _element$nested_eleme === void 0 ? void 0 : _element$nested_eleme.length) > 0) {
       element.nested_elements = filterDeprecatedElements(element.nested_elements);
     }
 
-    if (element.nestedElements?.length > 0) {
+    if (((_element$nestedElemen = element.nestedElements) === null || _element$nestedElemen === void 0 ? void 0 : _element$nestedElemen.length) > 0) {
       element.nestedElements = filterDeprecatedElements(element.nestedElements);
     }
 
-    if (element.essences?.length > 0) {
-      element.essences = element.essences.filter(essence => {
+    if (((_element$essences = element.essences) === null || _element$essences === void 0 ? void 0 : _element$essences.length) > 0) {
+      element.essences = element.essences.filter(function (essence) {
         return !essence.deprecated;
       });
     }
@@ -109,14 +110,14 @@ function filterDeprecatedElements(elements) {
 
 
 function deserializePage(pageData) {
-  const page = deserialize(pageData);
+  var page = deserialize(pageData);
   page.elements = filterDeprecatedElements(page.elements);
   return page;
 } // Returns deserialized pages without deprecated content
 
 function deserializePages(pagesData) {
-  const pages = deserialize(pagesData);
-  pages.forEach(page => {
+  var pages = deserialize(pagesData);
+  pages.forEach(function (page) {
     page.elements = filterDeprecatedElements(page.elements);
   });
   return pages;
