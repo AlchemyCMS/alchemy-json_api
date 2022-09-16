@@ -36,5 +36,6 @@
   "scripts": {
     "build": "rollup --config",
     "test": "jest"
-  }
+  },
+  "browserslist": "> 0.25%, not dead"
 }
