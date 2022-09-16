@@ -1,6 +1,14 @@
 # Changelog
 
-## [v1.1.0](https://github.com/AlchemyCMS/alchemy-json_api/tree/v1.0.0) (2022-09-16)
+## [v1.1.1](https://github.com/AlchemyCMS/alchemy-json_api/tree/v1.1.1) (2022-09-16)
+
+[Full Changelog](https://github.com/AlchemyCMS/alchemy-json_api/compare/v1.1.0...v1.1.1)
+
+**Merged pull requests:**
+
+- JS: Fix browser build [\#66](https://github.com/AlchemyCMS/alchemy-json_api/pull/66) ([tvdeyen](https://github.com/tvdeyen))
+
+## [v1.1.0](https://github.com/AlchemyCMS/alchemy-json_api/tree/v1.1.0) (2022-09-16)
 
 [Full Changelog](https://github.com/AlchemyCMS/alchemy-json_api/compare/v1.0.0...v1.1.0)
 
