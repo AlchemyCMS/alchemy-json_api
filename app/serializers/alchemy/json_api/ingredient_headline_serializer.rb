@@ -8,6 +8,11 @@ module Alchemy
       include IngredientSerializer
 
       attributes :level, :size
+
+      # Introduced in Alchemy 6.1
+      if Alchemy::Ingredients::Headline.stored_attributes[:data].include?(:dom_id)
+        attribute :dom_id
+      end
     end
   end
 end

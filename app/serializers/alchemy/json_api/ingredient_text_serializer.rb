@@ -17,6 +17,11 @@ module Alchemy
       # maintain compatibility with EssenceText
       attribute :body, &:value
       attribute :link_url, &:link
+
+      # Introduced in Alchemy 6.1
+      if Alchemy::Ingredients::Text.stored_attributes[:data].include?(:dom_id)
+        attribute :dom_id
+      end
     end
   end
 end

@@ -18,7 +18,7 @@ RSpec.describe Alchemy::JsonApi::IngredientFileSerializer do
       end
 
       it "has the right keys and values" do
-        expect(subject[:value]).to eq("/attachment/#{attachment.id}/show")
+        expect(subject[:value]).to eq("/attachment/#{attachment.id}/show.png")
         expect(subject[:link_title]).to eq("File")
         expect(subject[:attachment_name]).to eq("image")
         expect(subject[:attachment_file_name]).to eq("image.png")

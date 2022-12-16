@@ -30,4 +30,14 @@ RSpec.describe Alchemy::JsonApi::IngredientHeadlineSerializer do
       )
     )
   end
+
+  context "with dom_id", if: Alchemy::Ingredients::Headline.stored_attributes[:data].include?(:dom_id) do
+    before do
+      ingredient.dom_id = "hello-you-world"
+    end
+
+    it "is included in the response" do
+      expect(subject[:dom_id]).to eq "hello-you-world"
+    end
+  end
 end

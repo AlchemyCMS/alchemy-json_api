@@ -11,15 +11,21 @@ jobs:
       fail-fast: false
       matrix:
         alchemy_branch:
+          - 6.0-stable
           - main
+        ruby:
+          - "2.7"
+          - "3.0"
+          - "3.1"
     env:
       ALCHEMY_BRANCH: ${{ matrix.alchemy_branch }}
     steps:
       - uses: actions/checkout@v1
-      - name: Set up Ruby 2.6
-        uses: actions/setup-ruby@v1
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
         with:
-          ruby-version: 2.6.x
+          ruby-version: ${{ matrix.ruby }}
+          bundler-cache: true
       - name: Restore apt cache
         id: apt-cache
         uses: actions/cache@v1
@@ -32,21 +38,6 @@ jobs:
           sudo apt-get update -qq
           sudo apt-get install -qq --fix-missing libsqlite3-dev -o dir::cache::archives="/home/runner/apt/cache"
           sudo chown -R runner /home/runner/apt/cache
-      - name: Install bundler
-        run: |
-          gem install bundler
-      - name: Restore Ruby Gems cache
-        id: cache
-        uses: actions/cache@v1
-        with:
-          path: vendor/bundle
-          key: bundle-${{ hashFiles('**/Gemfile.lock') }}-${{ matrix.alchemy_branch }}
-          restore-keys: |
-            bundle-
-      - name: Install bundle
-        timeout-minutes: 10
-        run: |
-          bundle install --jobs 4 --retry 3 --path vendor/bundle
       - name: Build and test with RSpec
         env:
           RAILS_ENV: test

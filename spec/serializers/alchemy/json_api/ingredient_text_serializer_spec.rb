@@ -37,5 +37,15 @@ RSpec.describe Alchemy::JsonApi::IngredientTextSerializer do
         expect(subject[:link_url]).to eq "https://alchemy-cms.com"
       end
     end
+
+    context "with dom_id", if: Alchemy::Ingredients::Text.stored_attributes[:data].include?(:dom_id) do
+      before do
+        ingredient.dom_id = "welcome"
+      end
+
+      it "is included in the response" do
+        expect(subject[:dom_id]).to eq "welcome"
+      end
+    end
   end
 end
