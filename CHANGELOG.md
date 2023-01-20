@@ -1,5 +1,14 @@
 # Changelog
 
+## [v1.2.0](https://github.com/AlchemyCMS/alchemy-json_api/tree/v1.2.0) (2023-01-20)
+
+[Full Changelog](https://github.com/AlchemyCMS/alchemy-json_api/compare/v1.1.1...v1.2.0)
+
+**Merged pull requests:**
+
+- Allow Alchemy 6.1 [\#68](https://github.com/AlchemyCMS/alchemy-json_api/pull/68) ([tvdeyen](https://github.com/tvdeyen))
+- Add dom\_id attribute to ingredient headline and text serializers [\#67](https://github.com/AlchemyCMS/alchemy-json_api/pull/67) ([tvdeyen](https://github.com/tvdeyen))
+
 ## [v1.1.1](https://github.com/AlchemyCMS/alchemy-json_api/tree/v1.1.1) (2022-09-16)
 
 [Full Changelog](https://github.com/AlchemyCMS/alchemy-json_api/compare/v1.1.0...v1.1.1)
