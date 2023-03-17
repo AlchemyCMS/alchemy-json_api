@@ -16,10 +16,6 @@ module Alchemy
         !!element.definition[:deprecated]
       end
 
-      has_many :essences, polymorphic: true do |element|
-        element.contents.map(&:essence)
-      end
-
       has_many :ingredients,
         serializer: ->(record) do
           "Alchemy::JsonApi::Ingredient#{record.type.demodulize}Serializer".constantize

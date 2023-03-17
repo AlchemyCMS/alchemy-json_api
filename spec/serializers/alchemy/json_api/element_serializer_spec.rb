@@ -5,7 +5,7 @@ RSpec.describe Alchemy::JsonApi::ElementSerializer do
   let(:element) do
     FactoryBot.create(
       :alchemy_element,
-      autogenerate_contents: true,
+      autogenerate_ingredients: true,
       tag_list: "Tag1,Tag2",
       nested_elements: [nested_element],
       parent_element: parent_element,
@@ -44,9 +44,7 @@ RSpec.describe Alchemy::JsonApi::ElementSerializer do
   describe "relationships" do
     subject { serializer.serializable_hash[:data][:relationships] }
 
-    it "has the right keys and values" do
-      expect(subject[:essences]).to eq(data: element.contents.map { |c| { id: c.essence_id.to_s, type: c.essence.class.name.demodulize.underscore.to_sym } })
-      expect(subject[:ingredients]).to eq(data: [])
+    it "has nested_elements" do
       expect(subject[:nested_elements]).to eq(data: [{ id: nested_element.id.to_s, type: :element }])
     end
 
@@ -61,7 +59,7 @@ RSpec.describe Alchemy::JsonApi::ElementSerializer do
         end
       end
 
-      it "has the right keys and values" do
+      it "has ingredients" do
         expect(subject[:ingredients]).to eq(
           data: [
             { id: "1001", type: :ingredient_text },

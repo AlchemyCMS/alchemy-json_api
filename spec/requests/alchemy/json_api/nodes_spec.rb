@@ -67,11 +67,11 @@ RSpec.describe "Alchemy::JsonApi::Nodes", type: :request do
         end
       end
 
-      context "with include param set to 'page.all_elements.ingredients,page.all_elements.contents'" do
+      context "with include param set to 'page.all_elements.ingredients'" do
         let(:page) { FactoryBot.create(:alchemy_page, :public, autogenerate_elements: true) }
 
         it "includes page and elements" do
-          get alchemy_json_api.nodes_path(include: "page.all_elements.ingredients,page.all_elements.contents")
+          get alchemy_json_api.nodes_path(include: "page.all_elements.ingredients")
           document = JSON.parse(response.body)
           expect(document["data"]).to include(have_id(node.id.to_s))
           expect(document["included"]).to include(have_type("page"))
