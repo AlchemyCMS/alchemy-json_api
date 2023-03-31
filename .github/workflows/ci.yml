@@ -11,17 +11,15 @@ jobs:
       fail-fast: false
       matrix:
         alchemy_branch:
-          - 6.0-stable
-          - 6.1-stable
           - main
         ruby:
-          - "2.7"
           - "3.0"
           - "3.1"
+          - "3.2"
     env:
       ALCHEMY_BRANCH: ${{ matrix.alchemy_branch }}
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v3
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
@@ -29,7 +27,7 @@ jobs:
           bundler-cache: true
       - name: Restore apt cache
         id: apt-cache
-        uses: actions/cache@v1
+        uses: actions/cache@v3
         with:
           path: /home/runner/apt/cache
           key: apt-sqlite-
@@ -51,9 +49,9 @@ jobs:
     env:
       NODE_ENV: test
     steps:
-      - uses: actions/checkout@v2.3.4
+      - uses: actions/checkout@v3
       - name: Restore node modules cache
-        uses: actions/cache@v2.1.3
+        uses: actions/cache@v3
         with:
           path: node_modules
           key: ${{ runner.os }}-yarn-${{ hashFiles('./package.json') }}

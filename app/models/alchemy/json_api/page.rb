@@ -1,4 +1,10 @@
 module Alchemy
+  # With Ransack 4 we need to define the attributes
+  # that are allowed to be searched.
+  def Page.ransackable_attributes(_auth_object = nil)
+    %w[urlname page_layout]
+  end
+
   module JsonApi
     class Page < SimpleDelegator
       attr_reader :page_version_type, :page_version

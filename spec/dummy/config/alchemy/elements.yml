@@ -1,129 +1,129 @@
 - name: header
   unique: true
-  contents:
-  - name: image
-    type: EssencePicture
+  ingredients:
+    - role: image
+      type: Picture
 
 - name: headline
-  contents:
-  - name: headline
-    type: EssenceText
+  ingredients:
+    - role: headline
+      type: Text
 
 - name: article
   taggable: true
-  contents:
-  - name: intro
-    type: EssenceText
-    deprecated: true
-  - name: headline
-    type: EssenceText
-    settings:
-      linkable: true
-  - name: image
-    type: EssencePicture
-    settings:
-      size: 450x300
-      crop: true
-      fixed_ratio: false
-  - name: text
-    type: EssenceRichtext
+  ingredients:
+    - role: intro
+      type: Text
+      deprecated: true
+    - role: headline
+      type: Text
+      settings:
+        linkable: true
+    - role: image
+      type: Picture
+      settings:
+        size: 450x300
+        crop: true
+        fixed_ratio: false
+    - role: text
+      type: Richtext
 
 - name: text
-  contents:
-  - name: text
-    type: EssenceRichtext
+  ingredients:
+    - role: text
+      type: Richtext
 
 - name: search
-  contents: []
+  ingredients: []
 
 - name: news
-  contents:
-  - name: date
-    type: EssenceDate
-  - name: news_headline
-    type: EssenceText
-    rss_title: true
-  - name: body
-    type: EssenceRichtext
-    rss_description: true
+  ingredients:
+    - role: date
+      type: Datetime
+    - role: news_headline
+      type: Text
+      rss_title: true
+    - role: body
+      type: Richtext
+      rss_description: true
 
 - name: download
-  contents:
-  - name: file
-    type: EssenceFile
+  ingredients:
+    - role: file
+      type: File
 
 - name: bild
-  contents:
-  - name: image
-    type: EssencePicture
+  ingredients:
+    - role: image
+      type: Picture
 
 - name: contactform
   unique: true
-  contents:
-  - name: mail_from
-    type: EssenceText
-    validate:
-      - presence
-  - name: mail_to
-    type: EssenceText
-    validate:
-      - presence
-  - name: subject
-    type: EssenceText
-    as_element_title: true
-    validate:
-      - presence
-  - name: success_page
-    type: EssencePage
-    validate:
-      - presence
+  ingredients:
+    - role: mail_from
+      type: Text
+      validate:
+        - presence
+    - role: mail_to
+      type: Text
+      validate:
+        - presence
+    - role: subject
+      type: Text
+      as_element_title: true
+      validate:
+        - presence
+    - role: success_page
+      type: Page
+      validate:
+        - presence
 
 - name: all_you_can_eat
   hint: true
   taggable: true
-  contents:
-    - name: essence_text
-      type: EssenceText
+  ingredients:
+    - role: text
+      type: Text
       hint: true
-    - name: essence_picture
-      type: EssencePicture
+    - role: picture
+      type: Picture
       hint: true
-    - name: essence_richtext
-      type: EssenceRichtext
+    - role: richtext
+      type: Richtext
       hint: true
-    - name: essence_select
-      type: EssenceSelect
+    - role: select
+      type: Select
       hint: true
       settings:
         select_values: [A, B, C]
-    - name: essence_boolean
-      type: EssenceBoolean
+    - role: boolean
+      type: Boolean
       hint: true
-    - name: essence_date
-      type: EssenceDate
+    - role: date
+      type: Datetime
       hint: true
-    - name: essence_file
-      type: EssenceFile
+    - role: file
+      type: File
       hint: true
-    - name: essence_html
-      type: EssenceHtml
+    - role: html
+      type: Html
       hint: true
-    - name: essence_link
-      type: EssenceLink
+    - role: link
+      type: Link
       hint: true
 
 - name: <%= 'erb_' + 'element' %>
-  contents:
-  - name: text
-    type: EssenceRichtext
+  ingredients:
+    - role: text
+      type: Richtext
 
 - name: slide
   compact: true
-  contents:
-    - name: picture
-      type: EssencePicture
-    - name: caption
-      type: EssenceText
+  ingredients:
+    - role: picture
+      type: Picture
+    - role: caption
+      type: Text
       as_element_title: true
 
 - name: slider
@@ -138,18 +138,18 @@
 
 - name: gallery_picture
   compact: true
-  contents:
-    - name: picture
-      type: EssencePicture
+  ingredients:
+    - role: picture
+      type: Picture
       settings:
         size: 160x120
 
 - name: right_column
   fixed: true
   unique: true
-  contents:
-    - name: title
-      type: EssenceText
+  ingredients:
+    - role: title
+      type: Text
   nestable_elements: [search, text]
 
 - name: left_column
