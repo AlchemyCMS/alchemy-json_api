@@ -1,5 +1,13 @@
 # Changelog
 
+## [v2.0.0](https://github.com/AlchemyCMS/alchemy-json_api/tree/v2.0.0) (2023-03-31)
+
+[Full Changelog](https://github.com/AlchemyCMS/alchemy-json_api/compare/v1.2.0...v2.0.0)
+
+**Merged pull requests:**
+
+- Alchemy 7 support: Remove essence serializers [\#69](https://github.com/AlchemyCMS/alchemy-json_api/pull/69) ([tvdeyen](https://github.com/tvdeyen))
+
 ## [v1.2.0](https://github.com/AlchemyCMS/alchemy-json_api/tree/v1.2.0) (2023-01-20)
 
 [Full Changelog](https://github.com/AlchemyCMS/alchemy-json_api/compare/v1.1.1...v1.2.0)
