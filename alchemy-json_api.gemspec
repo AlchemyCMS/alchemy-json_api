@@ -17,7 +17,8 @@ Gem::Specification.new do |spec|
 
   spec.files = Dir["{app,config,db,lib}/**/*", "LICENSE", "Rakefile", "README.md"]
 
-  spec.add_dependency "alchemy_cms", [">= 7.0.0.a", "< 8"]
+  spec.add_dependency "alchemy_cms", [">= 6.1.0", "< 8"]
+  spec.add_dependency "goldiloader"
   spec.add_dependency "jsonapi.rb", "~> 1.6"
 
   spec.add_development_dependency "factory_bot"

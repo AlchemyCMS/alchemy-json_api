@@ -79,6 +79,7 @@ module Alchemy
 
       def load_page_by_id
         return unless params[:path] =~ /\A\d+\z/
+
         page_scope_with_includes.find_by(id: params[:path])
       end
 
@@ -91,21 +92,27 @@ module Alchemy
       end
 
       def page_scope_with_includes
-        page_scope.
-          includes(
-            [
-              :legacy_urls,
-              { language: { nodes: [:parent, :children, { page: { language: { site: :languages } } }] } },
-              {
-                page_version_type => {
-                  elements: [
-                    :nested_elements,
-                    { ingredients: :related_object },
-                  ],
-                },
-              },
-            ]
-          )
+        Goldiloader.enabled do
+          page_scope
+        end
+        # includes(
+        #   [
+        #     :legacy_urls,
+        #     {
+        #       language: {
+        #         nodes: [:parent, :children, { page: [page_version_type, { language: { site: :languages } }] }],
+        #       },
+        #     },
+        #     {
+        #       page_version_type => {
+        #         elements: [
+        #           :nested_elements,
+        #           { ingredients: :related_object },
+        #         ],
+        #       },
+        #     },
+        #   ],
+        # )
       end
 
       def page_version_type
