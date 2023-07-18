@@ -38,10 +38,10 @@ module Alchemy
       def render_pages_json(allowed)
         # Only load pages with all includes when browser cache is stale
         jsonapi_filter(page_scope_with_includes, allowed) do |filtered|
-          # decorate with our page model that has a eager loaded elements collection
-          filtered_pages = filtered.result.map { |page| api_page(page) }
-          jsonapi_paginate(filtered_pages) do |paginated|
-            render jsonapi: paginated
+          jsonapi_paginate(filtered.result) do |paginated|
+            # decorate with our page model that has a eager loaded elements collection
+            decorated_pages = preload_ingredients(paginated).map { |page| api_page(page) }
+            render jsonapi: decorated_pages
           end
         end
       end
@@ -74,7 +74,9 @@ module Alchemy
       end
 
       def load_page
-        @page = load_page_by_id || load_page_by_urlname || raise(ActiveRecord::RecordNotFound)
+        @page = preload_ingredients(
+          [load_page_by_id || load_page_by_urlname || raise(ActiveRecord::RecordNotFound)]
+        ).first
       end
 
       def load_page_by_id
@@ -107,6 +109,14 @@ module Alchemy
               },
             ],
           )
+      end
+
+      def preload_ingredients(scope)
+        if params[:include]&.match?(/ingredients/)
+          Alchemy::JsonApi::Page.preload_ingredient_relations(scope, page_version_type)
+        else
+          scope
+        end
       end
 
       def page_version_type

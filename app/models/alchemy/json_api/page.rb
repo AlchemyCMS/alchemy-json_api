@@ -7,6 +7,23 @@ module Alchemy
 
   module JsonApi
     class Page < SimpleDelegator
+      def self.preload_ingredient_relations(pages, page_version_type)
+        pages.map { |page| page.send(page_version_type) }.flat_map(&:elements).flat_map(&:ingredients).group_by do |ingredient|
+          "Alchemy::JsonApi::Ingredient#{ingredient.type.demodulize}Serializer".constantize.preload_relations
+        end.each do |preload_relations, ingredients|
+          preload(records: ingredients.map(&:related_object).compact, associations: preload_relations)
+        end
+        pages
+      end
+
+      def self.preload(records:, associations:)
+        if Rails::VERSION::MAJOR >= 7
+          ActiveRecord::Associations::Preloader.new(records: records, associations: associations).call
+        else
+          ActiveRecord::Associations::Preloader.new.preload(records, associations)
+        end
+      end
+
       attr_reader :page_version_type, :page_version
 
       def initialize(page, page_version_type: :public_version)
