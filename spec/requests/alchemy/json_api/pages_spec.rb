@@ -264,13 +264,21 @@ RSpec.describe "Alchemy::JsonApi::Pages", type: :request do
     context "with filters" do
       let!(:standard_page) { FactoryBot.create(:alchemy_page, :public, published_at: 2.weeks.ago) }
       let!(:news_page) { FactoryBot.create(:alchemy_page, :public, page_layout: "news", published_at: 1.week.ago) }
-      let!(:news_page2) { FactoryBot.create(:alchemy_page, :public, page_layout: "news", published_at: Date.yesterday) }
+      let!(:news_page2) { FactoryBot.create(:alchemy_page, :public, name: "News", page_layout: "news", published_at: Date.yesterday) }
 
-      it "returns only matching pages" do
+      it "returns only matching pages by page_layout" do
         get alchemy_json_api.pages_path(filter: { page_layout_eq: "news" })
         document = JSON.parse(response.body)
         expect(document["data"]).not_to include(have_id(standard_page.id.to_s))
         expect(document["data"]).to include(have_id(news_page.id.to_s))
+        expect(document["data"]).to include(have_id(news_page2.id.to_s))
+      end
+
+      it "returns only matching pages by name" do
+        get alchemy_json_api.pages_path(filter: { name_eq: "News" })
+        document = JSON.parse(response.body)
+        expect(document["data"]).not_to include(have_id(standard_page.id.to_s))
+        expect(document["data"]).not_to include(have_id(news_page.id.to_s))
         expect(document["data"]).to include(have_id(news_page2.id.to_s))
       end
 
