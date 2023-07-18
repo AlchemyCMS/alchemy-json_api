@@ -2,6 +2,7 @@
 
 require "fast_jsonapi"
 require "alchemy_cms"
+require "goldiloader"
 require "alchemy/json_api/engine"
 
 module Alchemy
