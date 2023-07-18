@@ -6,7 +6,7 @@ module Alchemy
       before_action :load_page_for_cache_key, only: :show
 
       def index
-        allowed = [:page_layout, :urlname]
+        allowed = Alchemy::Page.ransackable_attributes
 
         jsonapi_filter(page_scope, allowed) do |filtered_pages|
           @pages = filtered_pages.result
@@ -79,6 +79,7 @@ module Alchemy
 
       def load_page_by_id
         return unless params[:path] =~ /\A\d+\z/
+
         page_scope_with_includes.find_by(id: params[:path])
       end
 
@@ -104,7 +105,7 @@ module Alchemy
                   ],
                 },
               },
-            ]
+            ],
           )
       end
 
