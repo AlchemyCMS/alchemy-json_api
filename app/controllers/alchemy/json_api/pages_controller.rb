@@ -139,6 +139,42 @@ module Alchemy
       def jsonapi_serializer_class(_resource, _is_collection)
         ::Alchemy::JsonApi::PageSerializer
       end
+
+      # These overrides have to be in place until
+      # https://github.com/stas/jsonapi.rb/pull/91
+      # is merged and released
+      def jsonapi_paginate(resources)
+        @_jsonapi_original_size = resources.size
+        super
+      end
+
+      def jsonapi_pagination_meta(resources)
+        return {} unless JSONAPI::Rails.is_collection?(resources)
+
+        _, limit, page = jsonapi_pagination_params
+
+        numbers = { current: page }
+
+        total = @_jsonapi_original_size
+
+        last_page = [1, (total.to_f / limit).ceil].max
+
+        if page > 1
+          numbers[:first] = 1
+          numbers[:prev] = page - 1
+        end
+
+        if page < last_page
+          numbers[:next] = page + 1
+          numbers[:last] = last_page
+        end
+
+        if total.present?
+          numbers[:records] = total
+        end
+
+        numbers
+      end
     end
   end
 end
