@@ -5,15 +5,17 @@ module Alchemy
     class PagesController < JsonApi::BaseController
       before_action :load_page_for_cache_key, only: :show
 
+      ALLOWED_PUBLIC_VERSION_RANSACK_ATTRIBUTES = %w[public_on].map { |a| "public_version_#{a}" }.freeze
+
       def index
         allowed = Alchemy::Page.ransackable_attributes
 
         jsonapi_filter(page_scope, allowed) do |filtered_pages|
           @pages = filtered_pages.result
           if !@pages.all?(&:cache_page?)
-            render_pages_json(allowed) && return
+            render_pages_json(allowed | ALLOWED_PUBLIC_VERSION_RANSACK_ATTRIBUTES) && return
           elsif stale?(last_modified: @pages.maximum(:published_at), etag: @pages.max_by(&:cache_key)&.cache_key)
-            render_pages_json(allowed)
+            render_pages_json(allowed | ALLOWED_PUBLIC_VERSION_RANSACK_ATTRIBUTES)
           end
         end
 
