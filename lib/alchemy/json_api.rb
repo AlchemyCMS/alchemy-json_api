@@ -5,7 +5,7 @@ require "alchemy_cms"
 require "alchemy/json_api/engine"
 
 require "alchemy/json_api/page_class_methods_extension"
-Alchemy::Page.singleton_class.prepend(Alchemy::JsonApi::PageClassMethodsExtension)
+::Alchemy::Page.singleton_class.prepend(Alchemy::JsonApi::PageClassMethodsExtension)
 
 module Alchemy
   module JsonApi
