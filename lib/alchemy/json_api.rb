@@ -3,9 +3,7 @@
 require "fast_jsonapi"
 require "alchemy_cms"
 require "alchemy/json_api/engine"
-
 require "alchemy/json_api/page_class_methods_extension"
-::Alchemy::Page.singleton_class.prepend(Alchemy::JsonApi::PageClassMethodsExtension)
 
 module Alchemy
   module JsonApi
@@ -26,6 +24,12 @@ module Alchemy
     # Default :underscore # "some_key" => "some_key"
     def self.key_transform
       @_key_transform || :underscore
+    end
+
+    class Railtie < ::Rails::Railtie
+      initializer "alchemy-json_api.extend_page_model" do
+        ::Alchemy::Page.extend(Alchemy::JsonApi::PageClassMethodsExtension)
+      end
     end
   end
 end
