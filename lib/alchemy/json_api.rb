@@ -5,22 +5,6 @@ require "alchemy_cms"
 require "alchemy/json_api/engine"
 require "alchemy/json_api/page_class_methods_extension"
 
-require File.expand_path('../../app/models/alchemy/page', Alchemy::Engine.called_from)
-
-module Alchemy
-  class Page < BaseRecord
-    class << self
-      def ransackable_attributes(_auth_object = nil)
-        super | %w[page_layout]
-      end
-
-      def ransackable_associations(_auth_object = nil)
-        super | %w[public_version]
-      end
-    end
-  end
-end
-
 module Alchemy
   module JsonApi
     # Set FastJsonapi key_transform
