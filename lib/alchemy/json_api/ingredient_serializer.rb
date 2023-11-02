@@ -10,10 +10,14 @@ module Alchemy
           :role,
           :value,
           :created_at,
-          :updated_at
+          :updated_at,
         )
 
         klass.attribute :deprecated, &:deprecated?
+
+        klass.attribute(:type) do |ingredient|
+          ingredient.type.tr("::", "").sub!(/(Ingredient)s/, '\1')
+        end
       end
     end
   end
