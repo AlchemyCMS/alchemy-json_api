@@ -53,6 +53,19 @@ RSpec.describe "Alchemy::JsonApi::Nodes", type: :request do
           expect(document["included"]).to include(have_type("page"))
           expect(document["included"]).to_not include(have_type("element"))
         end
+
+        context "with 'page_page_layout' filter" do
+          let(:page2) { FactoryBot.create(:alchemy_page, page_layout: "news") }
+          let!(:node2) { FactoryBot.create(:alchemy_node, name: "News", page: page2) }
+
+          it "includes only matching pages" do
+            get alchemy_json_api.nodes_path(include: "page", filter: { page_page_layout_eq: "standard" })
+            document = JSON.parse(response.body)
+            expect(document["data"]).to include(have_id(node.id.to_s))
+            expect(document["included"]).to include(have_id(page.id.to_s))
+            expect(document["included"]).to_not include(have_id(page2.id.to_s))
+          end
+        end
       end
 
       context "with include param set to 'page.elements'" do
@@ -64,6 +77,19 @@ RSpec.describe "Alchemy::JsonApi::Nodes", type: :request do
           expect(document["data"]).to include(have_id(node.id.to_s))
           expect(document["included"]).to include(have_type("page"))
           expect(document["included"]).to include(have_type("element"))
+        end
+
+        context "with 'page_all_elements_name_eq' filter" do
+          let(:element) { page.elements.first }
+          let(:element2) { page.elements.last }
+
+          it "includes only matching elements" do
+            get alchemy_json_api.nodes_path(include: "page.all_elements", filter: { page_all_elements_name_eq: "header" })
+            document = JSON.parse(response.body)
+            expect(document["data"]).to include(have_id(node.id.to_s))
+            expect(document["included"]).to include(have_id(element.id.to_s))
+            expect(document["included"]).to_not include(have_id(element2.id.to_s))
+          end
         end
       end
 
