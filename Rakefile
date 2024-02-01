@@ -12,6 +12,7 @@ RSpec::Core::RakeTask.new(:spec)
 
 task default: [:test_setup, :spec]
 
+require "active_support"
 require "active_support/core_ext/string"
 
 desc "Setup test app"
