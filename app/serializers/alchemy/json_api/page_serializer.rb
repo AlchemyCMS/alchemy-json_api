@@ -13,6 +13,7 @@ module Alchemy
         :language_code,
         :meta_keywords,
         :meta_description,
+        :public_on,
         :created_at,
         :updated_at,
       )
