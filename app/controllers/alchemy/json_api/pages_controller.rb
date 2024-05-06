@@ -12,7 +12,7 @@ module Alchemy
           @pages = filtered_pages.result
           if !@pages.all?(&:cache_page?)
             render_pages_json(allowed) && return
-          elsif stale?(last_modified: @pages.maximum(:published_at), etag: @pages.max_by(&:cache_key)&.cache_key)
+          elsif stale?(last_modified: @pages.maximum(:published_at), etag: @pages.max_by(&:cache_key_with_version)&.cache_key_with_version)
             render_pages_json(allowed)
           end
         end
@@ -25,7 +25,7 @@ module Alchemy
           render(jsonapi: api_page(load_page)) && return
         end
 
-        if stale?(last_modified: last_modified_for(@page), etag: @page.cache_key)
+        if stale?(last_modified: last_modified_for(@page), etag: @page.cache_key_with_version)
           # Only load page with all includes when browser cache is stale
           render jsonapi: api_page(load_page)
         end
