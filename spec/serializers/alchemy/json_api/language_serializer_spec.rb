@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require "rails_helper"
 
 RSpec.describe Alchemy::JsonApi::LanguageSerializer do
@@ -29,10 +30,10 @@ RSpec.describe Alchemy::JsonApi::LanguageSerializer do
     subject { serializer.serializable_hash[:data][:relationships] }
 
     it "has the right keys and values" do
-      expect(subject[:root_page]).to eq(data: { id: root_page.id.to_s, type: :page })
-      expect(subject[:pages]).to eq(data: [{ id: root_page.id.to_s, type: :page }])
-      expect(subject[:menus]).to eq(data: [{ id: menu.id.to_s, type: :node }])
-      expect(subject[:menu_items]).to eq(data: [{ id: menu.id.to_s, type: :node }, { id: menu_node.id.to_s, type: :node }])
+      expect(subject[:root_page]).to eq(data: {id: root_page.id.to_s, type: :page})
+      expect(subject[:pages]).to eq(data: [{id: root_page.id.to_s, type: :page}])
+      expect(subject[:menus]).to eq(data: [{id: menu.id.to_s, type: :node}])
+      expect(subject[:menu_items]).to eq(data: [{id: menu.id.to_s, type: :node}, {id: menu_node.id.to_s, type: :node}])
     end
   end
 end

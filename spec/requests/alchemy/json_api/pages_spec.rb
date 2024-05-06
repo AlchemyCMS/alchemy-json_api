@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require "rails_helper"
 require "alchemy/devise/test_support/factories"
 require "alchemy/version"
@@ -12,7 +13,7 @@ RSpec.describe "Alchemy::JsonApi::Pages", type: :request do
       title: "Page Title",
       meta_keywords: "Meta Keywords",
       meta_description: "Meta Description",
-      tag_list: "Tag1,Tag2",
+      tag_list: "Tag1,Tag2"
     )
   end
 
@@ -22,7 +23,7 @@ RSpec.describe "Alchemy::JsonApi::Pages", type: :request do
         FactoryBot.create(
           :alchemy_page,
           :public,
-          published_at: DateTime.yesterday,
+          published_at: DateTime.yesterday
         )
       end
 
@@ -45,7 +46,7 @@ RSpec.describe "Alchemy::JsonApi::Pages", type: :request do
               :alchemy_page,
               :public,
               :restricted,
-              published_at: DateTime.yesterday,
+              published_at: DateTime.yesterday
             )
           end
 
@@ -61,7 +62,7 @@ RSpec.describe "Alchemy::JsonApi::Pages", type: :request do
               :alchemy_page,
               :public,
               page_layout: "contact",
-              published_at: DateTime.yesterday,
+              published_at: DateTime.yesterday
             )
           end
 
@@ -76,10 +77,10 @@ RSpec.describe "Alchemy::JsonApi::Pages", type: :request do
             get alchemy_json_api.page_path(page)
             etag = response.headers["ETag"]
             get alchemy_json_api.page_path(page),
-                headers: {
-                  "If-Modified-Since" => page.published_at.utc.httpdate,
-                  "If-None-Match" => etag,
-                }
+              headers: {
+                "If-Modified-Since" => page.published_at.utc.httpdate,
+                "If-None-Match" => etag
+              }
             expect(response.status).to eq(304)
           end
         end
@@ -121,7 +122,7 @@ RSpec.describe "Alchemy::JsonApi::Pages", type: :request do
         FactoryBot.create(
           :alchemy_page,
           :public,
-          urlname: "a-nested/page",
+          urlname: "a-nested/page"
         )
       end
 
@@ -195,7 +196,7 @@ RSpec.describe "Alchemy::JsonApi::Pages", type: :request do
                 :alchemy_page,
                 :public,
                 :restricted,
-                published_at: DateTime.yesterday,
+                published_at: DateTime.yesterday
               )
             end
 
@@ -211,7 +212,7 @@ RSpec.describe "Alchemy::JsonApi::Pages", type: :request do
                 :alchemy_page,
                 :public,
                 page_layout: "contact",
-                published_at: DateTime.yesterday,
+                published_at: DateTime.yesterday
               )
             end
 
@@ -226,10 +227,10 @@ RSpec.describe "Alchemy::JsonApi::Pages", type: :request do
               get alchemy_json_api.pages_path
               etag = response.headers["ETag"]
               get alchemy_json_api.pages_path,
-                  headers: {
-                    "If-Modified-Since" => pages.max_by(&:published_at).published_at.utc.httpdate,
-                    "If-None-Match" => etag,
-                  }
+                headers: {
+                  "If-Modified-Since" => pages.max_by(&:published_at).published_at.utc.httpdate,
+                  "If-None-Match" => etag
+                }
               expect(response.status).to eq(304)
             end
           end
@@ -267,7 +268,7 @@ RSpec.describe "Alchemy::JsonApi::Pages", type: :request do
       let!(:news_page2) { FactoryBot.create(:alchemy_page, :public, name: "News", page_layout: "news", published_at: Date.yesterday) }
 
       it "returns only matching pages by page_layout" do
-        get alchemy_json_api.pages_path(filter: { page_layout_eq: "news" })
+        get alchemy_json_api.pages_path(filter: {page_layout_eq: "news"})
         document = JSON.parse(response.body)
         expect(document["data"]).not_to include(have_id(standard_page.id.to_s))
         expect(document["data"]).to include(have_id(news_page.id.to_s))
@@ -275,7 +276,7 @@ RSpec.describe "Alchemy::JsonApi::Pages", type: :request do
       end
 
       it "returns only matching pages by name" do
-        get alchemy_json_api.pages_path(filter: { name_eq: "News" })
+        get alchemy_json_api.pages_path(filter: {name_eq: "News"})
         document = JSON.parse(response.body)
         expect(document["data"]).not_to include(have_id(standard_page.id.to_s))
         expect(document["data"]).not_to include(have_id(news_page.id.to_s))
@@ -284,7 +285,7 @@ RSpec.describe "Alchemy::JsonApi::Pages", type: :request do
 
       context "if no pages returned for filter params" do
         it "does not throw error" do
-          get alchemy_json_api.pages_path(filter: { page_layout_eq: "not-found" })
+          get alchemy_json_api.pages_path(filter: {page_layout_eq: "not-found"})
           expect(response).to be_successful
         end
       end
@@ -296,7 +297,7 @@ RSpec.describe "Alchemy::JsonApi::Pages", type: :request do
         end
 
         it "sets cache headers of latest matching page" do
-          get alchemy_json_api.pages_path(filter: { page_layout_eq: "news" })
+          get alchemy_json_api.pages_path(filter: {page_layout_eq: "news"})
           expect(response.headers["Last-Modified"]).to eq(news_page2.published_at.utc.httpdate)
           expect(response.headers["ETag"]).to match(/W\/".+"/)
           expect(response.headers["Cache-Control"]).to eq("max-age=10800, public, must-revalidate")
@@ -310,7 +311,7 @@ RSpec.describe "Alchemy::JsonApi::Pages", type: :request do
       end
 
       it "returns paginated result" do
-        get alchemy_json_api.pages_path(page: { number: 2, size: 1 })
+        get alchemy_json_api.pages_path(page: {number: 2, size: 1})
         document = JSON.parse(response.body)
         expect(document["data"].length).to eq(1)
         expect(document["meta"]).to eq({
@@ -320,9 +321,9 @@ RSpec.describe "Alchemy::JsonApi::Pages", type: :request do
             "last" => 4,
             "next" => 3,
             "prev" => 1,
-            "records" => 4,
+            "records" => 4
           },
-          "total" => 4,
+          "total" => 4
         })
       end
     end

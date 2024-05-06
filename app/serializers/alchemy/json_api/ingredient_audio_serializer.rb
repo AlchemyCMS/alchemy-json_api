@@ -11,7 +11,7 @@ module Alchemy
         :autoplay,
         :controls,
         :muted,
-        :loop,
+        :loop
       )
 
       attribute :value do |ingredient|

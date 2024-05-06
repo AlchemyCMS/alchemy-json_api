@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 source "https://rubygems.org"
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
@@ -20,6 +21,6 @@ alchemy_branch = ENV.fetch("ALCHEMY_BRANCH", "main")
 gem "alchemy_cms", github: "AlchemyCMS/alchemy_cms", branch: alchemy_branch
 gem "alchemy-devise", github: "AlchemyCMS/alchemy-devise", branch: "main"
 
-gem "rufo"
-gem "rubocop"
+gem "rubocop", require: false
+gem "standard", "~> 1.25", require: false
 gem "pry-byebug"

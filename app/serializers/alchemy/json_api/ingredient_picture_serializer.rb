@@ -12,7 +12,7 @@ module Alchemy
         :caption,
         :link_class_name,
         :link_title,
-        :link_target,
+        :link_target
       )
 
       attribute :value do |ingredient|
@@ -26,7 +26,7 @@ module Alchemy
         attribute :image_dimensions do |ingredient|
           sizes = ingredient.settings[:size]&.split("x", 2)&.map(&:to_i) || [
             ingredient.image_file_width,
-            ingredient.image_file_height,
+            ingredient.image_file_height
           ]
 
           ratio = ingredient.image_file_width.to_f / ingredient.image_file_height
@@ -35,7 +35,7 @@ module Alchemy
 
           {
             width: width,
-            height: height,
+            height: height
           }
         end
 
@@ -58,7 +58,7 @@ module Alchemy
               desc: "#{width}w",
               width: width,
               height: height,
-              type: type.to_s,
+              type: type.to_s
             }
           end
         end

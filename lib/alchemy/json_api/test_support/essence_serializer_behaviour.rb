@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 RSpec.shared_examples "an essence serializer" do
   describe "attributes" do
     subject { serializer.serializable_hash[:data][:attributes] }
@@ -15,7 +16,7 @@ RSpec.shared_examples "an essence serializer" do
         expect(content).to receive(:definition).at_least(:once) do
           {
             name: "intro",
-            deprecated: true,
+            deprecated: true
           }
         end
       end
@@ -30,7 +31,7 @@ RSpec.shared_examples "an essence serializer" do
     subject { serializer.serializable_hash[:data][:relationships] }
 
     it "has the right keys and values" do
-      expect(subject[:element]).to eq(data: { id: essence.element.id.to_s, type: :element })
+      expect(subject[:element]).to eq(data: {id: essence.element.id.to_s, type: :element})
     end
   end
 end

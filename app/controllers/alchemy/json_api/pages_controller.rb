@@ -17,7 +17,7 @@ module Alchemy
           end
         end
 
-        expires_in cache_duration, { public: @pages.none?(&:restricted?) }.merge(caching_options)
+        expires_in cache_duration, {public: @pages.none?(&:restricted?)}.merge(caching_options)
       end
 
       def show
@@ -30,7 +30,7 @@ module Alchemy
           render jsonapi: api_page(load_page)
         end
 
-        expires_in cache_duration, { public: !@page.restricted? }.merge(caching_options)
+        expires_in cache_duration, {public: !@page.restricted?}.merge(caching_options)
       end
 
       private
@@ -51,13 +51,13 @@ module Alchemy
       end
 
       def caching_options
-        { must_revalidate: true }
+        {must_revalidate: true}
       end
 
       # Get page w/o includes to get cache key
       def load_page_for_cache_key
-        @page = page_scope.where(id: params[:path]).
-          or(page_scope.where(urlname: params[:path])).first!
+        @page = page_scope.where(id: params[:path])
+          .or(page_scope.where(urlname: params[:path])).first!
       end
 
       def last_modified_for(page)
@@ -69,7 +69,7 @@ module Alchemy
 
         {
           pagination: pagination.presence,
-          total: page_scope.count,
+          total: page_scope.count
         }.compact
       end
 
@@ -78,7 +78,7 @@ module Alchemy
       end
 
       def load_page_by_id
-        return unless params[:path] =~ /\A\d+\z/
+        return unless /\A\d+\z/.match?(params[:path])
 
         page_scope_with_includes.find_by(id: params[:path])
       end
@@ -92,20 +92,20 @@ module Alchemy
       end
 
       def page_scope_with_includes
-        page_scope.
-          includes(
+        page_scope
+          .includes(
             [
               :legacy_urls,
-              { language: { nodes: [:parent, :children, { page: { language: { site: :languages } } }] } },
+              {language: {nodes: [:parent, :children, {page: {language: {site: :languages}}}]}},
               {
                 page_version_type => {
                   elements: [
                     :nested_elements,
-                    { ingredients: :related_object },
-                  ],
-                },
-              },
-            ],
+                    {ingredients: :related_object}
+                  ]
+                }
+              }
+            ]
           )
       end
 

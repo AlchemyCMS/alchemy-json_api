@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require "rails_helper"
 require "alchemy/devise/test_support/factories"
 
@@ -44,10 +45,10 @@ RSpec.describe "Alchemy::JsonApi::Admin::PagesController", type: :request do
             get alchemy_json_api.admin_page_path(page)
             etag = response.headers["ETag"]
             get alchemy_json_api.admin_page_path(page),
-                headers: {
-                  "If-Modified-Since" => page.updated_at.utc.httpdate,
-                  "If-None-Match" => etag,
-                }
+              headers: {
+                "If-Modified-Since" => page.updated_at.utc.httpdate,
+                "If-None-Match" => etag
+              }
             expect(response.status).to eq(304)
           end
         end
@@ -68,8 +69,8 @@ RSpec.describe "Alchemy::JsonApi::Admin::PagesController", type: :request do
           {
             "data" => [{
               "id" => element.id.to_s,
-              "type" => "element",
-            }],
+              "type" => "element"
+            }]
           }
         )
       end

@@ -1,0 +1,5 @@
+parallel: true
+format: progress
+ruby_version: 3.0
+ignore:
+  - "spec/dummy/**/*"

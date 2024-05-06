@@ -30,7 +30,7 @@ RSpec.describe Alchemy::JsonApi::IngredientPageSerializer do
     subject { serializer.serializable_hash[:data][:relationships] }
 
     it "has page object" do
-      expect(subject[:page]).to eq(data: { id: page.id.to_s, type: :page })
+      expect(subject[:page]).to eq(data: {id: page.id.to_s, type: :page})
     end
   end
 

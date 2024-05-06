@@ -9,7 +9,7 @@ module Alchemy
 
       attributes(
         :sanitized_body,
-        :stripped_body,
+        :stripped_body
       )
 
       attribute :body, &:value

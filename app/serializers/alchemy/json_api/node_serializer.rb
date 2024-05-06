@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module Alchemy
   module JsonApi
     class NodeSerializer < BaseSerializer
@@ -13,7 +14,7 @@ module Alchemy
         :page,
         record_type: :page,
         if: ->(node) { node.page },
-        serializer: ::Alchemy::JsonApi::PageSerializer,
+        serializer: ::Alchemy::JsonApi::PageSerializer
       ) do |node|
         ::Alchemy::JsonApi::Page.new(node.page)
       end

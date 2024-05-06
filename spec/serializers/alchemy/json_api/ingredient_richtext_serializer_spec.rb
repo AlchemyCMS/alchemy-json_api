@@ -6,7 +6,7 @@ RSpec.describe Alchemy::JsonApi::IngredientRichtextSerializer do
   let(:ingredient) do
     FactoryBot.create(
       :alchemy_ingredient_richtext,
-      value: "<h3 style=\"color: red;\">Hello</h3>",
+      value: "<h3 style=\"color: red;\">Hello</h3>"
     )
   end
 

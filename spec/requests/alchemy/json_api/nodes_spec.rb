@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require "rails_helper"
 require "alchemy/devise/test_support/factories"
 require "alchemy/version"
@@ -33,10 +34,10 @@ RSpec.describe "Alchemy::JsonApi::Nodes", type: :request do
           get alchemy_json_api.nodes_path
           etag = response.headers["ETag"]
           get alchemy_json_api.nodes_path,
-              headers: {
-                "If-Modified-Since" => nodes.max_by(&:updated_at).updated_at.utc.httpdate,
-                "If-None-Match" => etag,
-              }
+            headers: {
+              "If-Modified-Since" => nodes.max_by(&:updated_at).updated_at.utc.httpdate,
+              "If-None-Match" => etag
+            }
           expect(response.status).to eq(304)
         end
       end
@@ -86,7 +87,7 @@ RSpec.describe "Alchemy::JsonApi::Nodes", type: :request do
       end
 
       it "returns paginated result" do
-        get alchemy_json_api.nodes_path(page: { number: 2, size: 1 })
+        get alchemy_json_api.nodes_path(page: {number: 2, size: 1})
         document = JSON.parse(response.body)
         expect(document["data"].length).to eq(1)
         expect(document["meta"]).to eq({
@@ -96,9 +97,9 @@ RSpec.describe "Alchemy::JsonApi::Nodes", type: :request do
             "last" => 4,
             "next" => 3,
             "prev" => 1,
-            "records" => 4,
+            "records" => 4
           },
-          "total" => 4,
+          "total" => 4
         })
       end
     end

@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require "rails_helper"
 
 RSpec.describe Alchemy::JsonApi::ElementSerializer do
@@ -8,7 +9,7 @@ RSpec.describe Alchemy::JsonApi::ElementSerializer do
       autogenerate_ingredients: true,
       tag_list: "Tag1,Tag2",
       nested_elements: [nested_element],
-      parent_element: parent_element,
+      parent_element: parent_element
     )
   end
   let(:nested_element) { FactoryBot.create(:alchemy_element) }
@@ -45,7 +46,7 @@ RSpec.describe Alchemy::JsonApi::ElementSerializer do
     subject { serializer.serializable_hash[:data][:relationships] }
 
     it "has nested_elements" do
-      expect(subject[:nested_elements]).to eq(data: [{ id: nested_element.id.to_s, type: :element }])
+      expect(subject[:nested_elements]).to eq(data: [{id: nested_element.id.to_s, type: :element}])
     end
 
     context "with ingredients" do
@@ -54,7 +55,7 @@ RSpec.describe Alchemy::JsonApi::ElementSerializer do
           [
             FactoryBot.build_stubbed(:alchemy_ingredient_text, element: element),
             FactoryBot.build_stubbed(:alchemy_ingredient_richtext, element: element),
-            FactoryBot.build_stubbed(:alchemy_ingredient_picture, element: element),
+            FactoryBot.build_stubbed(:alchemy_ingredient_picture, element: element)
           ]
         end
       end
@@ -62,10 +63,10 @@ RSpec.describe Alchemy::JsonApi::ElementSerializer do
       it "has ingredients" do
         expect(subject[:ingredients]).to eq(
           data: [
-            { id: "1001", type: :ingredient_text },
-            { id: "1002", type: :ingredient_richtext },
-            { id: "1003", type: :ingredient_picture },
-          ],
+            {id: "1001", type: :ingredient_text},
+            {id: "1002", type: :ingredient_richtext},
+            {id: "1003", type: :ingredient_picture}
+          ]
         )
       end
     end

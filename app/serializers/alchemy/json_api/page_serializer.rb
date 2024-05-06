@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module Alchemy
   module JsonApi
     class PageSerializer < BaseSerializer
@@ -14,7 +15,7 @@ module Alchemy
         :meta_keywords,
         :meta_description,
         :created_at,
-        :updated_at,
+        :updated_at
       )
 
       cache_options store: Rails.cache, namespace: "alchemy-jsonapi"

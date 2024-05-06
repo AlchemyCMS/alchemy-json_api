@@ -13,7 +13,7 @@ module Alchemy
         :allow_fullscreen,
         :autoplay,
         :controls,
-        :preload,
+        :preload
       )
 
       attribute :value do |ingredient|

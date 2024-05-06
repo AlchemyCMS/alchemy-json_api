@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require "rails_helper"
 
 RSpec.describe Alchemy::JsonApi::NodeSerializer do
@@ -8,7 +9,7 @@ RSpec.describe Alchemy::JsonApi::NodeSerializer do
       name: "A Node",
       url: "/acdc",
       title: "Pop-up explanation",
-      nofollow: true,
+      nofollow: true
     )
   end
   let(:options) { {} }
@@ -38,7 +39,7 @@ RSpec.describe Alchemy::JsonApi::NodeSerializer do
           url: "/acdc",
           title: "Pop-up explanation",
           nofollow: true,
-          children: [child_node],
+          children: [child_node]
         )
       end
 
@@ -46,7 +47,7 @@ RSpec.describe Alchemy::JsonApi::NodeSerializer do
       let(:child_of_child_node) { FactoryBot.create(:alchemy_node) }
 
       it "has children" do
-        expect(subject[:children]).to eq(data: [{ id: child_node.id.to_s, type: :node }])
+        expect(subject[:children]).to eq(data: [{id: child_node.id.to_s, type: :node}])
       end
     end
 
@@ -58,14 +59,14 @@ RSpec.describe Alchemy::JsonApi::NodeSerializer do
           url: "/acdc",
           title: "Pop-up explanation",
           nofollow: true,
-          page: page,
+          page: page
         )
       end
 
       let(:page) { FactoryBot.create(:alchemy_page) }
 
       it "has page" do
-        expect(subject[:page]).to eq(data: { id: page.id.to_s, type: :page })
+        expect(subject[:page]).to eq(data: {id: page.id.to_s, type: :page})
       end
     end
   end

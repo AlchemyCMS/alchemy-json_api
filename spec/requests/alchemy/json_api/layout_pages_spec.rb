@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require "rails_helper"
 require "alchemy/devise/test_support/factories"
 
@@ -9,7 +10,7 @@ RSpec.describe "Alchemy::JsonApi::LayoutPagesController", type: :request do
       :public,
       :layoutpage,
       urlname: nil,
-      title: "Footer",
+      title: "Footer"
     )
   end
 
@@ -117,7 +118,7 @@ RSpec.describe "Alchemy::JsonApi::LayoutPagesController", type: :request do
       end
 
       it "returns paginated result" do
-        get alchemy_json_api.layout_pages_path(page: { number: 2, size: 1 })
+        get alchemy_json_api.layout_pages_path(page: {number: 2, size: 1})
         document = JSON.parse(response.body)
         expect(document["data"].length).to eq(1)
         expect(document["meta"]).to eq({
@@ -127,9 +128,9 @@ RSpec.describe "Alchemy::JsonApi::LayoutPagesController", type: :request do
             "last" => 3,
             "next" => 3,
             "prev" => 1,
-            "records" => 3,
+            "records" => 3
           },
-          "total" => 3,
+          "total" => 3
         })
       end
     end
