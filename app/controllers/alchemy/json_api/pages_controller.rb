@@ -120,9 +120,17 @@ module Alchemy
       def base_page_scope
         # cancancan is not able to merge our complex AR scopes for logged in users
         if can?(:edit_content, ::Alchemy::Page)
-          Alchemy::Language.current.pages.joins(page_version_type)
+          current_language.pages.joins(page_version_type)
         else
-          Alchemy::Language.current.pages.published.joins(page_version_type)
+          current_language.pages.published.joins(page_version_type)
+        end
+      end
+
+      def current_language
+        if Alchemy.const_defined?(:Current)
+          Alchemy::Current.language
+        else
+          Alchemy::Language.current
         end
       end
 

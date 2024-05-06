@@ -17,7 +17,11 @@ RSpec.describe Alchemy::JsonApi::Admin::PagesController do
 
     it "stores page as preview" do
       get :show, params: { path: page.urlname }
-      expect(Alchemy::Page.current_preview).to eq(page.id)
+      if Alchemy.const_defined?(:Current)
+        expect(Alchemy::Current.preview_page).to eq(page)
+      else
+        expect(Alchemy::Page.current_preview).to eq(page.id)
+      end
     end
   end
 end
