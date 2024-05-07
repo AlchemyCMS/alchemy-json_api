@@ -17,13 +17,15 @@ RSpec.describe "Alchemy::JsonApi::Pages", type: :request do
     )
   end
 
+  let(:published_at) { DateTime.parse("2024-05-04 00:00:00") }
+
   describe "GET /alchemy/json_api/pages/:id" do
     context "a published page" do
       let(:page) do
         FactoryBot.create(
           :alchemy_page,
           :public,
-          published_at: DateTime.yesterday
+          published_at: published_at
         )
       end
 
@@ -36,7 +38,7 @@ RSpec.describe "Alchemy::JsonApi::Pages", type: :request do
         it "sets public cache headers" do
           get alchemy_json_api.page_path(page)
           expect(response.headers["Last-Modified"]).to eq(page.published_at.utc.httpdate)
-          expect(response.headers["ETag"]).to match(/W\/".+"/)
+          expect(response.headers["ETag"]).to eq('W/"0741fe32d81bfdabfeb47d9939c5f6b7"')
           expect(response.headers["Cache-Control"]).to eq("max-age=10800, public, must-revalidate")
         end
 
@@ -46,7 +48,7 @@ RSpec.describe "Alchemy::JsonApi::Pages", type: :request do
               :alchemy_page,
               :public,
               :restricted,
-              published_at: DateTime.yesterday
+              published_at: published_at
             )
           end
 
@@ -62,7 +64,7 @@ RSpec.describe "Alchemy::JsonApi::Pages", type: :request do
               :alchemy_page,
               :public,
               page_layout: "contact",
-              published_at: DateTime.yesterday
+              published_at: published_at
             )
           end
 
@@ -172,7 +174,7 @@ RSpec.describe "Alchemy::JsonApi::Pages", type: :request do
     context "with layoutpages and unpublished pages" do
       let!(:layoutpage) { FactoryBot.create(:alchemy_page, :layoutpage, :public) }
       let!(:non_public_page) { FactoryBot.create(:alchemy_page) }
-      let!(:public_page) { FactoryBot.create(:alchemy_page, :public, published_at: Date.yesterday) }
+      let!(:public_page) { FactoryBot.create(:alchemy_page, :public, published_at: published_at) }
 
       context "as anonymous user" do
         let!(:pages) { [public_page] }
@@ -196,7 +198,7 @@ RSpec.describe "Alchemy::JsonApi::Pages", type: :request do
                 :alchemy_page,
                 :public,
                 :restricted,
-                published_at: DateTime.yesterday
+                published_at: published_at
               )
             end
 
@@ -212,7 +214,7 @@ RSpec.describe "Alchemy::JsonApi::Pages", type: :request do
                 :alchemy_page,
                 :public,
                 page_layout: "contact",
-                published_at: DateTime.yesterday
+                published_at: published_at
               )
             end
 
@@ -265,7 +267,7 @@ RSpec.describe "Alchemy::JsonApi::Pages", type: :request do
     context "with filters" do
       let!(:standard_page) { FactoryBot.create(:alchemy_page, :public, published_at: 2.weeks.ago) }
       let!(:news_page) { FactoryBot.create(:alchemy_page, :public, page_layout: "news", published_at: 1.week.ago) }
-      let!(:news_page2) { FactoryBot.create(:alchemy_page, :public, name: "News", page_layout: "news", published_at: Date.yesterday) }
+      let!(:news_page2) { FactoryBot.create(:alchemy_page, :public, name: "News", page_layout: "news", published_at: published_at) }
 
       it "returns only matching pages by page_layout" do
         get alchemy_json_api.pages_path(filter: {page_layout_eq: "news"})
@@ -299,7 +301,7 @@ RSpec.describe "Alchemy::JsonApi::Pages", type: :request do
         it "sets cache headers of latest matching page" do
           get alchemy_json_api.pages_path(filter: {page_layout_eq: "news"})
           expect(response.headers["Last-Modified"]).to eq(news_page2.published_at.utc.httpdate)
-          expect(response.headers["ETag"]).to match(/W\/".+"/)
+          expect(response.headers["ETag"]).to eq('W/"e7a1c8beb22b58e94a605594d79766ad"')
           expect(response.headers["Cache-Control"]).to eq("max-age=10800, public, must-revalidate")
         end
       end
