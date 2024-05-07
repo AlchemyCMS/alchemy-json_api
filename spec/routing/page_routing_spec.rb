@@ -8,7 +8,7 @@ RSpec.describe "Page Routing" do
   it "routes pages/" do
     expect(get: "/pages").to route_to(
       controller: "alchemy/json_api/pages",
-      action: "index",
+      action: "index"
     )
   end
 
@@ -16,7 +16,7 @@ RSpec.describe "Page Routing" do
     expect(get: "/pages/1").to route_to(
       controller: "alchemy/json_api/pages",
       action: "show",
-      path: "1",
+      path: "1"
     )
   end
 
@@ -24,7 +24,7 @@ RSpec.describe "Page Routing" do
     expect(get: "/pages/a-page").to route_to(
       controller: "alchemy/json_api/pages",
       action: "show",
-      path: "a-page",
+      path: "a-page"
     )
   end
 
@@ -32,7 +32,7 @@ RSpec.describe "Page Routing" do
     expect(get: "/pages/a-nested/page").to route_to(
       controller: "alchemy/json_api/pages",
       action: "show",
-      path: "a-nested/page",
+      path: "a-nested/page"
     )
   end
 end

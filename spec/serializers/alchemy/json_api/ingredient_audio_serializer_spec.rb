@@ -12,7 +12,7 @@ RSpec.describe Alchemy::JsonApi::IngredientAudioSerializer do
       attachment: attachment,
       autoplay: false,
       controls: true,
-      muted: true,
+      muted: true
     )
   end
 

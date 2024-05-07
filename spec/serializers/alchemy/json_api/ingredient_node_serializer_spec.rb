@@ -28,7 +28,7 @@ RSpec.describe Alchemy::JsonApi::IngredientNodeSerializer do
     subject { serializer.serializable_hash[:data][:relationships] }
 
     it "has the right keys and values" do
-      expect(subject[:node]).to eq(data: { id: node.id.to_s, type: :node })
+      expect(subject[:node]).to eq(data: {id: node.id.to_s, type: :node})
     end
   end
 

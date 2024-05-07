@@ -11,7 +11,7 @@ module Alchemy
         :link,
         :link_class_name,
         :link_target,
-        :link_title,
+        :link_title
       )
 
       # maintain compatibility with EssenceText

@@ -11,7 +11,7 @@ module Alchemy
           end
         end
 
-        expires_in cache_duration, { public: true, must_revalidate: true }
+        expires_in cache_duration, {public: true, must_revalidate: true}
       end
 
       private
@@ -25,7 +25,7 @@ module Alchemy
 
         {
           pagination: pagination.presence,
-          total: node_scope.count,
+          total: node_scope.count
         }.compact
       end
 
@@ -37,7 +37,7 @@ module Alchemy
         if params[:include].present?
           includes = params[:include].split(",").map do |association|
             association.split(".").reverse.inject({}) do |value, key|
-              { key.to_sym => value }
+              {key.to_sym => value}
             end
           end
           node_scope.includes(includes)

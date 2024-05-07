@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module Alchemy
   module JsonApi
     module Admin
@@ -13,7 +14,7 @@ module Alchemy
         end
 
         def caching_options
-          { public: false, must_revalidate: true }
+          {public: false, must_revalidate: true}
         end
 
         def set_current_preview

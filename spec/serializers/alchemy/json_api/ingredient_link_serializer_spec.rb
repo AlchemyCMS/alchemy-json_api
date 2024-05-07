@@ -9,7 +9,7 @@ RSpec.describe Alchemy::JsonApi::IngredientLinkSerializer do
       value: "/hello",
       link_class_name: "external",
       link_target: "_blank",
-      link_title: "Greetings!",
+      link_title: "Greetings!"
     )
   end
 

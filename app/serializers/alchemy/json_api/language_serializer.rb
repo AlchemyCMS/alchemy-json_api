@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module Alchemy
   module JsonApi
     class LanguageSerializer < BaseSerializer
@@ -6,7 +7,7 @@ module Alchemy
         :name,
         :language_code,
         :country_code,
-        :locale,
+        :locale
       )
 
       has_many :menu_items, record_type: :node, serializer: ::Alchemy::JsonApi::NodeSerializer, object_method_name: :nodes, id_method_name: :node_ids

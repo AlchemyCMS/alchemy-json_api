@@ -8,7 +8,7 @@ RSpec.describe Alchemy::JsonApi::IngredientPictureSerializer do
       :alchemy_ingredient_picture,
       title: "Picture",
       link: "/hello",
-      picture: picture,
+      picture: picture
     )
   end
 
@@ -51,7 +51,7 @@ RSpec.describe Alchemy::JsonApi::IngredientPictureSerializer do
           end
 
           let(:size) do
-            { size: "100x100" }
+            {size: "100x100"}
           end
 
           it do
@@ -60,7 +60,7 @@ RSpec.describe Alchemy::JsonApi::IngredientPictureSerializer do
 
           context "without y dimension" do
             let(:size) do
-              { size: "100x" }
+              {size: "100x"}
             end
 
             it "infers height from ratio" do
@@ -70,7 +70,7 @@ RSpec.describe Alchemy::JsonApi::IngredientPictureSerializer do
 
           context "without x dimension" do
             let(:size) do
-              { size: "x50" }
+              {size: "x50"}
             end
 
             it "infers width from ratio" do
@@ -94,7 +94,7 @@ RSpec.describe Alchemy::JsonApi::IngredientPictureSerializer do
         before do
           expect(ingredient).to receive(:settings).at_least(:once) do
             {
-              srcset: srcset_definition,
+              srcset: srcset_definition
             }
           end
         end
@@ -112,15 +112,15 @@ RSpec.describe Alchemy::JsonApi::IngredientPictureSerializer do
                   desc: "100w",
                   width: "100",
                   height: "100",
-                  type: "image/png",
+                  type: "image/png"
                 },
                 {
                   url: instance_of(String),
                   desc: "200w",
                   width: "200",
                   height: "100",
-                  type: "image/png",
-                },
+                  type: "image/png"
+                }
               ]
             )
           end
@@ -131,12 +131,12 @@ RSpec.describe Alchemy::JsonApi::IngredientPictureSerializer do
             [
               {
                 size: "100x100",
-                crop: true,
+                crop: true
               },
               {
                 size: "200x100",
-                format: "jpg",
-              },
+                format: "jpg"
+              }
             ]
           end
 
@@ -148,15 +148,15 @@ RSpec.describe Alchemy::JsonApi::IngredientPictureSerializer do
                   desc: "100w",
                   width: "100",
                   height: "100",
-                  type: "image/png",
+                  type: "image/png"
                 },
                 {
                   url: a_string_matching(%r{.jpg}),
                   desc: "200w",
                   width: "200",
                   height: "100",
-                  type: "image/jpeg",
-                },
+                  type: "image/jpeg"
+                }
               ]
             )
           end

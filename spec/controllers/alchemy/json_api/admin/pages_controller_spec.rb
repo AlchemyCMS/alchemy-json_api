@@ -16,7 +16,7 @@ RSpec.describe Alchemy::JsonApi::Admin::PagesController do
     let(:page) { FactoryBot.create(:alchemy_page) }
 
     it "stores page as preview" do
-      get :show, params: { path: page.urlname }
+      get :show, params: {path: page.urlname}
       if Alchemy.const_defined?(:Current)
         expect(Alchemy::Current.preview_page).to eq(page)
       else

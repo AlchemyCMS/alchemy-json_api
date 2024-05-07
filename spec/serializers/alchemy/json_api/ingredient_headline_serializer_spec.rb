@@ -11,7 +11,7 @@ RSpec.describe Alchemy::JsonApi::IngredientHeadlineSerializer do
       role: "headline",
       value: "Hello you world",
       size: 2,
-      level: 3,
+      level: 3
     )
   end
 
@@ -26,7 +26,7 @@ RSpec.describe Alchemy::JsonApi::IngredientHeadlineSerializer do
       hash_including(
         value: "Hello you world",
         level: 3,
-        size: 2,
+        size: 2
       )
     )
   end
