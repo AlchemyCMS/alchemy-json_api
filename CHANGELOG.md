@@ -1,5 +1,16 @@
 # Changelog
 
+## [v2.1.0](https://github.com/AlchemyCMS/alchemy-json_api/tree/v2.1.0) (2024-05-07)
+
+[Full Changelog](https://github.com/AlchemyCMS/alchemy-json_api/compare/v2.0.1...v2.1.0)
+
+**Merged pull requests:**
+
+- Standard linting [\#78](https://github.com/AlchemyCMS/alchemy-json_api/pull/78) ([tvdeyen](https://github.com/tvdeyen))
+- CI fixes [\#77](https://github.com/AlchemyCMS/alchemy-json_api/pull/77) ([tvdeyen](https://github.com/tvdeyen))
+- fix\(HTTP Cache\): Use cache\_key\_with\_version for etag [\#76](https://github.com/AlchemyCMS/alchemy-json_api/pull/76) ([tvdeyen](https://github.com/tvdeyen))
+- Allow jsonapi.rb 2.x [\#75](https://github.com/AlchemyCMS/alchemy-json_api/pull/75) ([mamhoff](https://github.com/mamhoff))
+
 ## [v2.0.1](https://github.com/AlchemyCMS/alchemy-json_api/tree/v2.0.1) (2023-07-18)
 
 [Full Changelog](https://github.com/AlchemyCMS/alchemy-json_api/compare/v2.0.0...v2.0.1)
