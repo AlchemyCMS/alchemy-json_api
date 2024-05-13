@@ -35,7 +35,7 @@ RSpec.describe "Alchemy::JsonApi::Admin::PagesController", type: :request do
 
         it "sets cache headers" do
           get alchemy_json_api.admin_page_path(page)
-          expect(response.headers["Last-Modified"]).to eq(page.updated_at.utc.httpdate)
+          expect(response.headers["Last-Modified"]).to be(nil)
           expect(response.headers["ETag"]).to match(/W\/".+"/)
           expect(response.headers["Cache-Control"]).to eq("max-age=0, private, must-revalidate")
         end
