@@ -17,6 +17,12 @@ RSpec.describe "Alchemy::JsonApi::Pages", type: :request do
     )
   end
 
+  around do |example|
+    travel_to(published_at - 1.week) do
+      example.run
+    end
+  end
+
   let(:published_at) { DateTime.parse("2024-05-04 00:00:00") }
 
   describe "GET /alchemy/json_api/pages/:id" do
