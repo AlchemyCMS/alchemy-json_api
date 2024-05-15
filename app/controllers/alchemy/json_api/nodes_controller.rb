@@ -3,6 +3,8 @@
 module Alchemy
   module JsonApi
     class NodesController < JsonApi::BaseController
+      THREE_HOURS = 10800
+
       def index
         @nodes = node_scope.select(:id, :updated_at)
         if stale?(last_modified: @nodes.maximum(:updated_at), etag: @nodes)
@@ -17,7 +19,7 @@ module Alchemy
       private
 
       def cache_duration
-        ENV.fetch("ALCHEMY_JSON_API_CACHE_DURATION", 3).to_i.hours
+        ENV.fetch("ALCHEMY_JSON_API_CACHE_DURATION", THREE_HOURS).to_i
       end
 
       def jsonapi_meta(nodes)

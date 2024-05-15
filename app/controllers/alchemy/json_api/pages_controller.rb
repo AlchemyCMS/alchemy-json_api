@@ -3,6 +3,8 @@
 module Alchemy
   module JsonApi
     class PagesController < JsonApi::BaseController
+      THREE_HOURS = 10800
+
       before_action :load_page_for_cache_key, only: :show
 
       def index
@@ -47,7 +49,7 @@ module Alchemy
       end
 
       def cache_duration
-        ENV.fetch("ALCHEMY_JSON_API_CACHE_DURATION", 3).to_i.hours
+        ENV.fetch("ALCHEMY_JSON_API_CACHE_DURATION", THREE_HOURS).to_i
       end
 
       def caching_options
