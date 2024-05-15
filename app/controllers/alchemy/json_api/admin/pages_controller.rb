@@ -25,7 +25,7 @@ module Alchemy
           end
         end
 
-        def last_modified_for(page)
+        def page_cache_key(page)
           page.updated_at
         end
 

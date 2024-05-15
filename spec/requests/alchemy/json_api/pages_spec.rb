@@ -43,9 +43,32 @@ RSpec.describe "Alchemy::JsonApi::Pages", type: :request do
 
         it "sets public cache headers" do
           get alchemy_json_api.page_path(page)
-          expect(response.headers["Last-Modified"]).to eq(page.published_at.utc.httpdate)
-          expect(response.headers["ETag"]).to eq('W/"0741fe32d81bfdabfeb47d9939c5f6b7"')
+          first_etag = response.headers["Last-Modified"]
+          expect(response.headers["ETag"]).to match(/W\/".+"/)
           expect(response.headers["Cache-Control"]).to eq("max-age=10800, public, must-revalidate")
+          get alchemy_json_api.page_path(page)
+          expect(response.headers["Last-Modified"]).to eq(first_etag)
+        end
+
+        it "returns a different etag if different filters are present" do
+          get alchemy_json_api.page_path(page)
+          etag = response.headers["ETag"]
+          get alchemy_json_api.pages_path(filter: {page_layout_eq: "standard"})
+          expect(response.headers["ETag"]).not_to eq(etag)
+        end
+
+        it "returns a different etag if different include params are present" do
+          get alchemy_json_api.page_path(page)
+          etag = response.headers["ETag"]
+          get alchemy_json_api.pages_path(include: "all_elements.ingredients")
+          expect(response.headers["ETag"]).not_to eq(etag)
+        end
+
+        it "returns a different etag if different fields params are present" do
+          get alchemy_json_api.page_path(page)
+          etag = response.headers["ETag"]
+          get alchemy_json_api.pages_path(fields: "urlname")
+          expect(response.headers["ETag"]).not_to eq(etag)
         end
 
         context "if page is restricted" do
@@ -178,9 +201,9 @@ RSpec.describe "Alchemy::JsonApi::Pages", type: :request do
 
   describe "GET /alchemy/json_api/pages" do
     context "with layoutpages and unpublished pages" do
-      let!(:layoutpage) { FactoryBot.create(:alchemy_page, :layoutpage, :public) }
-      let!(:non_public_page) { FactoryBot.create(:alchemy_page) }
-      let!(:public_page) { FactoryBot.create(:alchemy_page, :public, published_at: published_at) }
+      let!(:layoutpage) { FactoryBot.create(:alchemy_page, :layoutpage, :public, page_layout: "standard") }
+      let!(:non_public_page) { FactoryBot.create(:alchemy_page, page_layout: "standard") }
+      let!(:public_page) { FactoryBot.create(:alchemy_page, :public, published_at: published_at, page_layout: "standard") }
 
       context "as anonymous user" do
         let!(:pages) { [public_page] }
@@ -193,9 +216,51 @@ RSpec.describe "Alchemy::JsonApi::Pages", type: :request do
 
           it "sets public cache headers of latest published page" do
             get alchemy_json_api.pages_path
-            expect(response.headers["Last-Modified"]).to eq(pages.max_by(&:published_at).published_at.utc.httpdate)
+            expect(response.headers["Last-Modified"]).to be_nil
             expect(response.headers["ETag"]).to match(/W\/".+"/)
             expect(response.headers["Cache-Control"]).to eq("max-age=10800, public, must-revalidate")
+          end
+
+          it "returns a different etag if different filters are present" do
+            get alchemy_json_api.pages_path
+            etag = response.headers["ETag"]
+            get alchemy_json_api.pages_path(filter: {page_layout_eq: "standard"})
+            expect(response.headers["ETag"]).not_to eq(etag)
+          end
+
+          it "returns a different etag if different sort params are present" do
+            get alchemy_json_api.pages_path
+            etag = response.headers["ETag"]
+            get alchemy_json_api.pages_path(sort: "-id")
+            expect(response.headers["ETag"]).not_to eq(etag)
+          end
+
+          it "returns a different etag if different include params are present" do
+            get alchemy_json_api.pages_path
+            etag = response.headers["ETag"]
+            get alchemy_json_api.pages_path(include: "all_elements.ingredients")
+            expect(response.headers["ETag"]).not_to eq(etag)
+          end
+
+          it "returns a different etag if different fields params are present" do
+            get alchemy_json_api.pages_path
+            etag = response.headers["ETag"]
+            get alchemy_json_api.pages_path(fields: "urlname")
+            expect(response.headers["ETag"]).not_to eq(etag)
+          end
+
+          it "returns a different etag if different fields params are present" do
+            get alchemy_json_api.pages_path
+            etag = response.headers["ETag"]
+            get alchemy_json_api.pages_path(page: {number: 2, size: 1})
+            expect(response.headers["ETag"]).not_to eq(etag)
+          end
+
+          it "returns a different etag if different JSONAPI params have the same value" do
+            get alchemy_json_api.pages_path(sort: "author")
+            etag = response.headers["ETag"]
+            get alchemy_json_api.pages_path(fields: "author")
+            expect(response.headers["ETag"]).not_to eq(etag)
           end
 
           context "if one page is restricted" do
@@ -304,11 +369,16 @@ RSpec.describe "Alchemy::JsonApi::Pages", type: :request do
           stub_alchemy_config(:cache_pages, true)
         end
 
-        it "sets cache headers of latest matching page" do
+        it "sets constant etag" do
           get alchemy_json_api.pages_path(filter: {page_layout_eq: "news"})
-          expect(response.headers["Last-Modified"]).to eq(news_page2.published_at.utc.httpdate)
-          expect(response.headers["ETag"]).to eq('W/"e7a1c8beb22b58e94a605594d79766ad"')
+          expect(response.headers["ETag"]).to match(/W\/".+"/)
+
+          first_etag = response.headers["Last-Modified"]
+
           expect(response.headers["Cache-Control"]).to eq("max-age=10800, public, must-revalidate")
+
+          get alchemy_json_api.pages_path(filter: {page_layout_eq: "news"})
+          expect(response.headers["Last-Modified"]).to eq(first_etag)
         end
       end
     end

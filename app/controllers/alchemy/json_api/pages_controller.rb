@@ -4,6 +4,7 @@ module Alchemy
   module JsonApi
     class PagesController < JsonApi::BaseController
       THREE_HOURS = 10800
+      JSONAPI_STALEMAKERS = %i[include fields sort filter page]
 
       before_action :load_page_for_cache_key, only: :show
 
@@ -12,9 +13,10 @@ module Alchemy
 
         jsonapi_filter(page_scope, allowed) do |filtered_pages|
           @pages = filtered_pages.result
+
           if !@pages.all?(&:cache_page?)
             render_pages_json(allowed) && return
-          elsif stale?(last_modified: @pages.maximum(:published_at), etag: @pages.max_by(&:cache_key_with_version)&.cache_key_with_version)
+          elsif stale?(etag: etag(@pages))
             render_pages_json(allowed)
           end
         end
@@ -27,7 +29,7 @@ module Alchemy
           render(jsonapi: api_page(load_page)) && return
         end
 
-        if stale?(last_modified: last_modified_for(@page), etag: @page.cache_key_with_version)
+        if stale?(etag: etag(@page))
           # Only load page with all includes when browser cache is stale
           render jsonapi: api_page(load_page)
         end
@@ -60,10 +62,6 @@ module Alchemy
       def load_page_for_cache_key
         @page = page_scope.where(id: params[:path])
           .or(page_scope.where(urlname: params[:path])).first!
-      end
-
-      def last_modified_for(page)
-        page.published_at
       end
 
       def jsonapi_meta(pages)
@@ -117,6 +115,17 @@ module Alchemy
 
       def api_page(page)
         Alchemy::JsonApi::Page.new(page, page_version_type: page_version_type)
+      end
+
+      def etag(pages)
+        pages = Array.wrap(pages)
+        return unless pages.any?
+        relevant_params = params.to_unsafe_hash.slice(*JSONAPI_STALEMAKERS).flatten.compact
+        pages.map { |page| page_cache_key(page) }.concat(relevant_params)
+      end
+
+      def page_cache_key(page)
+        page.cache_key_with_version
       end
 
       def base_page_scope
