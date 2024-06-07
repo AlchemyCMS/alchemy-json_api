@@ -15,7 +15,8 @@ module Alchemy
         :meta_keywords,
         :meta_description,
         :created_at,
-        :updated_at
+        :updated_at,
+        :restricted
       )
 
       cache_options store: Rails.cache, namespace: "alchemy-jsonapi"

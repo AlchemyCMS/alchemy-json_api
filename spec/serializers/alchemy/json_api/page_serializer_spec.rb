@@ -36,6 +36,7 @@ RSpec.describe Alchemy::JsonApi::PageSerializer do
       expect(attributes[:created_at]).to eq(page.created_at)
       expect(attributes[:updated_at]).to eq(page.updated_at)
       expect(attributes[:legacy_urls]).to eq(["/other"])
+      expect(attributes[:restricted]).to be false
       expect(attributes.keys).not_to include(:tag_list, :status)
     end
   end
