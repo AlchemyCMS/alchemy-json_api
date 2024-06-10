@@ -11,7 +11,7 @@ var structuredClone__default = /*#__PURE__*/_interopDefaultLegacy(structuredClon
 function deserialize(originalResponse) {
   var response = structuredClone__default["default"](originalResponse);
 
-  var included = response.included || [];
+  var included = response?.included || [];
 
   if (Array.isArray(response.data)) {
     return response.data.map(function (data) {

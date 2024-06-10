@@ -6,7 +6,7 @@ export function deserialize(originalResponse, options = {}) {
     options = {}
   }
 
-  const included = response.included || []
+  const included = response?.included || []
 
   if (Array.isArray(response.data)) {
     return response.data.map((data) => {
