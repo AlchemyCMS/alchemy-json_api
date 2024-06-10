@@ -1,5 +1,13 @@
 # Changelog
 
+## [v2.3.0](https://github.com/AlchemyCMS/alchemy-json_api/tree/v2.3.0) (2024-06-10)
+
+[Full Changelog](https://github.com/AlchemyCMS/alchemy-json_api/compare/v2.2.0...v2.3.0)
+
+**Merged pull requests:**
+
+- Add restricted value to page serializer [\#82](https://github.com/AlchemyCMS/alchemy-json_api/pull/82) ([manleyac](https://github.com/manleyac))
+
 ## [v2.2.0](https://github.com/AlchemyCMS/alchemy-json_api/tree/v2.2.0) (2024-05-16)
 
 [Full Changelog](https://github.com/AlchemyCMS/alchemy-json_api/compare/v2.1.0...v2.2.0)
