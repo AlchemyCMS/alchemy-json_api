@@ -3,6 +3,8 @@
 module Alchemy
   module JsonApi
     class NodesController < JsonApi::BaseController
+      THREE_HOURS = 10800
+
       def index
         @nodes = node_scope.select(:id, :updated_at)
         if stale?(last_modified: @nodes.maximum(:updated_at), etag: @nodes)
@@ -11,13 +13,13 @@ module Alchemy
           end
         end
 
-        expires_in cache_duration, { public: true, must_revalidate: true }
+        expires_in cache_duration, {public: true, must_revalidate: true}
       end
 
       private
 
       def cache_duration
-        ENV.fetch("ALCHEMY_JSON_API_CACHE_DURATION", 3).to_i.hours
+        ENV.fetch("ALCHEMY_JSON_API_CACHE_DURATION", THREE_HOURS).to_i
       end
 
       def jsonapi_meta(nodes)
@@ -25,7 +27,7 @@ module Alchemy
 
         {
           pagination: pagination.presence,
-          total: node_scope.count,
+          total: node_scope.count
         }.compact
       end
 
@@ -37,7 +39,7 @@ module Alchemy
         if params[:include].present?
           includes = params[:include].split(",").map do |association|
             association.split(".").reverse.inject({}) do |value, key|
-              { key.to_sym => value }
+              {key.to_sym => value}
             end
           end
           node_scope.includes(includes)

@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module Alchemy
   module JsonApi
     class BaseController < ::ApplicationController
@@ -11,7 +12,7 @@ module Alchemy
 
       rescue_from(
         CanCan::AccessDenied,
-        with: :render_jsonapi_unauthorized,
+        with: :render_jsonapi_unauthorized
       )
 
       private
@@ -32,7 +33,7 @@ module Alchemy
       end
 
       def render_jsonapi_unauthorized(exception)
-        error = { status: "401", title: Rack::Utils::HTTP_STATUS_CODES[401] }
+        error = {status: "401", title: Rack::Utils::HTTP_STATUS_CODES[401]}
         render jsonapi_errors: [error], status: :unauthorized
       end
     end

@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require "rails_helper"
 
 RSpec.describe Alchemy::JsonApi::PageSerializer do
@@ -10,7 +11,7 @@ RSpec.describe Alchemy::JsonApi::PageSerializer do
       title: "Page Title",
       meta_keywords: "Meta Keywords",
       meta_description: "Meta Description",
-      tag_list: "Tag1,Tag2",
+      tag_list: "Tag1,Tag2"
     )
   end
   let!(:legacy_url) { Alchemy::LegacyPageUrl.create(urlname: "/other", page: alchemy_page) }
@@ -36,6 +37,7 @@ RSpec.describe Alchemy::JsonApi::PageSerializer do
       expect(attributes[:created_at]).to eq(page.created_at)
       expect(attributes[:updated_at]).to eq(page.updated_at)
       expect(attributes[:legacy_urls]).to eq(["/other"])
+      expect(attributes[:restricted]).to be false
       expect(attributes.keys).not_to include(:tag_list, :status)
     end
   end
@@ -51,10 +53,10 @@ RSpec.describe Alchemy::JsonApi::PageSerializer do
       it "does not include trashed, fixed or hidden elements" do
         expect(subject[:elements]).to eq(
           data: [
-            { id: element.id.to_s, type: :element },
-          ],
+            {id: element.id.to_s, type: :element}
+          ]
         )
-        expect(subject[:language]).to eq(data: { id: page.language_id.to_s, type: :language })
+        expect(subject[:language]).to eq(data: {id: page.language_id.to_s, type: :language})
       end
     end
 
@@ -62,18 +64,18 @@ RSpec.describe Alchemy::JsonApi::PageSerializer do
       it "does not include trashed, non-fixed or hidden elements" do
         expect(subject[:fixed_elements]).to eq(
           data: [
-            { id: fixed_element.id.to_s, type: :element },
-          ],
+            {id: fixed_element.id.to_s, type: :element}
+          ]
         )
-        expect(subject[:language]).to eq(data: { id: page.language_id.to_s, type: :language })
+        expect(subject[:language]).to eq(data: {id: page.language_id.to_s, type: :language})
       end
     end
 
     it "has ancestors relationship" do
       expect(subject[:ancestors]).to eq(
         data: [
-          { id: page.parent_id.to_s, type: :page },
-        ],
+          {id: page.parent_id.to_s, type: :page}
+        ]
       )
     end
   end

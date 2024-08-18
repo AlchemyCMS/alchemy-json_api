@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require "rails_helper"
 require "alchemy/devise/test_support/factories"
 
@@ -44,7 +45,7 @@ RSpec.describe "Alchemy::JsonApi::Admin::LayoutPagesController", type: :request 
         end
 
         it "returns paginated result" do
-          get alchemy_json_api.admin_layout_pages_path(page: { number: 2, size: 1 })
+          get alchemy_json_api.admin_layout_pages_path(page: {number: 2, size: 1})
           document = JSON.parse(response.body)
           expect(document["data"].length).to eq(1)
           expect(document["meta"]).to eq({
@@ -54,9 +55,9 @@ RSpec.describe "Alchemy::JsonApi::Admin::LayoutPagesController", type: :request 
               "last" => 3,
               "next" => 3,
               "prev" => 1,
-              "records" => 3,
+              "records" => 3
             },
-            "total" => 3,
+            "total" => 3
           })
         end
       end
@@ -97,8 +98,8 @@ RSpec.describe "Alchemy::JsonApi::Admin::LayoutPagesController", type: :request 
           {
             "data" => [{
               "id" => element.id.to_s,
-              "type" => "element",
-            }],
+              "type" => "element"
+            }]
           }
         )
       end
@@ -111,7 +112,7 @@ RSpec.describe "Alchemy::JsonApi::Admin::LayoutPagesController", type: :request 
 
         it "sets cache headers" do
           get alchemy_json_api.admin_layout_page_path(page)
-          expect(response.headers["Last-Modified"]).to eq(page.updated_at.utc.httpdate)
+          expect(response.headers["Last-Modified"]).to be nil
           expect(response.headers["ETag"]).to match(/W\/".+"/)
           expect(response.headers["Cache-Control"]).to eq("max-age=0, private, must-revalidate")
         end
@@ -121,10 +122,10 @@ RSpec.describe "Alchemy::JsonApi::Admin::LayoutPagesController", type: :request 
             get alchemy_json_api.admin_layout_page_path(page)
             etag = response.headers["ETag"]
             get alchemy_json_api.admin_layout_page_path(page),
-                headers: {
-                  "If-Modified-Since" => page.updated_at.utc.httpdate,
-                  "If-None-Match" => etag,
-                }
+              headers: {
+                "If-Modified-Since" => page.updated_at.utc.httpdate,
+                "If-None-Match" => etag
+              }
             expect(response.status).to eq(304)
           end
         end

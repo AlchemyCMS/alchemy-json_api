@@ -3,6 +3,9 @@
 module Alchemy
   module JsonApi
     class PagesController < JsonApi::BaseController
+      THREE_HOURS = 10800
+      JSONAPI_STALEMAKERS = %i[include fields sort filter page]
+
       before_action :load_page_for_cache_key, only: :show
 
       ALLOWED_PUBLIC_VERSION_RANSACK_ATTRIBUTES = %w[public_on].map { |a| "public_version_#{a}" }.freeze
@@ -12,14 +15,15 @@ module Alchemy
 
         jsonapi_filter(page_scope, allowed) do |filtered_pages|
           @pages = filtered_pages.result
+
           if !@pages.all?(&:cache_page?)
             render_pages_json(allowed | ALLOWED_PUBLIC_VERSION_RANSACK_ATTRIBUTES) && return
-          elsif stale?(last_modified: @pages.maximum(:published_at), etag: @pages.max_by(&:cache_key)&.cache_key)
+          elsif stale?(etag: etag(@pages))
             render_pages_json(allowed | ALLOWED_PUBLIC_VERSION_RANSACK_ATTRIBUTES)
           end
         end
 
-        expires_in cache_duration, { public: @pages.none?(&:restricted?) }.merge(caching_options)
+        expires_in cache_duration, {public: @pages.none?(&:restricted?)}.merge(caching_options)
       end
 
       def show
@@ -27,12 +31,12 @@ module Alchemy
           render(jsonapi: api_page(load_page)) && return
         end
 
-        if stale?(last_modified: last_modified_for(@page), etag: @page.cache_key)
+        if stale?(etag: etag(@page))
           # Only load page with all includes when browser cache is stale
           render jsonapi: api_page(load_page)
         end
 
-        expires_in cache_duration, { public: !@page.restricted? }.merge(caching_options)
+        expires_in cache_duration, {public: !@page.restricted?}.merge(caching_options)
       end
 
       private
@@ -49,21 +53,17 @@ module Alchemy
       end
 
       def cache_duration
-        ENV.fetch("ALCHEMY_JSON_API_CACHE_DURATION", 3).to_i.hours
+        ENV.fetch("ALCHEMY_JSON_API_CACHE_DURATION", THREE_HOURS).to_i
       end
 
       def caching_options
-        { must_revalidate: true }
+        {must_revalidate: true}
       end
 
       # Get page w/o includes to get cache key
       def load_page_for_cache_key
-        @page = page_scope.where(id: params[:path]).
-          or(page_scope.where(urlname: params[:path])).first!
-      end
-
-      def last_modified_for(page)
-        page.published_at
+        @page = page_scope.where(id: params[:path])
+          .or(page_scope.where(urlname: params[:path])).first!
       end
 
       def jsonapi_meta(pages)
@@ -71,7 +71,7 @@ module Alchemy
 
         {
           pagination: pagination.presence,
-          total: page_scope.count,
+          total: page_scope.count
         }.compact
       end
 
@@ -80,7 +80,7 @@ module Alchemy
       end
 
       def load_page_by_id
-        return unless params[:path] =~ /\A\d+\z/
+        return unless /\A\d+\z/.match?(params[:path])
 
         page_scope_with_includes.find_by(id: params[:path])
       end
@@ -94,20 +94,20 @@ module Alchemy
       end
 
       def page_scope_with_includes
-        page_scope.
-          includes(
+        page_scope
+          .includes(
             [
               :legacy_urls,
-              { language: { nodes: [:parent, :children, { page: { language: { site: :languages } } }] } },
+              {language: {nodes: [:parent, :children, {page: {language: {site: :languages}}}]}},
               {
                 page_version_type => {
                   elements: [
                     :nested_elements,
-                    { ingredients: :related_object },
-                  ],
-                },
-              },
-            ],
+                    {ingredients: :related_object}
+                  ]
+                }
+              }
+            ]
           )
       end
 
@@ -119,12 +119,31 @@ module Alchemy
         Alchemy::JsonApi::Page.new(page, page_version_type: page_version_type)
       end
 
+      def etag(pages)
+        pages = Array.wrap(pages)
+        return unless pages.any?
+        relevant_params = params.to_unsafe_hash.slice(*JSONAPI_STALEMAKERS).flatten.compact
+        pages.map { |page| page_cache_key(page) }.concat(relevant_params)
+      end
+
+      def page_cache_key(page)
+        page.cache_key_with_version
+      end
+
       def base_page_scope
         # cancancan is not able to merge our complex AR scopes for logged in users
         if can?(:edit_content, ::Alchemy::Page)
-          Alchemy::Language.current.pages.joins(page_version_type)
+          current_language.pages.joins(page_version_type)
         else
-          Alchemy::Language.current.pages.published.joins(page_version_type)
+          current_language.pages.published.joins(page_version_type)
+        end
+      end
+
+      def current_language
+        if Alchemy.const_defined?(:Current)
+          Alchemy::Current.language
+        else
+          Alchemy::Language.current
         end
       end
 

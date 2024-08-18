@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module Alchemy
   module JsonApi
     module Admin
@@ -13,14 +14,18 @@ module Alchemy
         end
 
         def caching_options
-          { public: false, must_revalidate: true }
+          {public: false, must_revalidate: true}
         end
 
         def set_current_preview
-          Alchemy::Page.current_preview = @page
+          if Alchemy.const_defined?(:Current)
+            Alchemy::Current.preview_page = @page
+          else
+            Alchemy::Page.current_preview = @page
+          end
         end
 
-        def last_modified_for(page)
+        def page_cache_key(page)
           page.updated_at
         end
 

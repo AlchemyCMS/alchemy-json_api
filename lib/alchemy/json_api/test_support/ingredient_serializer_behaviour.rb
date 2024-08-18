@@ -31,7 +31,7 @@ RSpec.shared_examples "an ingredient serializer" do
     subject { serializer.serializable_hash[:data][:relationships] }
 
     it "has one element" do
-      expect(subject[:element]).to eq(data: { id: ingredient.element_id.to_s, type: :element })
+      expect(subject[:element]).to eq(data: {id: ingredient.element_id.to_s, type: :element})
     end
   end
 end

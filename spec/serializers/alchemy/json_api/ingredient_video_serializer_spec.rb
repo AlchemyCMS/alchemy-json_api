@@ -12,7 +12,7 @@ RSpec.describe Alchemy::JsonApi::IngredientVideoSerializer do
       attachment: attachment,
       allow_fullscreen: true,
       autoplay: false,
-      controls: true,
+      controls: true
     )
   end
 
