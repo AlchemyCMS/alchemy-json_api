@@ -12,7 +12,6 @@ require "rspec/rails"
 require "jsonapi/rspec"
 require "shoulda-matchers"
 
-require "alchemy/json_api/test_support/essence_serializer_behaviour"
 require "alchemy/json_api/test_support/ingredient_serializer_behaviour"
 
 Shoulda::Matchers.configure do |config|
