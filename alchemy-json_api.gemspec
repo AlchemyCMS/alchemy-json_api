@@ -19,7 +19,7 @@ Gem::Specification.new do |spec|
   spec.files = Dir["{app,config,db,lib}/**/*", "LICENSE", "Rakefile", "README.md"]
 
   spec.add_dependency "alchemy_cms", [">= 7.0.0.a", "< 8"]
-  spec.add_dependency "jsonapi.rb", [">= 1.6.0", "< 2.1"]
+  spec.add_dependency "jsonapi.rb", [">= 1.6.0", "< 2.2"]
 
   spec.add_development_dependency "factory_bot"
   spec.add_development_dependency "github_changelog_generator"
