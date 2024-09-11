@@ -7,6 +7,10 @@ module Alchemy
     class IngredientPictureSerializer < BaseSerializer
       include IngredientSerializer
 
+      def self.preload_relations
+        [:thumbs]
+      end
+
       attributes(
         :title,
         :caption,
