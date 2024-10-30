@@ -18,6 +18,7 @@
     "Thomas von Deyen"
   ],
   "main": "dist/alchemy-json_api.js",
+  "module": "dist/alchemy-json_api.mjs",
   "files": [
     "dist"
   ],
