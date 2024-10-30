@@ -10,6 +10,10 @@ export default [
       {
         file: "dist/alchemy-json_api.js",
         format: "cjs"
+      },
+      {
+        file: "dist/alchemy-json_api.mjs",
+        format: "esm"
       }
     ],
     plugins,
@@ -17,10 +21,16 @@ export default [
   },
   {
     input: "src/deserialize.js",
-    output: {
-      file: "dist/deserialize.js",
-      format: "cjs"
-    },
+    output: [
+      {
+        file: "dist/deserialize.js",
+        format: "cjs"
+      },
+      {
+        file: "dist/deserialize.mjs",
+        format: "esm"
+      }
+    ],
     plugins,
     external
   }

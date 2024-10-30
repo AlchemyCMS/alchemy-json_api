@@ -1,15 +1,7 @@
-'use strict';
-
-Object.defineProperty(exports, '__esModule', { value: true });
-
-var structuredClone = require('@ungap/structured-clone');
-
-function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
-
-var structuredClone__default = /*#__PURE__*/_interopDefaultLegacy(structuredClone);
+import structuredClone from '@ungap/structured-clone';
 
 function deserialize(originalResponse) {
-  const response = structuredClone__default["default"](originalResponse);
+  const response = structuredClone(originalResponse);
   const included = response.included || [];
   if (Array.isArray(response.data)) {
     return response.data.map(data => {
@@ -67,4 +59,42 @@ function findJsonApiIncluded(included, type, id, options) {
   return found;
 }
 
-exports.deserialize = deserialize;
+// Recursively filters all deprecated elements and essences from collection
+function filterDeprecatedElements(elements) {
+  const els = [];
+  elements.forEach(element => {
+    if (element.nested_elements?.length > 0) {
+      element.nested_elements = filterDeprecatedElements(element.nested_elements);
+    }
+    if (element.nestedElements?.length > 0) {
+      element.nestedElements = filterDeprecatedElements(element.nestedElements);
+    }
+    if (element.essences?.length > 0) {
+      element.essences = element.essences.filter(essence => {
+        return !essence.deprecated;
+      });
+    }
+    if (!element.deprecated) {
+      els.push(element);
+    }
+  });
+  return els;
+}
+
+// Returns deserialized page without deprecated content
+function deserializePage(pageData) {
+  const page = deserialize(pageData);
+  page.elements = filterDeprecatedElements(page.elements);
+  return page;
+}
+
+// Returns deserialized pages without deprecated content
+function deserializePages(pagesData) {
+  const pages = deserialize(pagesData);
+  pages.forEach(page => {
+    page.elements = filterDeprecatedElements(page.elements);
+  });
+  return pages;
+}
+
+export { deserialize, deserializePage, deserializePages };
