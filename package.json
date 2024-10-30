@@ -36,6 +36,7 @@
   },
   "scripts": {
     "build": "rollup --config",
+    "lint": "prettier --check 'src/**/*.js'",
     "test": "jest"
   },
   "browserslist": "> 0.25%, not dead"
