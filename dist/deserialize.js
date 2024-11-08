@@ -1,15 +1,9 @@
 'use strict';
 
-Object.defineProperty(exports, '__esModule', { value: true });
-
 var structuredClone = require('@ungap/structured-clone');
 
-function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
-
-var structuredClone__default = /*#__PURE__*/_interopDefaultLegacy(structuredClone);
-
 function deserialize(originalResponse) {
-  const response = structuredClone__default["default"](originalResponse);
+  const response = structuredClone(originalResponse);
   const included = response.included || [];
   if (Array.isArray(response.data)) {
     return response.data.map(data => {
