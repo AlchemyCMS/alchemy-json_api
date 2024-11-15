@@ -1,6 +1,3 @@
-import babel from "@rollup/plugin-babel"
-
-const plugins = [babel({ babelHelpers: "bundled" })]
 const external = ["@ungap/structured-clone"]
 
 export default [
@@ -9,14 +6,9 @@ export default [
     output: [
       {
         file: "dist/alchemy-json_api.js",
-        format: "cjs"
-      },
-      {
-        file: "dist/alchemy-json_api.mjs",
         format: "esm"
       }
     ],
-    plugins,
     external
   },
   {
@@ -24,14 +16,9 @@ export default [
     output: [
       {
         file: "dist/deserialize.js",
-        format: "cjs"
-      },
-      {
-        file: "dist/deserialize.mjs",
         format: "esm"
       }
     ],
-    plugins,
     external
   }
 ]
