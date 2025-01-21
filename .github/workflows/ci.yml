@@ -8,7 +8,7 @@ on:
 
 jobs:
   RSpec:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     strategy:
       fail-fast: false
       matrix:
@@ -58,10 +58,9 @@ jobs:
           RAILS_ENV: test
           DB_USER: user
           DB_PASSWORD: password
-          DB_PORT: ${{ job.services.mariadb.ports[3306] }}
         run: bundle exec rake
   Jest:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     env:
       NODE_ENV: test
     steps:
