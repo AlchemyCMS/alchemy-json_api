@@ -1,5 +1,13 @@
 # Changelog
 
+## [v2.4.1](https://github.com/AlchemyCMS/alchemy-json_api/tree/v2.4.1) (2025-01-24)
+
+[Full Changelog](https://github.com/AlchemyCMS/alchemy-json_api/compare/v2.4.0...v2.4.1)
+
+**Merged pull requests:**
+
+- Test Alchemy 7.4 [\#95](https://github.com/AlchemyCMS/alchemy-json_api/pull/95) ([tvdeyen](https://github.com/tvdeyen))
+
 ## [v2.4.0](https://github.com/AlchemyCMS/alchemy-json_api/tree/v2.4.0) (2025-01-09)
 
 [Full Changelog](https://github.com/AlchemyCMS/alchemy-json_api/compare/v2.3.0...v2.4.0)
