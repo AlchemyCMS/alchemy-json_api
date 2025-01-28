@@ -4,8 +4,6 @@ module Alchemy
   module JsonApi
     module IngredientSerializer
       def self.included(klass)
-        klass.has_one :element, record_type: :element, serializer: ::Alchemy::JsonApi::ElementSerializer
-
         klass.attributes(
           :role,
           :value,

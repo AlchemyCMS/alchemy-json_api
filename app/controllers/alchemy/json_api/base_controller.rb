@@ -26,7 +26,7 @@ module Alchemy
         logger = Rails.logger
         return unless logger
 
-        message = +"\n#{exception.class} (#{exception.message}):\n"
+        message = "\n#{exception.class} (#{exception.message}):\n"
         message << exception.annotated_source_code.to_s if exception.respond_to?(:annotated_source_code)
         message << "  " << exception.backtrace.join("\n  ")
         logger.fatal("#{message}\n\n")

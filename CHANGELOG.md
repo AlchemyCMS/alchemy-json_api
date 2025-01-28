@@ -1,5 +1,24 @@
 # Changelog
 
+## [v2.4.1](https://github.com/AlchemyCMS/alchemy-json_api/tree/v2.4.1) (2025-01-24)
+
+[Full Changelog](https://github.com/AlchemyCMS/alchemy-json_api/compare/v2.4.0...v2.4.1)
+
+**Merged pull requests:**
+
+- Test Alchemy 7.4 [\#95](https://github.com/AlchemyCMS/alchemy-json_api/pull/95) ([tvdeyen](https://github.com/tvdeyen))
+
+## [v2.4.0](https://github.com/AlchemyCMS/alchemy-json_api/tree/v2.4.0) (2025-01-09)
+
+[Full Changelog](https://github.com/AlchemyCMS/alchemy-json_api/compare/v2.3.0...v2.4.0)
+
+**Merged pull requests:**
+
+- Build .mjs \(ES Modules\) as well [\#87](https://github.com/AlchemyCMS/alchemy-json_api/pull/87) ([tvdeyen](https://github.com/tvdeyen))
+- Allow jsonapi.rb v2.1 [\#86](https://github.com/AlchemyCMS/alchemy-json_api/pull/86) ([manleyac](https://github.com/manleyac))
+- Remove EssenceSerializer mixin [\#85](https://github.com/AlchemyCMS/alchemy-json_api/pull/85) ([tvdeyen](https://github.com/tvdeyen))
+- Remove element from IngredientSerializer [\#84](https://github.com/AlchemyCMS/alchemy-json_api/pull/84) ([tvdeyen](https://github.com/tvdeyen))
+
 ## [v2.3.0](https://github.com/AlchemyCMS/alchemy-json_api/tree/v2.3.0) (2024-06-10)
 
 [Full Changelog](https://github.com/AlchemyCMS/alchemy-json_api/compare/v2.2.0...v2.3.0)

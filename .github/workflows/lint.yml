@@ -9,13 +9,35 @@ concurrency:
 jobs:
   Standard:
     runs-on: ubuntu-latest
+    env:
+      ALCHEMY_BRANCH: 7.3-stable
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
       - name: Install Ruby and gems
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: "3.0"
+          ruby-version: "3.1"
           bundler-cache: true
       - name: Lint Ruby files
         run: bundle exec standardrb
+  Prettier:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Restore node_modules cache
+        uses: actions/cache@v4
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-node-modules-${{ hashFiles('package.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-modules
+      - name: Install dependencies
+        run: yarn install
+      - name: Lint JS files
+        run: yarn run lint

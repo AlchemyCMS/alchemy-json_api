@@ -15,9 +15,9 @@ gemspec
 
 # To use a debugger
 # gem 'byebug', group: [:development, :test]
-gem "sqlite3", "~> 1.4"
+gem "sqlite3", "~> 2.2"
 
-alchemy_branch = ENV.fetch("ALCHEMY_BRANCH", "main")
+alchemy_branch = ENV.fetch("ALCHEMY_BRANCH", "7.4-stable")
 gem "alchemy_cms", github: "AlchemyCMS/alchemy_cms", branch: alchemy_branch
 gem "alchemy-devise", github: "AlchemyCMS/alchemy-devise", branch: "main"
 
