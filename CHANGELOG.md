@@ -1,5 +1,13 @@
 # Changelog
 
+## [v2.4.2](https://github.com/AlchemyCMS/alchemy-json_api/tree/v2.4.2) (2025-06-17)
+
+[Full Changelog](https://github.com/AlchemyCMS/alchemy-json_api/compare/v2.4.1...v2.4.2)
+
+**Merged pull requests:**
+
+- fix\(ingredient/page\_serializer\): Wrap page in decorator [\#96](https://github.com/AlchemyCMS/alchemy-json_api/pull/96) ([tvdeyen](https://github.com/tvdeyen))
+
 ## [v2.4.1](https://github.com/AlchemyCMS/alchemy-json_api/tree/v2.4.1) (2025-01-24)
 
 [Full Changelog](https://github.com/AlchemyCMS/alchemy-json_api/compare/v2.4.0...v2.4.1)
