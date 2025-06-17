@@ -19,7 +19,9 @@ module Alchemy
         ingredient.page&.url_path
       end
 
-      has_one :page, record_type: :page, serializer: ::Alchemy::JsonApi::PageSerializer
+      has_one :page, record_type: :page, serializer: PageSerializer do |ingredient|
+        ingredient.page&.tap { Page.new(_1) }
+      end
     end
   end
 end

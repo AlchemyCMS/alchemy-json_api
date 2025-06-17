@@ -3,8 +3,8 @@
 require "rails_helper"
 
 RSpec.describe Alchemy::JsonApi::IngredientPageSerializer do
-  let(:ingredient) { FactoryBot.build_stubbed(:alchemy_ingredient_page, page: page) }
-  let(:page) { FactoryBot.build_stubbed(:alchemy_page) }
+  let(:ingredient) { FactoryBot.create(:alchemy_ingredient_page, page: page) }
+  let(:page) { FactoryBot.create(:alchemy_page) }
 
   let(:serializer) { described_class.new(ingredient) }
 
@@ -38,7 +38,7 @@ RSpec.describe Alchemy::JsonApi::IngredientPageSerializer do
     let(:page) { nil }
 
     describe "attributes" do
-      it "has no ingredient" do
+      it "has no value" do
         expect(subject[:value]).to be_nil
       end
 

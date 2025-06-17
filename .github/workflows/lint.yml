@@ -10,7 +10,7 @@ jobs:
   Standard:
     runs-on: ubuntu-latest
     env:
-      ALCHEMY_BRANCH: 7.3-stable
+      ALCHEMY_BRANCH: 7.4-stable
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
