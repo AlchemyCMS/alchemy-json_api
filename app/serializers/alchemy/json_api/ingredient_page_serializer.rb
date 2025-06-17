@@ -20,7 +20,7 @@ module Alchemy
       end
 
       has_one :page, record_type: :page, serializer: PageSerializer do |ingredient|
-        ingredient.page&.tap { Page.new(_1) }
+        Alchemy::JsonApi::Page.new(ingredient.page) if ingredient.page
       end
     end
   end

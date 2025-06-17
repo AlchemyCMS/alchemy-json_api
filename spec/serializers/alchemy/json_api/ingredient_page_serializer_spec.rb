@@ -32,6 +32,14 @@ RSpec.describe Alchemy::JsonApi::IngredientPageSerializer do
     it "has page object" do
       expect(subject[:page]).to eq(data: {id: page.id.to_s, type: :page})
     end
+
+    context "if page is nil" do
+      let(:page) { nil }
+
+      it "returns nil" do
+        expect(subject[:page]).to eq({data: nil})
+      end
+    end
   end
 
   context "With no page set" do
