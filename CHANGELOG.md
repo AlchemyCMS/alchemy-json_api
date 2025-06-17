@@ -1,5 +1,13 @@
 # Changelog
 
+## [v2.4.3](https://github.com/AlchemyCMS/alchemy-json_api/tree/v2.4.3) (2025-06-17)
+
+[Full Changelog](https://github.com/AlchemyCMS/alchemy-json_api/compare/v2.4.2...v2.4.3)
+
+**Merged pull requests:**
+
+- Fix ingredient page serializer again [\#98](https://github.com/AlchemyCMS/alchemy-json_api/pull/98) ([tvdeyen](https://github.com/tvdeyen))
+
 ## [v2.4.2](https://github.com/AlchemyCMS/alchemy-json_api/tree/v2.4.2) (2025-06-17)
 
 [Full Changelog](https://github.com/AlchemyCMS/alchemy-json_api/compare/v2.4.1...v2.4.2)
