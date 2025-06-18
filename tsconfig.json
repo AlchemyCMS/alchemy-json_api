@@ -1,0 +1,9 @@
+{
+  "compilerOptions": {
+    "removeComments": true,
+    "noImplicitAny": true,
+    "skipLibCheck": true
+  },
+  "files": ["src/main.d.ts"],
+  "include": ["src/**/*"]
+}

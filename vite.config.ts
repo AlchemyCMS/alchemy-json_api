@@ -1,8 +1,6 @@
 import { defineConfig } from "vite"
 import { resolve } from "path"
 
-const external = ["@ungap/structured-clone"]
-
 export default defineConfig({
   build: {
     lib: {
@@ -12,9 +10,6 @@ export default defineConfig({
       },
       formats: ["es"],
       fileName: (_format, entryName) => `${entryName}.js`
-    },
-    rollupOptions: {
-      external
     }
   }
 })
