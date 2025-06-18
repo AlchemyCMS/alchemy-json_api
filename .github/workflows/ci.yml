@@ -59,7 +59,7 @@ jobs:
           DB_USER: user
           DB_PASSWORD: password
         run: bundle exec rake
-  Jest:
+  Vitest:
     runs-on: ubuntu-24.04
     env:
       NODE_ENV: test
@@ -74,5 +74,5 @@ jobs:
             ${{ runner.os }}-yarn-
       - name: Install yarn
         run: yarn install
-      - name: Run jest
-        run: yarn jest
+      - name: Run Vitest
+        run: yarn vitest
