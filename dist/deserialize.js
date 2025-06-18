@@ -1,90 +1,45 @@
-import structuredClone from '@ungap/structured-clone';
-
-function deserialize(originalResponse, options = {}) {
-  const response = structuredClone(originalResponse);
-  if (!options) {
-    options = {};
-  }
-
-  const included = response.included || [];
-
-  if (Array.isArray(response.data)) {
-    return response.data.map((data) => {
-      return parseJsonApiSimpleResourceData(data, included, false)
-    })
-  } else {
-    return parseJsonApiSimpleResourceData(
-      response.data,
-      included,
-      false)
-  }
+import y from "@ungap/structured-clone";
+function A(e, r = {}) {
+  const s = y(e);
+  r || (r = {});
+  const n = s.included || [];
+  return Array.isArray(s.data) ? s.data.map((i) => f(i, n, !1)) : f(
+    s.data,
+    n,
+    !1
+  );
 }
-
-function parseJsonApiSimpleResourceData(data, included, useCache, options) {
-  if (!included.cached) {
-    included.cached = {};
-  }
-
-  if (!(data.type in included.cached)) {
-    included.cached[data.type] = {};
-  }
-
-  if (useCache && data.id in included.cached[data.type]) {
-    return included.cached[data.type][data.id]
-  }
-
-  const attributes = data.attributes || {};
-
-  const resource = attributes;
-  resource.id = data.id;
-
-  included.cached[data.type][data.id] = resource;
-
-  if (data.relationships) {
-    for (const relationName of Object.keys(data.relationships)) {
-      const relationRef = data.relationships[relationName];
-
-      if (Array.isArray(relationRef.data)) {
-        const items = [];
-
-        relationRef.data.forEach((relationData) => {
-          const item = findJsonApiIncluded(
-            included,
-            relationData.type,
-            relationData.id);
-
-          items.push(item);
-        });
-
-        resource[relationName] = items;
-      } else if (relationRef && relationRef.data) {
-        resource[relationName] = findJsonApiIncluded(
-          included,
-          relationRef.data.type,
-          relationRef.data.id);
-      } else {
-        resource[relationName] = null;
-      }
+function f(e, r, s, n) {
+  if (r.cached || (r.cached = {}), e.type in r.cached || (r.cached[e.type] = {}), s && e.id in r.cached[e.type])
+    return r.cached[e.type][e.id];
+  const t = e.attributes || {};
+  if (t.id = e.id, r.cached[e.type][e.id] = t, e.relationships)
+    for (const c of Object.keys(e.relationships)) {
+      const o = e.relationships[c];
+      if (Array.isArray(o.data)) {
+        const p = [];
+        o.data.forEach((a) => {
+          const h = u(
+            r,
+            a.type,
+            a.id
+          );
+          p.push(h);
+        }), t[c] = p;
+      } else o && o.data ? t[c] = u(
+        r,
+        o.data.type,
+        o.data.id
+      ) : t[c] = null;
     }
-  }
-
-  return resource
+  return t;
 }
-
-function findJsonApiIncluded(included, type, id, options) {
-  let found = null;
-
-  included.forEach((item) => {
-    if (item.type === type && item.id === id) {
-      found = parseJsonApiSimpleResourceData(item, included, true);
-    }
-  });
-
-  if (!found) {
-    found = { id };
-  }
-
-  return found
+function u(e, r, s, n) {
+  let i = null;
+  return e.forEach((t) => {
+    t.type === r && t.id === s && (i = f(t, e, !0));
+  }), i || (i = { id: s }), i;
 }
-
-export { deserialize };
+export {
+  A as deserialize
+};
