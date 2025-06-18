@@ -29,8 +29,9 @@
     "vitest": "^3.2.4"
   },
   "scripts": {
+    "typecheck": "tsc --noEmit",
     "build": "vite build",
-    "lint": "prettier --check 'src/**/*.js'",
+    "lint": "prettier --check 'src/**/*'",
     "test": "vitest"
   },
   "packageManager": "pnpm@10.12.1"

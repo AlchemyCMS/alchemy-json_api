@@ -1,4 +1,5 @@
 import { deserialize } from "../deserialize"
+import { describe, it, expect } from "vitest"
 
 describe("deserialize", () => {
   it("Complex serialize", () => {
@@ -38,7 +39,7 @@ describe("deserialize", () => {
       ]
     }
 
-    expect(deserialize(serialized)).toEqual([
+    expect(deserialize(serialized as any)).toEqual([
       {
         id: 1,
         "first-name": "Joe",
