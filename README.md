@@ -13,11 +13,13 @@ gem 'alchemy-json_api'
 ```
 
 And then execute:
+
 ```bash
 $ bundle
 ```
 
 Or install it yourself as:
+
 ```bash
 $ gem install alchemy-json_api
 ```
@@ -27,8 +29,10 @@ $ gem install alchemy-json_api
 Run this in your application:
 
 ```
-yarn add "@alchemy_cms/json_api"
+npm install @alchemy_cms/json_api --save
 ```
+
+or with the package manager of your choice
 
 ## Usage
 
@@ -68,7 +72,9 @@ Alchemy::JsonApi.key_transform = :camel_lower
 It defaults to `:underscore`.
 
 ## Contributing
+
 Contribution directions go here.
 
 ## License
+
 The gem is available as open source under the terms of the [BSD-3-Clause license](https://opensource.org/licenses/BSD-3-Clause).

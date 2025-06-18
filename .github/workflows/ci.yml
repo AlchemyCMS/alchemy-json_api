@@ -69,10 +69,12 @@ jobs:
         uses: actions/cache@v4
         with:
           path: node_modules
-          key: ${{ runner.os }}-yarn-${{ hashFiles('./package.json') }}
+          key: ${{ runner.os }}-pnpm-${{ hashFiles('./package.json') }}
           restore-keys: |
-            ${{ runner.os }}-yarn-
-      - name: Install yarn
-        run: yarn install
+            ${{ runner.os }}-pnpm-
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+      - name: Install dependencies
+        run: pnpm install
       - name: Run Vitest
-        run: yarn vitest
+        run: pnpm run test
