@@ -34,7 +34,6 @@ updates:
         patterns:
           - "@babel/core"
           - "@babel/preset-env"
-      jest:
+      vitest:
         patterns:
-          - "jest"
-          - "babel-jest"
+          - "vitest"

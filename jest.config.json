@@ -1,9 +1,0 @@
-{
-  "moduleFileExtensions": ["js"],
-  "transform": {
-    "^.+\\.js$": "babel-jest"
-  },
-  "roots": [
-    "src"
-  ]
-}
