@@ -1,5 +1,3 @@
-import structuredClone from "@ungap/structured-clone"
-
 export function deserialize(originalResponse, options = {}) {
   const response = structuredClone(originalResponse)
   if (!options) {
