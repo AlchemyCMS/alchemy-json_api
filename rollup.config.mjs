@@ -1,18 +1,21 @@
+import typescript from "@rollup/plugin-typescript"
+
 const external = ["@ungap/structured-clone"]
 
 export default [
   {
-    input: "src/main.js",
+    input: "src/main.ts",
     output: [
       {
         file: "dist/alchemy-json_api.js",
         format: "esm"
       }
     ],
-    external
+    external,
+    plugins: [typescript()]
   },
   {
-    input: "src/deserialize.js",
+    input: "src/deserialize.ts",
     output: [
       {
         file: "dist/deserialize.js",
