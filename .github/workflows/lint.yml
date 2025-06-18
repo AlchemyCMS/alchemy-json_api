@@ -38,6 +38,6 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-modules
       - name: Install dependencies
-        run: yarn install
+        run: pnpm install
       - name: Lint JS files
-        run: yarn run lint
+        run: pnpm run lint
