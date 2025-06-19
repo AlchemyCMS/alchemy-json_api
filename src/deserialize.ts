@@ -1,4 +1,4 @@
-export function deserialize(originalResponse, options = {}) {
+export function deserialize(originalResponse: any, options = {}) {
   const response = structuredClone(originalResponse)
   if (!options) {
     options = {}
@@ -7,7 +7,7 @@ export function deserialize(originalResponse, options = {}) {
   const included = response.included || []
 
   if (Array.isArray(response.data)) {
-    return response.data.map((data) => {
+    return response.data.map((data: any) => {
       return parseJsonApiSimpleResourceData(data, included, false, options)
     })
   } else {
@@ -20,7 +20,12 @@ export function deserialize(originalResponse, options = {}) {
   }
 }
 
-function parseJsonApiSimpleResourceData(data, included, useCache, options) {
+function parseJsonApiSimpleResourceData(
+  data: any,
+  included: any,
+  useCache: any,
+  options: any
+) {
   if (!included.cached) {
     included.cached = {}
   }
@@ -45,9 +50,9 @@ function parseJsonApiSimpleResourceData(data, included, useCache, options) {
       const relationRef = data.relationships[relationName]
 
       if (Array.isArray(relationRef.data)) {
-        const items = []
+        const items: any = []
 
-        relationRef.data.forEach((relationData) => {
+        relationRef.data.forEach((relationData: any) => {
           const item = findJsonApiIncluded(
             included,
             relationData.type,
@@ -75,10 +80,10 @@ function parseJsonApiSimpleResourceData(data, included, useCache, options) {
   return resource
 }
 
-function findJsonApiIncluded(included, type, id, options) {
+function findJsonApiIncluded(included: any, type: any, id: any, options: any) {
   let found = null
 
-  included.forEach((item) => {
+  included.forEach((item: any) => {
     if (item.type === type && item.id === id) {
       found = parseJsonApiSimpleResourceData(item, included, true, options)
     }
