@@ -50,6 +50,20 @@ RSpec.describe "Alchemy::JsonApi::Pages", type: :request do
           expect(response.headers["Last-Modified"]).to eq(first_etag)
         end
 
+        it "can set cache duration via ENV variable" do
+          ENV["ALCHEMY_JSON_API_CACHE_DURATION"] = "60"
+          get alchemy_json_api.page_path(page)
+          expect(response.headers["Cache-Control"]).to eq("max-age=60, public, must-revalidate")
+          ENV["ALCHEMY_JSON_API_CACHE_DURATION"] = nil
+        end
+
+        it "can set stale-while-revalidate header via ENV variable" do
+          ENV["ALCHEMY_JSON_API_CACHE_STALE_WHILE_REVALIDATE"] = "60"
+          get alchemy_json_api.page_path(page)
+          expect(response.headers["Cache-Control"]).to eq("max-age=10800, public, stale-while-revalidate=60")
+          ENV["ALCHEMY_JSON_API_CACHE_STALE_WHILE_REVALIDATE"] = nil
+        end
+
         it "returns a different etag if different filters are present" do
           get alchemy_json_api.page_path(page)
           etag = response.headers["ETag"]

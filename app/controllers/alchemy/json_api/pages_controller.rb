@@ -55,7 +55,15 @@ module Alchemy
       end
 
       def caching_options
-        {must_revalidate: true}
+        if ENV["ALCHEMY_JSON_API_CACHE_STALE_WHILE_REVALIDATE"]
+          {
+            stale_while_revalidate: ENV["ALCHEMY_JSON_API_CACHE_STALE_WHILE_REVALIDATE"].to_i
+          }
+        else
+          {
+            must_revalidate: true
+          }
+        end
       end
 
       # Get page w/o includes to get cache key
