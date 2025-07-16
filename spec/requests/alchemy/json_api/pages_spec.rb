@@ -45,9 +45,23 @@ RSpec.describe "Alchemy::JsonApi::Pages", type: :request do
           get alchemy_json_api.page_path(page)
           first_etag = response.headers["Last-Modified"]
           expect(response.headers["ETag"]).to match(/W\/".+"/)
-          expect(response.headers["Cache-Control"]).to eq("max-age=10800, public, must-revalidate")
+          expect(response.headers["Cache-Control"]).to eq("max-age=600, public, must-revalidate")
           get alchemy_json_api.page_path(page)
           expect(response.headers["Last-Modified"]).to eq(first_etag)
+        end
+
+        it "can set cache duration via ENV variable" do
+          ENV["ALCHEMY_JSON_API_CACHE_DURATION"] = "60"
+          get alchemy_json_api.page_path(page)
+          expect(response.headers["Cache-Control"]).to eq("max-age=60, public, must-revalidate")
+          ENV["ALCHEMY_JSON_API_CACHE_DURATION"] = nil
+        end
+
+        it "can set stale-while-revalidate header via ENV variable" do
+          ENV["ALCHEMY_JSON_API_CACHE_STALE_WHILE_REVALIDATE"] = "60"
+          get alchemy_json_api.page_path(page)
+          expect(response.headers["Cache-Control"]).to eq("max-age=600, public, stale-while-revalidate=60")
+          ENV["ALCHEMY_JSON_API_CACHE_STALE_WHILE_REVALIDATE"] = nil
         end
 
         it "returns a different etag if different filters are present" do
@@ -83,7 +97,7 @@ RSpec.describe "Alchemy::JsonApi::Pages", type: :request do
 
           it "sets private cache headers" do
             get alchemy_json_api.page_path(page)
-            expect(response.headers["Cache-Control"]).to eq("max-age=10800, private, must-revalidate")
+            expect(response.headers["Cache-Control"]).to eq("max-age=600, private, must-revalidate")
           end
         end
 
@@ -218,7 +232,7 @@ RSpec.describe "Alchemy::JsonApi::Pages", type: :request do
             get alchemy_json_api.pages_path
             expect(response.headers["Last-Modified"]).to be_nil
             expect(response.headers["ETag"]).to match(/W\/".+"/)
-            expect(response.headers["Cache-Control"]).to eq("max-age=10800, public, must-revalidate")
+            expect(response.headers["Cache-Control"]).to eq("max-age=600, public, must-revalidate")
           end
 
           it "returns a different etag if different filters are present" do
@@ -275,7 +289,7 @@ RSpec.describe "Alchemy::JsonApi::Pages", type: :request do
 
             it "sets private cache headers" do
               get alchemy_json_api.pages_path
-              expect(response.headers["Cache-Control"]).to eq("max-age=10800, private, must-revalidate")
+              expect(response.headers["Cache-Control"]).to eq("max-age=600, private, must-revalidate")
             end
           end
 
@@ -375,7 +389,7 @@ RSpec.describe "Alchemy::JsonApi::Pages", type: :request do
 
           first_etag = response.headers["Last-Modified"]
 
-          expect(response.headers["Cache-Control"]).to eq("max-age=10800, public, must-revalidate")
+          expect(response.headers["Cache-Control"]).to eq("max-age=600, public, must-revalidate")
 
           get alchemy_json_api.pages_path(filter: {page_layout_eq: "news"})
           expect(response.headers["Last-Modified"]).to eq(first_etag)
