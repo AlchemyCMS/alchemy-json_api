@@ -61,6 +61,16 @@ const pages = deserializePages(data)
 console.log(pages[0].name) // => Homepage
 ```
 
+## HTTP Caching
+
+Alchemy::JsonApi allows for caching API responses. It respects the caching configuration of your Rails app and of your Alchemy configuration and settings in the pages page layout configuration. Restricted pages are never cached.
+
+By default it sets the `max-age` `Cache-Control` header to 10 minutes (`600` seconds). You can change this by setting the `ALCHEMY_JSON_API_CACHE_DURATION` environment variable.
+
+### Edge Caching
+
+Alchemy sets the `must-revalidate` directive if caching is enabled. If your CDN supports it, you can change that to use the much more efficient `stale-while-revalidate` directive by setting the `ALCHEMY_JSON_API_STALE_WHILE_REVALIDATE` environment variable to any integer value.
+
 ## Key transforms
 
 If you ever want to change how Alchemy serializes attributes you can set
