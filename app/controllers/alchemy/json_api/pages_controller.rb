@@ -51,19 +51,11 @@ module Alchemy
       end
 
       def cache_duration
-        ENV.fetch("ALCHEMY_JSON_API_CACHE_DURATION", CACHE_DURATION).to_i
+        Alchemy::JsonApi.page_cache_max_age
       end
 
       def caching_options
-        if ENV["ALCHEMY_JSON_API_CACHE_STALE_WHILE_REVALIDATE"]
-          {
-            stale_while_revalidate: ENV["ALCHEMY_JSON_API_CACHE_STALE_WHILE_REVALIDATE"].to_i
-          }
-        else
-          {
-            must_revalidate: true
-          }
-        end
+        Alchemy::JsonApi.page_caching_options
       end
 
       # Get page w/o includes to get cache key
