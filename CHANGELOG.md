@@ -1,5 +1,32 @@
 # Changelog
 
+## [v3.0.0](https://github.com/AlchemyCMS/alchemy-json_api/tree/v3.0.0) (2025-07-17)
+
+[Full Changelog](https://github.com/AlchemyCMS/alchemy-json_api/compare/package-v3.0.0...v3.0.0)
+
+**Merged pull requests:**
+
+- Bump minimum Alchemy version to 7.2.0 [\#116](https://github.com/AlchemyCMS/alchemy-json_api/pull/116) ([tvdeyen](https://github.com/tvdeyen))
+- Bump vite from 7.0.4 to 7.0.5 [\#115](https://github.com/AlchemyCMS/alchemy-json_api/pull/115) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Use Ruby config to set caching options [\#114](https://github.com/AlchemyCMS/alchemy-json_api/pull/114) ([tvdeyen](https://github.com/tvdeyen))
+- Efficient edge caching [\#113](https://github.com/AlchemyCMS/alchemy-json_api/pull/113) ([tvdeyen](https://github.com/tvdeyen))
+- Bump vite from 6.3.5 to 7.0.4 [\#112](https://github.com/AlchemyCMS/alchemy-json_api/pull/112) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump prettier from 3.5.3 to 3.6.2 [\#110](https://github.com/AlchemyCMS/alchemy-json_api/pull/110) ([dependabot[bot]](https://github.com/apps/dependabot))
+
+## [package-v3.0.0](https://github.com/AlchemyCMS/alchemy-json_api/tree/package-v3.0.0) (2025-06-18)
+
+[Full Changelog](https://github.com/AlchemyCMS/alchemy-json_api/compare/v2.4.3...package-v3.0.0)
+
+**Closed issues:**
+
+- Already a hundred prs/issues! [\#100](https://github.com/AlchemyCMS/alchemy-json_api/issues/100)
+
+**Merged pull requests:**
+
+- chore: replace rollup with vite [\#103](https://github.com/AlchemyCMS/alchemy-json_api/pull/103) ([lassediercks](https://github.com/lassediercks))
+- Go pnpm [\#101](https://github.com/AlchemyCMS/alchemy-json_api/pull/101) ([lassediercks](https://github.com/lassediercks))
+- chore: switch from jest to vitest [\#99](https://github.com/AlchemyCMS/alchemy-json_api/pull/99) ([lassediercks](https://github.com/lassediercks))
+
 ## [v2.4.3](https://github.com/AlchemyCMS/alchemy-json_api/tree/v2.4.3) (2025-06-17)
 
 [Full Changelog](https://github.com/AlchemyCMS/alchemy-json_api/compare/v2.4.2...v2.4.3)
@@ -26,7 +53,31 @@
 
 ## [v2.4.0](https://github.com/AlchemyCMS/alchemy-json_api/tree/v2.4.0) (2025-01-09)
 
-[Full Changelog](https://github.com/AlchemyCMS/alchemy-json_api/compare/v2.3.0...v2.4.0)
+[Full Changelog](https://github.com/AlchemyCMS/alchemy-json_api/compare/package-v2.0.0...v2.4.0)
+
+## [package-v2.0.0](https://github.com/AlchemyCMS/alchemy-json_api/tree/package-v2.0.0) (2024-11-15)
+
+[Full Changelog](https://github.com/AlchemyCMS/alchemy-json_api/compare/package-v1.3.0...package-v2.0.0)
+
+**Merged pull requests:**
+
+- Remove CommonJS package [\#94](https://github.com/AlchemyCMS/alchemy-json_api/pull/94) ([tvdeyen](https://github.com/tvdeyen))
+- Update sqlite3 requirement from ~\> 1.4 to ~\> 2.2 [\#93](https://github.com/AlchemyCMS/alchemy-json_api/pull/93) ([dependabot[bot]](https://github.com/apps/dependabot))
+
+## [package-v1.3.0](https://github.com/AlchemyCMS/alchemy-json_api/tree/package-v1.3.0) (2024-11-08)
+
+[Full Changelog](https://github.com/AlchemyCMS/alchemy-json_api/compare/package-v1.2.0...package-v1.3.0)
+
+**Merged pull requests:**
+
+- Bump rollup from 2.79.2 to 4.24.4 [\#92](https://github.com/AlchemyCMS/alchemy-json_api/pull/92) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump @rollup/plugin-babel from 5.3.1 to 6.0.4 [\#90](https://github.com/AlchemyCMS/alchemy-json_api/pull/90) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump prettier from 2.8.8 to 3.3.3 [\#89](https://github.com/AlchemyCMS/alchemy-json_api/pull/89) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Add dependabot version updates [\#88](https://github.com/AlchemyCMS/alchemy-json_api/pull/88) ([tvdeyen](https://github.com/tvdeyen))
+
+## [package-v1.2.0](https://github.com/AlchemyCMS/alchemy-json_api/tree/package-v1.2.0) (2024-10-30)
+
+[Full Changelog](https://github.com/AlchemyCMS/alchemy-json_api/compare/v2.3.0...package-v1.2.0)
 
 **Merged pull requests:**
 
