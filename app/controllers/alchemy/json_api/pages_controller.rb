@@ -138,11 +138,7 @@ module Alchemy
       end
 
       def current_language
-        if Alchemy.const_defined?(:Current)
-          Alchemy::Current.language
-        else
-          Alchemy::Language.current
-        end
+        Alchemy::Current.language
       end
 
       def jsonapi_serializer_class(_resource, _is_collection)
