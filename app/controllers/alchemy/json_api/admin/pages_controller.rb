@@ -18,11 +18,7 @@ module Alchemy
         end
 
         def set_current_preview
-          if Alchemy.const_defined?(:Current)
-            Alchemy::Current.preview_page = @page
-          else
-            Alchemy::Page.current_preview = @page
-          end
+          Alchemy::Current.preview_page = @page
         end
 
         def page_cache_key(page)
