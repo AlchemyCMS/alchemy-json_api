@@ -1,4 +1,5 @@
 import { deserialize } from "../deserialize"
+import { describe, expect, it } from "vitest"
 
 describe("deserialize", () => {
   it("Complex serialize", () => {

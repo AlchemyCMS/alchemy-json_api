@@ -26,17 +26,15 @@
   "files": [
     "dist"
   ],
-  "dependencies": {
-    "@ungap/structured-clone": "^1.0.1"
-  },
   "devDependencies": {
     "prettier": "^3.3.3",
     "vite": "^7.0.4",
     "vitest": "^3.2.4"
   },
   "scripts": {
-    "build": "vite build",
-    "lint": "prettier --check 'src/**/*.js'",
+    "typecheck": "tsc --noEmit",
+    "build": "vite build && tsc",
+    "lint": "prettier --check 'src/**/*'",
     "test": "vitest"
   },
   "packageManager": "pnpm@10.12.1"
