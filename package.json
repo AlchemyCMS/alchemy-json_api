@@ -1,6 +1,6 @@
 {
   "name": "@alchemy_cms/json_api",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "JSON API deserializer for AlchemyCMS",
   "license": "BSD-3-Clause",
   "repository": {
