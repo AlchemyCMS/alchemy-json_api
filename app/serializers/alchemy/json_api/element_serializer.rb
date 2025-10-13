@@ -14,7 +14,7 @@ module Alchemy
       cache_options store: Rails.cache, namespace: "alchemy-jsonapi"
 
       attribute :deprecated do |element|
-        !!element.definition[:deprecated]
+        !!element.definition.deprecated
       end
 
       has_many :ingredients,
