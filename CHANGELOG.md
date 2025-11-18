@@ -1,5 +1,26 @@
 # Changelog
 
+## [v4.0.0](https://github.com/AlchemyCMS/alchemy-json_api/tree/v4.0.0) (2025-11-18)
+
+[Full Changelog](https://github.com/AlchemyCMS/alchemy-json_api/compare/package-v3.0.1...v4.0.0)
+
+**Merged pull requests:**
+
+- Update to Alchemy 8.0 [\#136](https://github.com/AlchemyCMS/alchemy-json_api/pull/136) ([tvdeyen](https://github.com/tvdeyen))
+- Update vite to 7.2.2 [\#135](https://github.com/AlchemyCMS/alchemy-json_api/pull/135) ([tvdeyen](https://github.com/tvdeyen))
+- Bump vitest from 3.2.4 to 4.0.7 in the vitest group [\#132](https://github.com/AlchemyCMS/alchemy-json_api/pull/132) ([dependabot[bot]](https://github.com/apps/dependabot))
+
+## [package-v3.0.1](https://github.com/AlchemyCMS/alchemy-json_api/tree/package-v3.0.1) (2025-09-23)
+
+[Full Changelog](https://github.com/AlchemyCMS/alchemy-json_api/compare/v3.0.0...package-v3.0.1)
+
+**Merged pull requests:**
+
+- Bump vite from 7.1.4 to 7.1.6 [\#124](https://github.com/AlchemyCMS/alchemy-json_api/pull/124) ([dependabot[bot]](https://github.com/apps/dependabot))
+- feat: remove structuredClone polyfill [\#122](https://github.com/AlchemyCMS/alchemy-json_api/pull/122) ([tvdeyen](https://github.com/tvdeyen))
+- Bump vite from 7.0.6 to 7.1.4 [\#121](https://github.com/AlchemyCMS/alchemy-json_api/pull/121) ([dependabot[bot]](https://github.com/apps/dependabot))
+- Bump vite from 7.0.5 to 7.0.6 [\#117](https://github.com/AlchemyCMS/alchemy-json_api/pull/117) ([dependabot[bot]](https://github.com/apps/dependabot))
+
 ## [v3.0.0](https://github.com/AlchemyCMS/alchemy-json_api/tree/v3.0.0) (2025-07-17)
 
 [Full Changelog](https://github.com/AlchemyCMS/alchemy-json_api/compare/package-v3.0.0...v3.0.0)
