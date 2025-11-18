@@ -12,7 +12,7 @@ RSpec.describe Alchemy::JsonApi::IngredientPictureSerializer do
     )
   end
 
-  let(:picture) { FactoryBot.create(:alchemy_picture, image_file_size: 301) }
+  let(:picture) { FactoryBot.create(:alchemy_picture) }
 
   subject(:serializer) { described_class.new(ingredient) }
 
@@ -27,7 +27,7 @@ RSpec.describe Alchemy::JsonApi::IngredientPictureSerializer do
       expect(subject[:image_name]).to eq("image")
       expect(subject[:image_file_name]).to eq("image.png")
       expect(subject[:image_mime_type]).to eq("image/png")
-      expect(subject[:image_file_size]).to eq(301)
+      expect(subject[:image_file_size]).to eq(70)
       expect(subject[:image_dimensions]).to eq(width: 1, height: 1)
     end
 
