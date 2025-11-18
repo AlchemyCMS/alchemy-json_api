@@ -101,7 +101,7 @@ RSpec.describe "Alchemy::JsonApi::Pages", type: :request do
 
           it "sets private cache headers" do
             get alchemy_json_api.page_path(page)
-            expect(response.headers["Cache-Control"]).to eq("max-age=600, private, must-revalidate")
+            expect(response.headers["Cache-Control"]).to eq("max-age=0, private, must-revalidate")
           end
         end
 
@@ -293,7 +293,7 @@ RSpec.describe "Alchemy::JsonApi::Pages", type: :request do
 
             it "sets private cache headers" do
               get alchemy_json_api.pages_path
-              expect(response.headers["Cache-Control"]).to eq("max-age=600, private, must-revalidate")
+              expect(response.headers["Cache-Control"]).to eq("max-age=0, private, must-revalidate")
             end
           end
 
