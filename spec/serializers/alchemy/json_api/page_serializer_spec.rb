@@ -33,6 +33,7 @@ RSpec.describe Alchemy::JsonApi::PageSerializer do
       expect(attributes[:language_code]).to eq("en")
       expect(attributes[:meta_keywords]).to eq("Meta Keywords")
       expect(attributes[:meta_description]).to eq("Meta Description")
+      expect(attributes[:public_on]).to eq(page.public_on)
       expect(attributes[:created_at]).to eq(page.created_at)
       expect(attributes[:updated_at]).to eq(page.updated_at)
       expect(attributes[:legacy_urls]).to eq(["/other"])
