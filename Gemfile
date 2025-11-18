@@ -24,3 +24,5 @@ gem "alchemy-devise", github: "AlchemyCMS/alchemy-devise", branch: alchemy_branc
 gem "rubocop", require: false
 gem "standard", "~> 1.25", require: false
 gem "pry-byebug"
+
+gem "propshaft", "~> 1.3"
