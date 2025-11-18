@@ -4,7 +4,7 @@ require "rails_helper"
 
 RSpec.describe Alchemy::JsonApi::IngredientFileSerializer do
   let(:ingredient) { FactoryBot.build_stubbed(:alchemy_ingredient_file, title: "File", css_class: "custom") }
-  let(:attachment) { FactoryBot.build_stubbed(:alchemy_attachment) }
+  let(:attachment) { FactoryBot.create(:alchemy_attachment) }
 
   subject(:serializer) { described_class.new(ingredient) }
 

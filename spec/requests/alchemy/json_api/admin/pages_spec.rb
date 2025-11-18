@@ -30,7 +30,7 @@ RSpec.describe "Alchemy::JsonApi::Admin::PagesController", type: :request do
       context "with caching enabled" do
         before do
           allow(Rails.application.config.action_controller).to receive(:perform_caching) { true }
-          stub_alchemy_config(:cache_pages, true)
+          stub_alchemy_config(cache_pages: true)
         end
 
         it "sets cache headers" do

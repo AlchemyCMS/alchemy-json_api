@@ -38,7 +38,7 @@ RSpec.describe "Alchemy::JsonApi::Pages", type: :request do
       context "with caching enabled" do
         before do
           allow(Rails.application.config.action_controller).to receive(:perform_caching) { true }
-          stub_alchemy_config(:cache_pages, true)
+          stub_alchemy_config(cache_pages: true)
         end
 
         it "sets public cache headers" do
@@ -101,7 +101,7 @@ RSpec.describe "Alchemy::JsonApi::Pages", type: :request do
 
           it "sets private cache headers" do
             get alchemy_json_api.page_path(page)
-            expect(response.headers["Cache-Control"]).to eq("max-age=600, private, must-revalidate")
+            expect(response.headers["Cache-Control"]).to eq("max-age=0, private, must-revalidate")
           end
         end
 
@@ -229,7 +229,7 @@ RSpec.describe "Alchemy::JsonApi::Pages", type: :request do
         context "with caching enabled" do
           before do
             allow(Rails.application.config.action_controller).to receive(:perform_caching) { true }
-            stub_alchemy_config(:cache_pages, true)
+            stub_alchemy_config(cache_pages: true)
           end
 
           it "sets public cache headers of latest published page" do
@@ -293,7 +293,7 @@ RSpec.describe "Alchemy::JsonApi::Pages", type: :request do
 
             it "sets private cache headers" do
               get alchemy_json_api.pages_path
-              expect(response.headers["Cache-Control"]).to eq("max-age=600, private, must-revalidate")
+              expect(response.headers["Cache-Control"]).to eq("max-age=0, private, must-revalidate")
             end
           end
 
@@ -384,7 +384,7 @@ RSpec.describe "Alchemy::JsonApi::Pages", type: :request do
       context "with caching enabled" do
         before do
           allow(Rails.application.config.action_controller).to receive(:perform_caching) { true }
-          stub_alchemy_config(:cache_pages, true)
+          stub_alchemy_config(cache_pages: true)
         end
 
         it "sets constant etag" do

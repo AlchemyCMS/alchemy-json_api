@@ -14,7 +14,7 @@ Devise.setup do |config|
   # confirmation, reset password and unlock tokens in the database.
   # Devise will use the `secret_key_base` as its `secret_key`
   # by default. You can change it below and use your own secret key.
-  # config.secret_key = 'a3e5b8e7089c0196c17e4b22a708f36d193da5d859e65ee6af46031f84c341eaa2a6050063d9294a415fc505c1591ff20a1c63babddb8cab9010a5ac711008a8'
+  # config.secret_key = '2feb8af0d2b0ffe7ae73a39502e5f4fbd2cc3a17a8d2d7a6abc706ab35ec0fc249a0801aa2d56956a6aaddfadf60f186447a2d79c7fa7a6a7997ee41b5f13874'
 
   # ==> Controller configuration
   # Configure the parent class to the devise controllers.
@@ -24,7 +24,7 @@ Devise.setup do |config|
   # Configure the e-mail address which will be shown in Devise::Mailer,
   # note that it will be overwritten if you use your own mailer class
   # with default "from" parameter.
-  config.mailer_sender = Alchemy::Config.get(:mailer)['mail_from']
+  config.mailer_sender = Alchemy.config.mailer.mail_from
 
   # Configure the class responsible to send e-mails.
   config.mailer = "Alchemy::Notifications"
@@ -126,7 +126,7 @@ Devise.setup do |config|
   config.stretches = Rails.env.test? ? 1 : 12
 
   # Set up a pepper to generate the hashed password.
-  # config.pepper = '73e2f6b111518b9a30148f5cc4d17a48b409d2cbce73f95e4349e845e40b77f53e5e2299bb7fc7cdc6fee147c282c6e57ec7921ea02d829c60f0dcd84ae84d43'
+  # config.pepper = '797fe652e0a115d80a704292969fe8e604ec5aa4bbcabff9dd44f2ef780c2eeeac926a2903fd12dad82f85862e53790cbae7184ca09b0aabfe28fc9f6b242251'
 
   # Send a notification to the original email when the user's email is changed.
   # config.send_email_changed_notification = false
@@ -188,7 +188,7 @@ Devise.setup do |config|
   # ==> Configuration for :timeoutable
   # The time you want to timeout the user session without activity. After this
   # time the user will be asked for credentials again. Default is 30 minutes.
-  config.timeout_in = Rails.env.development? ? nil : Alchemy::Config.get(:auto_logout_time).minutes
+  config.timeout_in = Rails.env.development? ? nil : Alchemy.config.auto_logout_time.minutes
 
   # ==> Configuration for :lockable
   # Defines which strategy will be used to lock an account.

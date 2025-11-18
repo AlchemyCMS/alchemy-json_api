@@ -4,7 +4,7 @@ require "rails_helper"
 
 RSpec.describe Alchemy::JsonApi::IngredientVideoSerializer do
   let(:element) { FactoryBot.build_stubbed(:alchemy_element) }
-  let(:attachment) { FactoryBot.build_stubbed(:alchemy_attachment) }
+  let(:attachment) { FactoryBot.create(:alchemy_attachment) }
   let(:ingredient) do
     Alchemy::Ingredients::Video.new(
       role: "video",

@@ -72,7 +72,7 @@ module Alchemy
         end
 
         attribute :image_mime_type do |ingredient|
-          "image/#{ingredient.picture.image_file_format}"
+          ingredient.picture.image_file_format
         end
 
         attribute :image_file_size do |ingredient|
