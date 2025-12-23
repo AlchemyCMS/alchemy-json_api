@@ -1,5 +1,15 @@
 # Changelog
 
+## 4.0.1 (2025-12-23)
+
+## What's Changed
+* Add reusable release workflows by @tvdeyen in https://github.com/AlchemyCMS/alchemy-json_api/pull/142
+* fix(Page): Remove `"page_layout"` from `ransackable_attributes`. by @tvdeyen in https://github.com/AlchemyCMS/alchemy-json_api/pull/144
+* Bump vitest from 4.0.10 to 4.0.12 in the vitest group by @dependabot[bot] in https://github.com/AlchemyCMS/alchemy-json_api/pull/137
+* Bump prettier from 3.6.2 to 3.7.4 by @dependabot[bot] in https://github.com/AlchemyCMS/alchemy-json_api/pull/141
+
+
+**Full Changelog**: https://github.com/AlchemyCMS/alchemy-json_api/compare/v4.0.0...v4.0.
 ## [v4.0.0](https://github.com/AlchemyCMS/alchemy-json_api/tree/v4.0.0) (2025-11-18)
 
 [Full Changelog](https://github.com/AlchemyCMS/alchemy-json_api/compare/package-v3.0.1...v4.0.0)
