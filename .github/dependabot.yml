@@ -10,7 +10,6 @@ updates:
         dependency-type: "development"
         patterns:
           - "factory_bot"
-          - "github_changelog_generator"
           - "jsonapi-rspec"
           - "rspec-rails"
           - "shoulda-matchers"
