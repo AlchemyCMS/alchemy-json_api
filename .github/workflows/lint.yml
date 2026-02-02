@@ -9,8 +9,6 @@ concurrency:
 jobs:
   Standard:
     runs-on: ubuntu-latest
-    env:
-      ALCHEMY_BRANCH: 8.0-stable
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
