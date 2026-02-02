@@ -1,5 +1,24 @@
 # Changelog
 
+## 4.1.0 (2026-02-02)
+
+<!-- Release notes generated using configuration in .github/release.yml at 4.1-stable -->
+
+## What's Changed
+### Breaking Changes
+* Update to Alchemy 8.1 by @tvdeyen in https://github.com/AlchemyCMS/alchemy-json_api/pull/153
+### Dependencies
+* Bump prettier from 3.7.4 to 3.8.1 by @dependabot[bot] in https://github.com/AlchemyCMS/alchemy-json_api/pull/151
+* Bump vitest from 4.0.16 to 4.0.17 in the vitest group by @dependabot[bot] in https://github.com/AlchemyCMS/alchemy-json_api/pull/149
+* Bump vite from 7.2.2 to 7.3.1 by @dependabot[bot] in https://github.com/AlchemyCMS/alchemy-json_api/pull/148
+* Bump vitest from 4.0.17 to 4.0.18 in the vitest group by @dependabot[bot] in https://github.com/AlchemyCMS/alchemy-json_api/pull/152
+### Other Changes
+* Pass rubygems_api_key secret to release workflow by @tvdeyen in https://github.com/AlchemyCMS/alchemy-json_api/pull/147
+
+
+**Full Changelog**: https://github.com/AlchemyCMS/alchemy-json_api/compare/v4.0.1...v4.1.0
+
+
 ## 4.0.1 (2025-12-23)
 
 ## What's Changed
