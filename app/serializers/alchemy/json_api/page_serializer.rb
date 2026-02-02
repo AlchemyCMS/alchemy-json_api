@@ -10,10 +10,7 @@ module Alchemy
         :urlname,
         :url_path,
         :page_layout,
-        :title,
         :language_code,
-        :meta_keywords,
-        :meta_description,
         :created_at,
         :updated_at,
         :restricted
@@ -23,6 +20,17 @@ module Alchemy
 
       attribute :legacy_urls do |page|
         page.legacy_urls.map(&:urlname)
+      end
+
+      %i[title meta_keywords meta_description].each do |attr_name|
+        attribute attr_name do |page|
+          case page.page_version_type
+          when :public_version
+            page.public_version&.send(attr_name)
+          else
+            page.draft_version.send(attr_name)
+          end
+        end
       end
 
       belongs_to :language, record_type: :language, serializer: ::Alchemy::JsonApi::LanguageSerializer
