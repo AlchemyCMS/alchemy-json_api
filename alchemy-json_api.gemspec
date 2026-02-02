@@ -22,7 +22,6 @@ Gem::Specification.new do |spec|
   spec.add_dependency "jsonapi.rb", [">= 1.6.0", "< 2.2"]
 
   spec.add_development_dependency "factory_bot"
-  spec.add_development_dependency "github_changelog_generator"
   spec.add_development_dependency "jsonapi-rspec"
   spec.add_development_dependency "rspec-rails"
   spec.add_development_dependency "shoulda-matchers"
