@@ -1,5 +1,16 @@
 # Changelog
 
+## 4.1.1 (2026-02-03)
+
+<!-- Release notes generated using configuration in .github/release.yml at 4.1-stable -->
+
+## What's Changed
+### Other Changes
+* [4.1-stable] feat: Add IngredientColorSerializer (#157) by @alchemycms-bot[bot] in https://github.com/AlchemyCMS/alchemy-json_api/pull/158
+
+
+**Full Changelog**: https://github.com/AlchemyCMS/alchemy-json_api/compare/v4.1.0...v4.1.1
+
 ## 4.1.0 (2026-02-02)
 
 <!-- Release notes generated using configuration in .github/release.yml at 4.1-stable -->
