@@ -125,7 +125,7 @@ module Alchemy
       end
 
       def page_cache_key(page)
-        page.cache_key_with_version
+        Alchemy::Page::EtagGenerator.new(page).call
       end
 
       def base_page_scope
