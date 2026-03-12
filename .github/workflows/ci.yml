@@ -13,7 +13,7 @@ jobs:
       fail-fast: false
       matrix:
         alchemy_branch:
-          - 8.1-stable
+          - main
         ruby:
           - "3.2"
           - "3.3"
