@@ -8,11 +8,10 @@ RSpec.describe Alchemy::JsonApi::ElementSerializer do
       :alchemy_element,
       autogenerate_ingredients: true,
       tag_list: "Tag1,Tag2",
-      nested_elements: [nested_element],
       parent_element: parent_element
     )
   end
-  let(:nested_element) { FactoryBot.create(:alchemy_element) }
+  let!(:nested_element) { FactoryBot.create(:alchemy_element, parent_element: element) }
   let(:parent_element) { FactoryBot.create(:alchemy_element) }
   let(:options) { {} }
 
