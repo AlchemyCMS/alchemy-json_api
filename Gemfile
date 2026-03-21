@@ -28,3 +28,5 @@ gem "pry-byebug"
 gem "propshaft", "~> 1.3"
 
 gem "rspec-openapi", require: false
+
+gem "puma", "~> 7.2"
