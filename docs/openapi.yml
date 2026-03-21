@@ -1,0 +1,1185 @@
+openapi: 3.0.3
+info:
+  title: Alchemy CMS JSON API
+  description: |
+    A [JSON:API](https://jsonapi.org/) compliant API for [AlchemyCMS](https://alchemy-cms.com).
+
+    All responses follow the JSON:API specification. Use the `include` query parameter to
+    sideload related resources, `filter` for Ransack-based filtering, and `page` for pagination.
+
+    ## Authentication
+
+    Public endpoints serve published content without authentication. Admin endpoints require
+    an authenticated user with `edit_content` permission on `Alchemy::Page`.
+
+    ## Caching
+
+    Responses include HTTP caching headers (ETag, Cache-Control). Page endpoints default to
+    a max-age of 600 seconds (configurable via `ALCHEMY_JSON_API_CACHE_DURATION` env var).
+    Node endpoints default to 3 hours. Restricted pages are never publicly cached.
+  version: 8.2.0.a
+  license:
+    name: BSD-3-Clause
+    url: https://opensource.org/licenses/BSD-3-Clause
+  contact:
+    name: AlchemyCMS
+    url: https://github.com/AlchemyCMS/alchemy-json_api
+
+servers:
+  - url: /jsonapi
+    description: Mounted engine path (default)
+
+tags:
+  - name: Pages
+    description: Content pages
+  - name: Layout Pages
+    description: Layout pages (global partials like headers, footers)
+  - name: Nodes
+    description: Navigation menu nodes
+  - name: Admin Pages
+    description: Draft page preview (requires authentication)
+  - name: Admin Layout Pages
+    description: Draft layout page preview (requires authentication)
+
+paths:
+  /pages:
+    get:
+      operationId: listPages
+      summary: List content pages
+      description: |
+        Returns a paginated, filterable list of content pages for the current language.
+        Supports Ransack-based filtering via `filter` query parameters.
+      tags:
+        - Pages
+      parameters:
+        - $ref: "#/components/parameters/IncludeParam"
+        - $ref: "#/components/parameters/FieldsParam"
+        - $ref: "#/components/parameters/SortParam"
+        - $ref: "#/components/parameters/PageNumberParam"
+        - $ref: "#/components/parameters/PageSizeParam"
+        - name: filter[name_eq]
+          in: query
+          description: "Filter pages by exact name match (Ransack predicate). Other Ransack predicates on `Page` attributes are also supported (e.g. `filter[urlname_cont]`, `filter[page_layout_eq]`)."
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: A paginated list of pages
+          headers:
+            ETag:
+              $ref: "#/components/headers/ETag"
+            Cache-Control:
+              $ref: "#/components/headers/Cache-Control"
+          content:
+            application/vnd.api+json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/PageResource"
+                  included:
+                    type: array
+                    items:
+                      oneOf:
+                        - $ref: "#/components/schemas/LanguageResource"
+                        - $ref: "#/components/schemas/ElementResource"
+                        - $ref: "#/components/schemas/NodeResource"
+                  meta:
+                    $ref: "#/components/schemas/PaginationMeta"
+        "404":
+          $ref: "#/components/responses/NotFound"
+
+  /pages/{path}:
+    get:
+      operationId: showPage
+      summary: Get a content page
+      description: |
+        Returns a single content page by its numeric ID or URL name (slug path).
+      tags:
+        - Pages
+      parameters:
+        - name: path
+          in: path
+          required: true
+          description: Page ID (numeric) or urlname (slug path, e.g. `about/team`)
+          schema:
+            type: string
+        - $ref: "#/components/parameters/IncludeParam"
+        - $ref: "#/components/parameters/FieldsParam"
+      responses:
+        "200":
+          description: A single page
+          headers:
+            ETag:
+              $ref: "#/components/headers/ETag"
+            Cache-Control:
+              $ref: "#/components/headers/Cache-Control"
+          content:
+            application/vnd.api+json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: "#/components/schemas/PageResource"
+                  included:
+                    type: array
+                    items:
+                      oneOf:
+                        - $ref: "#/components/schemas/LanguageResource"
+                        - $ref: "#/components/schemas/ElementResource"
+                        - $ref: "#/components/schemas/NodeResource"
+        "404":
+          $ref: "#/components/responses/NotFound"
+
+  /layout_pages:
+    get:
+      operationId: listLayoutPages
+      summary: List layout pages
+      description: |
+        Returns a paginated list of layout pages for the current language.
+        Layout pages are used for global partials such as headers and footers.
+      tags:
+        - Layout Pages
+      parameters:
+        - $ref: "#/components/parameters/IncludeParam"
+        - $ref: "#/components/parameters/FieldsParam"
+        - $ref: "#/components/parameters/SortParam"
+        - $ref: "#/components/parameters/PageNumberParam"
+        - $ref: "#/components/parameters/PageSizeParam"
+      responses:
+        "200":
+          description: A paginated list of layout pages
+          headers:
+            ETag:
+              $ref: "#/components/headers/ETag"
+            Cache-Control:
+              $ref: "#/components/headers/Cache-Control"
+          content:
+            application/vnd.api+json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/PageResource"
+                  included:
+                    type: array
+                    items:
+                      oneOf:
+                        - $ref: "#/components/schemas/LanguageResource"
+                        - $ref: "#/components/schemas/ElementResource"
+                        - $ref: "#/components/schemas/NodeResource"
+                  meta:
+                    $ref: "#/components/schemas/PaginationMeta"
+
+  /layout_pages/{path}:
+    get:
+      operationId: showLayoutPage
+      summary: Get a layout page
+      description: Returns a single layout page by its numeric ID or URL name.
+      tags:
+        - Layout Pages
+      parameters:
+        - name: path
+          in: path
+          required: true
+          description: Layout page ID (numeric) or urlname
+          schema:
+            type: string
+        - $ref: "#/components/parameters/IncludeParam"
+        - $ref: "#/components/parameters/FieldsParam"
+      responses:
+        "200":
+          description: A single layout page
+          content:
+            application/vnd.api+json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: "#/components/schemas/PageResource"
+                  included:
+                    type: array
+                    items:
+                      oneOf:
+                        - $ref: "#/components/schemas/LanguageResource"
+                        - $ref: "#/components/schemas/ElementResource"
+                        - $ref: "#/components/schemas/NodeResource"
+        "404":
+          $ref: "#/components/responses/NotFound"
+
+  /nodes:
+    get:
+      operationId: listNodes
+      summary: List navigation nodes
+      description: |
+        Returns a paginated list of navigation menu nodes. Use the `include` parameter
+        to load nested associations (e.g. `include=children,page`).
+      tags:
+        - Nodes
+      parameters:
+        - $ref: "#/components/parameters/IncludeParam"
+        - $ref: "#/components/parameters/FieldsParam"
+        - $ref: "#/components/parameters/PageNumberParam"
+        - $ref: "#/components/parameters/PageSizeParam"
+      responses:
+        "200":
+          description: A paginated list of nodes
+          headers:
+            ETag:
+              $ref: "#/components/headers/ETag"
+            Cache-Control:
+              $ref: "#/components/headers/Cache-Control"
+            Last-Modified:
+              description: Timestamp of the most recently updated node
+              schema:
+                type: string
+                format: date-time
+          content:
+            application/vnd.api+json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/NodeResource"
+                  included:
+                    type: array
+                    items:
+                      oneOf:
+                        - $ref: "#/components/schemas/NodeResource"
+                        - $ref: "#/components/schemas/PageResource"
+                  meta:
+                    $ref: "#/components/schemas/PaginationMeta"
+
+  /admin/pages/{path}:
+    get:
+      operationId: showAdminPage
+      summary: Get a draft content page (admin)
+      description: |
+        Returns a single content page with its **draft version** for editor preview.
+        Requires authentication with `edit_content` permission. Responses are never cached.
+      tags:
+        - Admin Pages
+      security:
+        - cookieAuth: []
+      parameters:
+        - name: path
+          in: path
+          required: true
+          description: Page ID (numeric) or urlname
+          schema:
+            type: string
+        - $ref: "#/components/parameters/IncludeParam"
+        - $ref: "#/components/parameters/FieldsParam"
+      responses:
+        "200":
+          description: A single page (draft version)
+          content:
+            application/vnd.api+json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: "#/components/schemas/PageResource"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+
+  /admin/layout_pages:
+    get:
+      operationId: listAdminLayoutPages
+      summary: List draft layout pages (admin)
+      description: |
+        Returns a paginated list of layout pages with draft versions for editor preview.
+        Requires authentication with `edit_content` permission.
+      tags:
+        - Admin Layout Pages
+      security:
+        - cookieAuth: []
+      parameters:
+        - $ref: "#/components/parameters/IncludeParam"
+        - $ref: "#/components/parameters/FieldsParam"
+        - $ref: "#/components/parameters/PageNumberParam"
+        - $ref: "#/components/parameters/PageSizeParam"
+      responses:
+        "200":
+          description: A paginated list of layout pages (draft versions)
+          content:
+            application/vnd.api+json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/PageResource"
+                  meta:
+                    $ref: "#/components/schemas/PaginationMeta"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+
+  /admin/layout_pages/{path}:
+    get:
+      operationId: showAdminLayoutPage
+      summary: Get a draft layout page (admin)
+      description: |
+        Returns a single layout page with its draft version for editor preview.
+        Requires authentication with `edit_content` permission.
+      tags:
+        - Admin Layout Pages
+      security:
+        - cookieAuth: []
+      parameters:
+        - name: path
+          in: path
+          required: true
+          description: Layout page ID (numeric) or urlname
+          schema:
+            type: string
+        - $ref: "#/components/parameters/IncludeParam"
+        - $ref: "#/components/parameters/FieldsParam"
+      responses:
+        "200":
+          description: A single layout page (draft version)
+          content:
+            application/vnd.api+json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: "#/components/schemas/PageResource"
+        "403":
+          $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"
+
+components:
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: _alchemy_session
+      description: Alchemy CMS session cookie (required for admin endpoints)
+
+  parameters:
+    IncludeParam:
+      name: include
+      in: query
+      required: false
+      description: |
+        Comma-separated list of related resources to include (JSON:API spec).
+        For pages: `language`, `all_elements`, `all_elements.ingredients`,
+        `all_elements.nested_elements`, `elements`, `fixed_elements`, `ancestors`.
+        For nodes: `children`, `parent`, `page`, `children.children`.
+      schema:
+        type: string
+      example: all_elements,all_elements.ingredients,language
+
+    FieldsParam:
+      name: fields
+      in: query
+      required: false
+      style: deepObject
+      explode: true
+      description: |
+        Sparse fieldsets (JSON:API spec). Limit which fields are returned per resource type.
+        Example: `fields[page]=name,urlname,url_path`
+      schema:
+        type: object
+        additionalProperties:
+          type: string
+
+    SortParam:
+      name: sort
+      in: query
+      required: false
+      description: |
+        Comma-separated list of sort fields (JSON:API spec). Prefix with `-` for descending.
+        Example: `-updated_at,name`
+      schema:
+        type: string
+
+    PageNumberParam:
+      name: page[number]
+      in: query
+      required: false
+      description: Page number for pagination (1-based)
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+
+    PageSizeParam:
+      name: page[size]
+      in: query
+      required: false
+      description: Number of records per page
+      schema:
+        type: integer
+        minimum: 1
+
+  headers:
+    ETag:
+      description: Entity tag for conditional requests
+      schema:
+        type: string
+    Cache-Control:
+      description: Caching directives
+      schema:
+        type: string
+      example: "max-age=600, public, must-revalidate"
+
+  responses:
+    NotFound:
+      description: Resource not found
+      content:
+        application/vnd.api+json:
+          schema:
+            $ref: "#/components/schemas/JsonApiErrors"
+    Forbidden:
+      description: Insufficient permissions
+      content:
+        application/vnd.api+json:
+          schema:
+            $ref: "#/components/schemas/JsonApiErrors"
+
+  schemas:
+    JsonApiErrors:
+      type: object
+      properties:
+        errors:
+          type: array
+          items:
+            type: object
+            properties:
+              status:
+                type: string
+              title:
+                type: string
+              detail:
+                type: string
+
+    PaginationMeta:
+      type: object
+      properties:
+        meta:
+          type: object
+          properties:
+            pagination:
+              type: object
+              properties:
+                current:
+                  type: integer
+                first:
+                  type: integer
+                prev:
+                  type: integer
+                  nullable: true
+                next:
+                  type: integer
+                  nullable: true
+                last:
+                  type: integer
+            total:
+              type: integer
+
+    # ---------------------
+    # Resource objects
+    # ---------------------
+
+    PageResource:
+      type: object
+      required:
+        - id
+        - type
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+          enum:
+            - page
+        attributes:
+          $ref: "#/components/schemas/PageAttributes"
+        relationships:
+          $ref: "#/components/schemas/PageRelationships"
+
+    PageAttributes:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Internal page name
+        urlname:
+          type: string
+          description: URL slug for this page
+        url_path:
+          type: string
+          description: Full URL path (including language prefix)
+        page_layout:
+          type: string
+          description: Page layout name (maps to Alchemy page layout definition)
+        title:
+          type: string
+          nullable: true
+          description: HTML title (from page version)
+        meta_keywords:
+          type: string
+          nullable: true
+          description: Meta keywords (from page version)
+        meta_description:
+          type: string
+          nullable: true
+          description: Meta description (from page version)
+        language_code:
+          type: string
+          description: Two-letter language code
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        restricted:
+          type: boolean
+          description: Whether this page requires authentication to view
+        legacy_urls:
+          type: array
+          items:
+            type: string
+          description: Previous URL names that redirect to this page
+        deprecated:
+          type: boolean
+          description: Whether the page layout is marked as deprecated
+
+    PageRelationships:
+      type: object
+      properties:
+        language:
+          type: object
+          properties:
+            data:
+              $ref: "#/components/schemas/ResourceIdentifier"
+        ancestors:
+          type: object
+          properties:
+            data:
+              type: array
+              items:
+                $ref: "#/components/schemas/ResourceIdentifier"
+        all_elements:
+          type: object
+          description: All public elements (top-level, fixed, and nested). Use for eager loading via `include`.
+          properties:
+            data:
+              type: array
+              items:
+                $ref: "#/components/schemas/ResourceIdentifier"
+        elements:
+          type: object
+          description: Top-level, non-fixed public elements only
+          properties:
+            data:
+              type: array
+              items:
+                $ref: "#/components/schemas/ResourceIdentifier"
+        fixed_elements:
+          type: object
+          description: Top-level, fixed public elements only
+          properties:
+            data:
+              type: array
+              items:
+                $ref: "#/components/schemas/ResourceIdentifier"
+
+    ElementResource:
+      type: object
+      required:
+        - id
+        - type
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+          enum:
+            - element
+        attributes:
+          $ref: "#/components/schemas/ElementAttributes"
+        relationships:
+          $ref: "#/components/schemas/ElementRelationships"
+
+    ElementAttributes:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Element definition name
+        fixed:
+          type: boolean
+          description: Whether this element is fixed to the page layout
+        position:
+          type: integer
+          description: Sort position within its container
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        deprecated:
+          type: boolean
+          description: Whether the element definition is marked as deprecated
+
+    ElementRelationships:
+      type: object
+      properties:
+        ingredients:
+          type: object
+          description: |
+            Polymorphic ingredients. Each ingredient's `type` field indicates the specific kind
+            (e.g. `ingredient_text`, `ingredient_picture`, `ingredient_richtext`).
+          properties:
+            data:
+              type: array
+              items:
+                $ref: "#/components/schemas/ResourceIdentifier"
+        nested_elements:
+          type: object
+          description: Child elements nested within this element
+          properties:
+            data:
+              type: array
+              items:
+                $ref: "#/components/schemas/ResourceIdentifier"
+
+    LanguageResource:
+      type: object
+      required:
+        - id
+        - type
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+          enum:
+            - language
+        attributes:
+          $ref: "#/components/schemas/LanguageAttributes"
+        relationships:
+          $ref: "#/components/schemas/LanguageRelationships"
+
+    LanguageAttributes:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Human-readable language name
+        language_code:
+          type: string
+          description: ISO 639-1 language code
+        country_code:
+          type: string
+          description: ISO 3166-1 country code
+        locale:
+          type: string
+          description: Full locale string (e.g. `en_US`)
+
+    LanguageRelationships:
+      type: object
+      properties:
+        menu_items:
+          type: object
+          description: All navigation nodes for this language
+          properties:
+            data:
+              type: array
+              items:
+                $ref: "#/components/schemas/ResourceIdentifier"
+        menus:
+          type: object
+          description: Root-level navigation nodes (menus) for this language
+          properties:
+            data:
+              type: array
+              items:
+                $ref: "#/components/schemas/ResourceIdentifier"
+        pages:
+          type: object
+          properties:
+            data:
+              type: array
+              items:
+                $ref: "#/components/schemas/ResourceIdentifier"
+        root_page:
+          type: object
+          properties:
+            data:
+              $ref: "#/components/schemas/ResourceIdentifier"
+
+    NodeResource:
+      type: object
+      required:
+        - id
+        - type
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+          enum:
+            - node
+        attributes:
+          $ref: "#/components/schemas/NodeAttributes"
+        relationships:
+          $ref: "#/components/schemas/NodeRelationships"
+
+    NodeAttributes:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Display name of the navigation item
+        link_url:
+          type: string
+          nullable: true
+          description: Navigation link URL
+        link_title:
+          type: string
+          nullable: true
+          description: Link title attribute
+        link_nofollow:
+          type: boolean
+          nullable: true
+          description: Whether the link has rel=nofollow
+
+    NodeRelationships:
+      type: object
+      properties:
+        parent:
+          type: object
+          description: Parent node (null for root menu nodes)
+          properties:
+            data:
+              nullable: true
+              allOf:
+                - $ref: "#/components/schemas/ResourceIdentifier"
+        page:
+          type: object
+          description: Associated Alchemy page (if this node links to an internal page)
+          properties:
+            data:
+              nullable: true
+              allOf:
+                - $ref: "#/components/schemas/ResourceIdentifier"
+        children:
+          type: object
+          description: Child navigation nodes
+          properties:
+            data:
+              type: array
+              items:
+                $ref: "#/components/schemas/ResourceIdentifier"
+
+    # ---------------------
+    # Ingredient types
+    # ---------------------
+
+    IngredientBaseAttributes:
+      type: object
+      description: Common attributes shared by all ingredient types
+      properties:
+        role:
+          type: string
+          description: The role name defined in the element definition
+        value:
+          description: The primary value (type varies by ingredient kind)
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+        deprecated:
+          type: boolean
+
+    IngredientTextAttributes:
+      allOf:
+        - $ref: "#/components/schemas/IngredientBaseAttributes"
+        - type: object
+          properties:
+            value:
+              type: string
+              nullable: true
+            body:
+              type: string
+              nullable: true
+              description: Alias for value (legacy compatibility)
+            link:
+              type: string
+              nullable: true
+            link_url:
+              type: string
+              nullable: true
+              description: Alias for link
+            link_class_name:
+              type: string
+              nullable: true
+            link_target:
+              type: string
+              nullable: true
+            link_title:
+              type: string
+              nullable: true
+            dom_id:
+              type: string
+              nullable: true
+              description: DOM ID attribute (Alchemy 6.1+)
+
+    IngredientRichtextAttributes:
+      allOf:
+        - $ref: "#/components/schemas/IngredientBaseAttributes"
+        - type: object
+          properties:
+            value:
+              type: string
+              nullable: true
+              description: Raw rich text HTML
+            body:
+              type: string
+              nullable: true
+              description: Alias for value
+            sanitized_body:
+              type: string
+              nullable: true
+              description: Sanitized HTML output
+            stripped_body:
+              type: string
+              nullable: true
+              description: Plain text with HTML tags stripped
+
+    IngredientPictureAttributes:
+      allOf:
+        - $ref: "#/components/schemas/IngredientBaseAttributes"
+        - type: object
+          properties:
+            value:
+              type: string
+              nullable: true
+              description: URL to the rendered picture
+            title:
+              type: string
+              nullable: true
+            alt_text:
+              type: string
+              nullable: true
+            caption:
+              type: string
+              nullable: true
+            link_url:
+              type: string
+              nullable: true
+            link_class_name:
+              type: string
+              nullable: true
+            link_title:
+              type: string
+              nullable: true
+            link_target:
+              type: string
+              nullable: true
+            image_dimensions:
+              type: object
+              nullable: true
+              description: Present only when a picture is attached
+              properties:
+                width:
+                  type: number
+                height:
+                  type: number
+            srcset:
+              type: array
+              nullable: true
+              description: Responsive image source set (present only when a picture is attached)
+              items:
+                type: object
+                properties:
+                  url:
+                    type: string
+                  desc:
+                    type: string
+                    description: Width descriptor (e.g. `800w`)
+                  width:
+                    type: string
+                  height:
+                    type: string
+                  type:
+                    type: string
+                    description: MIME type
+            image_name:
+              type: string
+              nullable: true
+              description: Picture name (present only when a picture is attached)
+            image_file_name:
+              type: string
+              nullable: true
+            image_mime_type:
+              type: string
+              nullable: true
+            image_file_size:
+              type: integer
+              nullable: true
+
+    IngredientVideoAttributes:
+      allOf:
+        - $ref: "#/components/schemas/IngredientBaseAttributes"
+        - type: object
+          properties:
+            value:
+              type: string
+              nullable: true
+              description: URL to the video attachment
+            width:
+              type: integer
+              nullable: true
+            height:
+              type: integer
+              nullable: true
+            allow_fullscreen:
+              type: boolean
+              nullable: true
+            autoplay:
+              type: boolean
+              nullable: true
+            controls:
+              type: boolean
+              nullable: true
+            preload:
+              type: string
+              nullable: true
+            video_name:
+              type: string
+              nullable: true
+              description: Present only when an attachment exists
+            video_file_name:
+              type: string
+              nullable: true
+            video_mime_type:
+              type: string
+              nullable: true
+            video_file_size:
+              type: integer
+              nullable: true
+
+    IngredientAudioAttributes:
+      allOf:
+        - $ref: "#/components/schemas/IngredientBaseAttributes"
+        - type: object
+          properties:
+            value:
+              type: string
+              nullable: true
+              description: URL to the audio attachment
+            autoplay:
+              type: boolean
+              nullable: true
+            controls:
+              type: boolean
+              nullable: true
+            muted:
+              type: boolean
+              nullable: true
+            loop:
+              type: boolean
+              nullable: true
+            audio_name:
+              type: string
+              nullable: true
+              description: Present only when an attachment exists
+            audio_file_name:
+              type: string
+              nullable: true
+            audio_mime_type:
+              type: string
+              nullable: true
+            audio_file_size:
+              type: integer
+              nullable: true
+
+    IngredientFileAttributes:
+      allOf:
+        - $ref: "#/components/schemas/IngredientBaseAttributes"
+        - type: object
+          properties:
+            value:
+              type: string
+              nullable: true
+              description: URL to the file attachment
+            link_title:
+              type: string
+              nullable: true
+            attachment_name:
+              type: string
+              nullable: true
+              description: Present only when an attachment exists
+            attachment_file_name:
+              type: string
+              nullable: true
+            attachment_mime_type:
+              type: string
+              nullable: true
+            attachment_file_size:
+              type: integer
+              nullable: true
+
+    IngredientPageAttributes:
+      allOf:
+        - $ref: "#/components/schemas/IngredientBaseAttributes"
+        - type: object
+          properties:
+            value:
+              type: string
+              nullable: true
+              description: URL path of the referenced page
+            page_name:
+              type: string
+              nullable: true
+            page_url:
+              type: string
+              nullable: true
+
+    IngredientNodeAttributes:
+      allOf:
+        - $ref: "#/components/schemas/IngredientBaseAttributes"
+        - type: object
+          properties:
+            value:
+              type: string
+              nullable: true
+              description: Name of the referenced node
+            name:
+              type: string
+              nullable: true
+              description: Present only when a node is attached
+            link_url:
+              type: string
+              nullable: true
+            link_title:
+              type: string
+              nullable: true
+            link_nofollow:
+              type: boolean
+              nullable: true
+
+    IngredientLinkAttributes:
+      allOf:
+        - $ref: "#/components/schemas/IngredientBaseAttributes"
+        - type: object
+          properties:
+            value:
+              type: string
+              nullable: true
+              description: The link URL
+            link_class_name:
+              type: string
+              nullable: true
+            link_target:
+              type: string
+              nullable: true
+            link_title:
+              type: string
+              nullable: true
+
+    IngredientHeadlineAttributes:
+      allOf:
+        - $ref: "#/components/schemas/IngredientBaseAttributes"
+        - type: object
+          properties:
+            value:
+              type: string
+              nullable: true
+              description: Headline text
+            level:
+              type: integer
+              nullable: true
+              description: Heading level (1-6)
+            size:
+              type: string
+              nullable: true
+              description: CSS size class
+            dom_id:
+              type: string
+              nullable: true
+              description: DOM ID attribute (Alchemy 6.1+)
+
+    IngredientBooleanAttributes:
+      allOf:
+        - $ref: "#/components/schemas/IngredientBaseAttributes"
+        - type: object
+          properties:
+            value:
+              type: boolean
+              nullable: true
+
+    IngredientColorAttributes:
+      allOf:
+        - $ref: "#/components/schemas/IngredientBaseAttributes"
+        - type: object
+          properties:
+            value:
+              type: string
+              nullable: true
+              description: Color value (e.g. hex code)
+
+    IngredientDatetimeAttributes:
+      allOf:
+        - $ref: "#/components/schemas/IngredientBaseAttributes"
+        - type: object
+          properties:
+            value:
+              type: string
+              format: date-time
+              nullable: true
+
+    IngredientHtmlAttributes:
+      allOf:
+        - $ref: "#/components/schemas/IngredientBaseAttributes"
+        - type: object
+          properties:
+            value:
+              type: string
+              nullable: true
+              description: Raw HTML content
+
+    IngredientSelectAttributes:
+      allOf:
+        - $ref: "#/components/schemas/IngredientBaseAttributes"
+        - type: object
+          properties:
+            value:
+              type: string
+              nullable: true
+              description: Selected option value
+
+    # ---------------------
+    # JSON:API primitives
+    # ---------------------
+
+    ResourceIdentifier:
+      type: object
+      required:
+        - id
+        - type
+      properties:
+        id:
+          type: string
+        type:
+          type: string
