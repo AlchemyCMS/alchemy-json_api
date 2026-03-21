@@ -75,16 +75,10 @@ jobs:
         run: bundle exec rake
       - name: Check for OpenAPI spec drift
         run: |
-          ruby -ryaml -e '
-            generated = YAML.safe_load_file("docs/openapi.yml", permitted_classes: [Date, Time])
-            committed = YAML.safe_load(
-              %x(git show HEAD:docs/openapi.yml),
-              permitted_classes: [Date, Time]
-            )
-            exit 0 if generated == committed
-            system("git diff docs/openapi.yml")
-            abort "::error::docs/openapi.yml is out of date. Run OPENAPI=1 bundle exec rspec locally and commit the result."
-          '
+          if ! git diff --ignore-blank-lines --ignore-all-space --exit-code docs/openapi.yml; then
+            echo "::error::docs/openapi.yml is out of date. Run 'OPENAPI=1 bundle exec rspec' locally and commit the result."
+            exit 1
+          fi
   Vitest:
     runs-on: ubuntu-24.04
     env:
