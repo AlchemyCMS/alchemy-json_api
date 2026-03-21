@@ -16,4 +16,15 @@ RSpec.describe "Alchemy::JsonApi::Openapi", type: :request do
       expect(document["paths"]).to include("/pages", "/pages/{path}", "/nodes")
     end
   end
+
+  describe "GET /alchemy/json_api/docs" do
+    it "returns an HTML page with Swagger UI" do
+      get alchemy_json_api.docs_path
+
+      expect(response).to have_http_status(:ok)
+      expect(response.content_type).to include("text/html")
+      expect(response.body).to include("swagger-ui")
+      expect(response.body).to include("openapi.json")
+    end
+  end
 end
