@@ -32,8 +32,8 @@ if ENV["OPENAPI"]
   RSpec::OpenAPI.response_headers = %w[ETag Cache-Control Last-Modified]
   RSpec::OpenAPI.example_types = %i[request]
 
-  # Exclude the openapi endpoint itself from generation
-  RSpec::OpenAPI.ignored_paths = [/openapi/]
+  # Exclude the openapi and docs endpoints from generation
+  RSpec::OpenAPI.ignored_paths = [/openapi/, /docs/]
 
   # Tag endpoints by controller name
   RSpec::OpenAPI.tags_builder = ->(example) {
