@@ -2,7 +2,7 @@
 
 Alchemy::JsonApi::Engine.routes.draw do
   get "openapi", to: "openapi#show", defaults: {format: :json}, as: :openapi
-  get "docs", to: "openapi#docs"
+  get "docs", to: "openapi#docs", constraints: ->(_req) { Rails.env.development? }
 
   resources :pages, only: [:index]
   get "pages/*path" => "pages#show", :as => :page
