@@ -121,9 +121,32 @@ OPENAPI=1 bundle exec rspec
 This merges actual API responses into `docs/openapi.yml`. Hand-written component
 schemas are preserved. Review the diff and commit the result.
 
+> [!NOTE]
+> CI will fail if `docs/openapi.yml` is out of date. Always regenerate and
+> commit the spec when changing API endpoints or serializers.
+
 ## Contributing
 
-Contribution directions go here.
+1. Fork the repo and create your branch from `main`.
+2. Install dependencies:
+   ```bash
+   bundle install
+   ```
+3. Run the test suite:
+   ```bash
+   bundle exec rake
+   ```
+4. If you changed any API endpoints or serializers, regenerate the OpenAPI spec:
+   ```bash
+   OPENAPI=1 bundle exec rspec
+   ```
+   Review the diff in `docs/openapi.yml` and include it in your commit. CI will
+   reject PRs where the spec is out of date.
+5. Ensure linting passes:
+   ```bash
+   bundle exec standardrb
+   ```
+6. Open a pull request.
 
 ## License
 
