@@ -16,7 +16,7 @@ Gem::Specification.new do |spec|
   spec.description = "A JSONAPI compliant API for AlchemyCMS"
   spec.license = "BSD-3-Clause"
 
-  spec.files = Dir["{app,config,db,lib}/**/*", "LICENSE", "Rakefile", "README.md"]
+  spec.files = Dir["{app,config,db,docs,lib}/**/*", "LICENSE", "Rakefile", "README.md"]
 
   spec.add_dependency "alchemy_cms", [">= 8.2.0.a", "< 9"]
   spec.add_dependency "jsonapi.rb", [">= 1.6.0", "< 2.2"]
