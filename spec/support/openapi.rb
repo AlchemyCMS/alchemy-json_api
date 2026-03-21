@@ -8,10 +8,21 @@ if ENV["OPENAPI"]
   RSpec::OpenAPI.application_version = Alchemy::JsonApi::VERSION
   RSpec::OpenAPI.info = {
     description: <<~DESC.strip,
-      A JSON:API compliant API for AlchemyCMS.
+      A [JSON:API](https://jsonapi.org/) compliant API for [AlchemyCMS](https://alchemy-cms.com).
 
       All responses follow the JSON:API specification. Use the `include` query parameter to
       sideload related resources, `filter` for Ransack-based filtering, and `page` for pagination.
+
+      ## Authentication
+
+      Public endpoints serve published content without authentication. Admin endpoints require
+      an authenticated user with `edit_content` permission on `Alchemy::Page`.
+
+      ## Caching
+
+      Responses include HTTP caching headers (ETag, Cache-Control). Page endpoints default to
+      a max-age of 600 seconds (configurable via `ALCHEMY_JSON_API_CACHE_DURATION` env var).
+      Node endpoints default to 3 hours. Restricted pages are never publicly cached.
     DESC
     license: {
       name: "BSD-3-Clause",
@@ -32,8 +43,8 @@ if ENV["OPENAPI"]
   RSpec::OpenAPI.response_headers = %w[ETag Cache-Control Last-Modified]
   RSpec::OpenAPI.example_types = %i[request]
 
-  # Exclude the openapi endpoint itself from generation
-  RSpec::OpenAPI.ignored_paths = [/openapi/]
+  # Exclude the openapi and docs endpoints from generation
+  RSpec::OpenAPI.ignored_paths = [/openapi/, /docs/]
 
   # Tag endpoints by controller name
   RSpec::OpenAPI.tags_builder = ->(example) {
