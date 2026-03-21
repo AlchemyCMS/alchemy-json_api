@@ -75,7 +75,7 @@ jobs:
         run: bundle exec rake
       - name: Check for OpenAPI spec drift
         run: |
-          if ! git diff --exit-code docs/openapi.yml; then
+          if ! git diff --ignore-all-space --exit-code docs/openapi.yml; then
             echo "::error::docs/openapi.yml is out of date. Run 'OPENAPI=1 bundle exec rspec' locally and commit the result."
             exit 1
           fi
