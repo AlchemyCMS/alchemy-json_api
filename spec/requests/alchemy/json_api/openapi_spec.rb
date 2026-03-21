@@ -16,4 +16,32 @@ RSpec.describe "Alchemy::JsonApi::Openapi", type: :request do
       expect(document["paths"]).to include("/pages", "/pages/{path}", "/nodes")
     end
   end
+
+  describe "GET /alchemy/json_api/docs" do
+    context "in development environment" do
+      before do
+        allow(Rails).to receive(:env).and_return(ActiveSupport::StringInquirer.new("development"))
+        Rails.application.reload_routes!
+      end
+
+      it "returns an HTML page with Swagger UI in development", :aggregate_failures do
+        get alchemy_json_api.docs_path
+
+        expect(response).to have_http_status(:ok)
+        expect(response.content_type).to include("text/html")
+        expect(response.body).to include("swagger-ui")
+        expect(response.body).to include(alchemy_json_api.openapi_path)
+      end
+
+      after do
+        allow(Rails).to receive(:env).and_call_original
+        Rails.application.reload_routes!
+      end
+    end
+
+    it "is not routable in non-development environments" do
+      get alchemy_json_api.docs_path
+      expect(response).to have_http_status(:not_found)
+    end
+  end
 end

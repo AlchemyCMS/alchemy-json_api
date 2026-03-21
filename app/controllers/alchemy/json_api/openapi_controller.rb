@@ -10,6 +10,11 @@ module Alchemy
         render json: spec
       end
 
+      def docs
+        @spec_url = alchemy_json_api.openapi_path(format: :json)
+        render layout: false
+      end
+
       private
 
       def spec
