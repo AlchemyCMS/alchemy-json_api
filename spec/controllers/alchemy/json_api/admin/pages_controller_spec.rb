@@ -19,5 +19,19 @@ RSpec.describe Alchemy::JsonApi::Admin::PagesController do
       get :show, params: {path: page.urlname}
       expect(Alchemy::Current.preview_page).to eq(page)
     end
+
+    context "with alchemy_preview_time param" do
+      it "stores preview time" do
+        preview_time = 1.day.from_now
+        get :show, params: {path: page.urlname, alchemy_preview_time: preview_time.iso8601}
+        expect(Alchemy::Current.preview_time).to be_within(1.second).of(preview_time)
+      end
+    end
+
+    it "runs action in given timezone" do
+      allow(Time).to receive(:use_zone).and_yield
+      get :show, params: {path: page.urlname, admin_timezone: "Hawaii"}
+      expect(Time).to have_received(:use_zone).with("Hawaii")
+    end
   end
 end
