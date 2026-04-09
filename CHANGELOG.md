@@ -1,5 +1,34 @@
 # Changelog
 
+## 8.2.0 (2026-04-09)
+
+<!-- Release notes generated using configuration in .github/release.yml at main -->
+
+## What's Changed
+### Breaking Changes
+* Update to Alchemy 8.1 by @tvdeyen in https://github.com/AlchemyCMS/alchemy-json_api/pull/153
+### Dependencies
+* Bump prettier from 3.7.4 to 3.8.1 by @dependabot[bot] in https://github.com/AlchemyCMS/alchemy-json_api/pull/151
+* Bump vitest from 4.0.16 to 4.0.17 in the vitest group by @dependabot[bot] in https://github.com/AlchemyCMS/alchemy-json_api/pull/149
+* Bump vite from 7.2.2 to 7.3.1 by @dependabot[bot] in https://github.com/AlchemyCMS/alchemy-json_api/pull/148
+* Bump vitest from 4.0.17 to 4.0.18 in the vitest group by @dependabot[bot] in https://github.com/AlchemyCMS/alchemy-json_api/pull/152
+* chore(deps-dev): bump vitest from 4.0.18 to 4.1.0 in the vitest group by @dependabot[bot] in https://github.com/AlchemyCMS/alchemy-json_api/pull/162
+* chore(deps-dev): bump vite from 7.3.1 to 8.0.0 by @dependabot[bot] in https://github.com/AlchemyCMS/alchemy-json_api/pull/163
+* chore(deps-dev): bump vite from 8.0.0 to 8.0.1 by @dependabot[bot] in https://github.com/AlchemyCMS/alchemy-json_api/pull/164
+* chore(deps-dev): bump vitest from 4.1.0 to 4.1.2 in the vitest group by @dependabot[bot] in https://github.com/AlchemyCMS/alchemy-json_api/pull/166
+* chore(deps-dev): bump vite from 8.0.1 to 8.0.3 by @dependabot[bot] in https://github.com/AlchemyCMS/alchemy-json_api/pull/167
+* chore(deps-dev): bump vite from 8.0.3 to 8.0.5 by @dependabot[bot] in https://github.com/AlchemyCMS/alchemy-json_api/pull/169
+* chore(deps-dev): bump vitest from 4.1.2 to 4.1.4 in the vitest group by @dependabot[bot] in https://github.com/AlchemyCMS/alchemy-json_api/pull/170
+* chore(deps-dev): bump vite from 8.0.5 to 8.0.8 by @dependabot[bot] in https://github.com/AlchemyCMS/alchemy-json_api/pull/171
+### Other Changes
+* Pass rubygems_api_key secret to release workflow by @tvdeyen in https://github.com/AlchemyCMS/alchemy-json_api/pull/147
+* feat: Add IngredientColorSerializer by @tvdeyen in https://github.com/AlchemyCMS/alchemy-json_api/pull/157
+* fix: Use Alchemy's page etag generator by @tvdeyen in https://github.com/AlchemyCMS/alchemy-json_api/pull/161
+* feat: Store alchemy_preview_time in current global by @tvdeyen in https://github.com/AlchemyCMS/alchemy-json_api/pull/168
+
+
+**Full Changelog**: https://github.com/AlchemyCMS/alchemy-json_api/compare/v4.0.1...v8.2.0
+
 ## 4.1.1 (2026-02-03)
 
 <!-- Release notes generated using configuration in .github/release.yml at 4.1-stable -->
