@@ -19,7 +19,7 @@ gem "sqlite3", "~> 2.2"
 
 alchemy_branch = ENV.fetch("ALCHEMY_BRANCH", "main")
 gem "alchemy_cms", github: "AlchemyCMS/alchemy_cms", branch: alchemy_branch
-gem "alchemy-devise", github: "AlchemyCMS/alchemy-devise", branch: alchemy_branch
+gem "alchemy-devise", github: "AlchemyCMS/alchemy-devise", branch: "main"
 
 gem "rubocop", require: false
 gem "standard", "~> 1.25", require: false

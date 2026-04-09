@@ -7,6 +7,9 @@ module Alchemy
         prepend_before_action { authorize! :edit_content, Alchemy::Page }
         before_action :set_current_preview, only: :show
 
+        include Alchemy::Admin::Timezone
+        include Alchemy::Admin::PreviewTime
+
         private
 
         def cache_duration

@@ -13,11 +13,12 @@ jobs:
       fail-fast: false
       matrix:
         alchemy_branch:
+          - 8.2-stable
           - main
         ruby:
-          - "3.2"
           - "3.3"
           - "3.4"
+          - "4.0"
     env:
       ALCHEMY_BRANCH: ${{ matrix.alchemy_branch }}
     steps:
