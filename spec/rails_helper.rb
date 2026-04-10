@@ -13,6 +13,7 @@ require "jsonapi/rspec"
 require "shoulda-matchers"
 
 require "alchemy/json_api/test_support/ingredient_serializer_behaviour"
+require_relative "support/openapi"
 
 Shoulda::Matchers.configure do |config|
   config.integrate do |with|
