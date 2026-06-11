@@ -12,6 +12,7 @@ module Alchemy
         )
 
         klass.attribute :deprecated, &:deprecated?
+        klass.cache_options store: Rails.cache, namespace: "alchemy-jsonapi"
       end
     end
   end
