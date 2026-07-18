@@ -23,7 +23,11 @@ RSpec.describe Alchemy::JsonApi::IngredientPictureSerializer do
 
     it "has the right keys and values" do
       expect(subject[:title]).to eq("Picture")
-      expect(subject[:value]).to match(/pictures\/\w+\/image.png/)
+      if Alchemy.storage_adapter.active_storage?
+        expect(subject[:value]).to match(/rails\/active_storage\/representations\/redirect\/.+?\/image.png/)
+      else
+        expect(subject[:value]).to match(/pictures\/\w+\/image.png/)
+      end
       expect(subject[:image_name]).to eq("image")
       expect(subject[:image_file_name]).to eq("image.png")
       expect(subject[:image_mime_type]).to eq("image/png")
