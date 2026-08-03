@@ -401,6 +401,48 @@ RSpec.describe "Alchemy::JsonApi::Pages", type: :request do
       end
     end
 
+    context "with elements" do
+      def create_page_with_element
+        page = FactoryBot.create(:alchemy_page, :public)
+        FactoryBot.create(
+          :alchemy_element,
+          page_version: page.public_version,
+          name: "article",
+          autogenerate_ingredients: true
+        )
+        page
+      end
+
+      # Only counts full record loads, so the id only queries the etag generation
+      # runs for every page do not hide a per page element load.
+      def count_element_load_queries
+        queries = []
+        subscriber = ActiveSupport::Notifications.subscribe("sql.active_record") do |_name, _start, _finish, _id, payload|
+          next if payload[:name] == "SCHEMA" || payload[:cached]
+          queries << payload[:sql] if payload[:sql].include?(%("alchemy_elements"."name"))
+        end
+        yield
+        queries.size
+      ensure
+        ActiveSupport::Notifications.unsubscribe(subscriber)
+      end
+
+      it "loads elements eager, not once per page" do
+        create_page_with_element
+        queries_for_one_page = count_element_load_queries do
+          get alchemy_json_api.pages_path(include: "all_elements.ingredients")
+        end
+        expect(queries_for_one_page).to be > 0
+
+        2.times { create_page_with_element }
+        queries_for_three_pages = count_element_load_queries do
+          get alchemy_json_api.pages_path(include: "all_elements.ingredients")
+        end
+
+        expect(queries_for_three_pages).to eq(queries_for_one_page)
+      end
+    end
+
     context "with pagination params" do
       before do
         FactoryBot.create_list(:alchemy_page, 3, :public)
