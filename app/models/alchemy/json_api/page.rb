@@ -45,8 +45,7 @@ module Alchemy
       def element_repository
         return Alchemy::ElementsRepository.none unless page_version
 
-        # Need to use select here, otherwise rails would not eager load the elements correctly
-        Alchemy::ElementsRepository.new(page_version.elements.select(&:public))
+        Alchemy::ElementsRepository.new(page_version.elements).visible
       end
     end
   end
