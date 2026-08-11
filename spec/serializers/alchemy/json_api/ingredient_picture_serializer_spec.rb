@@ -18,6 +18,12 @@ RSpec.describe Alchemy::JsonApi::IngredientPictureSerializer do
 
   it_behaves_like "an ingredient serializer"
 
+  describe ".preload_relations" do
+    subject { described_class.preload_relations }
+
+    it { is_expected.to eq([:thumbs]) }
+  end
+
   describe "attributes" do
     subject { serializer.serializable_hash[:data][:attributes] }
 

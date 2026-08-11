@@ -42,10 +42,10 @@ module Alchemy
       def render_pages_json(allowed)
         # Only load pages with all includes when browser cache is stale
         jsonapi_filter(page_scope_with_includes, allowed) do |filtered|
-          # decorate with our page model that has a eager loaded elements collection
-          filtered_pages = filtered.result.map { |page| api_page(page) }
-          jsonapi_paginate(filtered_pages) do |paginated|
-            render jsonapi: paginated
+          jsonapi_paginate(filtered.result) do |paginated|
+            # decorate with our page model that has a eager loaded elements collection
+            decorated_pages = preload_ingredients(paginated).map { |page| api_page(page) }
+            render jsonapi: decorated_pages
           end
         end
       end
@@ -74,7 +74,9 @@ module Alchemy
       end
 
       def load_page
-        @page = load_page_by_id || load_page_by_urlname || raise(ActiveRecord::RecordNotFound)
+        @page = preload_ingredients(
+          [load_page_by_id || load_page_by_urlname || raise(ActiveRecord::RecordNotFound)]
+        ).first
       end
 
       def load_page_by_id
@@ -107,6 +109,14 @@ module Alchemy
               }
             ]
           )
+      end
+
+      def preload_ingredients(scope)
+        if params[:include]&.match?(/ingredients/)
+          Alchemy::JsonApi::Page.preload_ingredient_relations(scope, page_version_type)
+        else
+          scope
+        end
       end
 
       def page_version_type
@@ -143,6 +153,42 @@ module Alchemy
 
       def jsonapi_serializer_class(_resource, _is_collection)
         ::Alchemy::JsonApi::PageSerializer
+      end
+
+      # These overrides have to be in place until
+      # https://github.com/stas/jsonapi.rb/pull/91
+      # is merged and released
+      def jsonapi_paginate(resources)
+        @_jsonapi_original_size = resources.size
+        super
+      end
+
+      def jsonapi_pagination_meta(resources)
+        return {} unless JSONAPI::Rails.is_collection?(resources)
+
+        _, limit, page = jsonapi_pagination_params
+
+        numbers = { current: page }
+
+        total = @_jsonapi_original_size
+
+        last_page = [1, (total.to_f / limit).ceil].max
+
+        if page > 1
+          numbers[:first] = 1
+          numbers[:prev] = page - 1
+        end
+
+        if page < last_page
+          numbers[:next] = page + 1
+          numbers[:last] = last_page
+        end
+
+        if total.present?
+          numbers[:records] = total
+        end
+
+        numbers
       end
     end
   end
