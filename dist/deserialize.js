@@ -1,44 +1,30 @@
-function y(e, t = {}) {
-  const s = structuredClone(e);
-  t || (t = {});
-  const o = s.included || [];
-  return Array.isArray(s.data) ? s.data.map((i) => f(i, o, !1)) : f(
-    s.data,
-    o,
-    !1
-  );
+//#region src/deserialize.js
+function e(e, n = {}) {
+	let r = structuredClone(e);
+	n ||= {};
+	let i = r.included || [];
+	return Array.isArray(r.data) ? r.data.map((e) => t(e, i, !1, n)) : t(r.data, i, !1, n);
 }
-function f(e, t, s, o) {
-  if (t.cached || (t.cached = {}), e.type in t.cached || (t.cached[e.type] = {}), s && e.id in t.cached[e.type])
-    return t.cached[e.type][e.id];
-  const r = e.attributes || {};
-  if (r.id = e.id, t.cached[e.type][e.id] = r, e.relationships)
-    for (const c of Object.keys(e.relationships)) {
-      const n = e.relationships[c];
-      if (Array.isArray(n.data)) {
-        const p = [];
-        n.data.forEach((a) => {
-          const h = u(
-            t,
-            a.type,
-            a.id
-          );
-          p.push(h);
-        }), r[c] = p;
-      } else n && n.data ? r[c] = u(
-        t,
-        n.data.type,
-        n.data.id
-      ) : r[c] = null;
-    }
-  return r;
+function t(e, t, r, i) {
+	if (t.cached ||= {}, e.type in t.cached || (t.cached[e.type] = {}), r && e.id in t.cached[e.type]) return t.cached[e.type][e.id];
+	let a = e.attributes || {};
+	if (a.id = e.id, t.cached[e.type][e.id] = a, e.relationships) for (let r of Object.keys(e.relationships)) {
+		let o = e.relationships[r];
+		if (Array.isArray(o.data)) {
+			let e = [];
+			o.data.forEach((r) => {
+				let a = n(t, r.type, r.id, i);
+				e.push(a);
+			}), a[r] = e;
+		} else a[r] = o && o.data ? n(t, o.data.type, o.data.id, i) : null;
+	}
+	return a;
 }
-function u(e, t, s, o) {
-  let i = null;
-  return e.forEach((r) => {
-    r.type === t && r.id === s && (i = f(r, e, !0));
-  }), i || (i = { id: s }), i;
+function n(e, n, r, i) {
+	let a = null;
+	return e.forEach((o) => {
+		o.type === n && o.id === r && (a = t(o, e, !0, i));
+	}), a ||= { id: r }, a;
 }
-export {
-  y as deserialize
-};
+//#endregion
+export { e as deserialize };
