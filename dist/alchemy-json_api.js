@@ -1,24 +1,20 @@
-import { deserialize as r } from "./deserialize.js";
-function n(t) {
-  const s = [];
-  return t.forEach((e) => {
-    e.nested_elements?.length > 0 && (e.nested_elements = n(
-      e.nested_elements
-    )), e.nestedElements?.length > 0 && (e.nestedElements = n(e.nestedElements)), e.essences?.length > 0 && (e.essences = e.essences.filter((i) => !i.deprecated)), e.deprecated || s.push(e);
-  }), s;
+import { deserialize as e } from "./deserialize.js";
+//#region src/alchemyApiDeserializer.js
+function t(e) {
+	let n = [];
+	return e.forEach((e) => {
+		e.nested_elements?.length > 0 && (e.nested_elements = t(e.nested_elements)), e.nestedElements?.length > 0 && (e.nestedElements = t(e.nestedElements)), e.essences?.length > 0 && (e.essences = e.essences.filter((e) => !e.deprecated)), e.deprecated || n.push(e);
+	}), n;
 }
-function d(t) {
-  const s = r(t);
-  return s.elements = n(s.elements), s;
+function n(n) {
+	let r = e(n);
+	return r.elements = t(r.elements), r;
 }
-function f(t) {
-  const s = r(t);
-  return s.forEach((e) => {
-    e.elements = n(e.elements);
-  }), s;
+function r(n) {
+	let r = e(n);
+	return r.forEach((e) => {
+		e.elements = t(e.elements);
+	}), r;
 }
-export {
-  r as deserialize,
-  d as deserializePage,
-  f as deserializePages
-};
+//#endregion
+export { e as deserialize, n as deserializePage, r as deserializePages };

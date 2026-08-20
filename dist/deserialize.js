@@ -1,44 +1,36 @@
-function y(e, t = {}) {
-  const s = structuredClone(e);
-  t || (t = {});
-  const o = s.included || [];
-  return Array.isArray(s.data) ? s.data.map((i) => f(i, o, !1)) : f(
-    s.data,
-    o,
-    !1
-  );
+//#region src/deserialize.js
+function e({ type: e, id: t }) {
+	return `${e}:${t}`;
 }
-function f(e, t, s, o) {
-  if (t.cached || (t.cached = {}), e.type in t.cached || (t.cached[e.type] = {}), s && e.id in t.cached[e.type])
-    return t.cached[e.type][e.id];
-  const r = e.attributes || {};
-  if (r.id = e.id, t.cached[e.type][e.id] = r, e.relationships)
-    for (const c of Object.keys(e.relationships)) {
-      const n = e.relationships[c];
-      if (Array.isArray(n.data)) {
-        const p = [];
-        n.data.forEach((a) => {
-          const h = u(
-            t,
-            a.type,
-            a.id
-          );
-          p.push(h);
-        }), r[c] = p;
-      } else n && n.data ? r[c] = u(
-        t,
-        n.data.type,
-        n.data.id
-      ) : r[c] = null;
-    }
-  return r;
+function t({ id: e }) {
+	return { id: e };
 }
-function u(e, t, s, o) {
-  let i = null;
-  return e.forEach((r) => {
-    r.type === t && r.id === s && (i = f(r, e, !0));
-  }), i || (i = { id: s }), i;
+function n(t) {
+	let n = /* @__PURE__ */ new Map();
+	for (let r of t) {
+		let t = e(r);
+		n.has(t) || n.set(t, r);
+	}
+	return n;
 }
-export {
-  y as deserialize
-};
+function r(n, r, i) {
+	let o = e(i), s = r.has(o) ? void 0 : n.get(o);
+	return s ? a(n, r, s) : t(i);
+}
+function i(e, t, n) {
+	return Array.isArray(n) ? n.map((n) => r(e, t, n)) : n ? r(e, t, n) : null;
+}
+function a(t, n, r) {
+	let a = new Set(n).add(e(r)), o = Object.entries(r.relationships ?? {}).map(([e, n]) => [e, i(t, a, n?.data ?? null)]);
+	return {
+		...r.attributes,
+		id: r.id,
+		...Object.fromEntries(o)
+	};
+}
+function o(e) {
+	let { data: t = null, included: r = [] } = e == null ? {} : structuredClone(e), i = n(r), o = (e) => a(i, /* @__PURE__ */ new Set(), e);
+	return Array.isArray(t) ? t.map(o) : t ? o(t) : null;
+}
+//#endregion
+export { o as deserialize };
