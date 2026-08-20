@@ -45,7 +45,7 @@ module Alchemy
       def element_repository
         return Alchemy::ElementsRepository.none unless page_version
 
-        Alchemy::ElementsRepository.new(page_version.elements).visible
+        page_version.element_repository.visible
       end
     end
   end
