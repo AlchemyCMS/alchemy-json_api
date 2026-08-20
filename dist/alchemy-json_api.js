@@ -1,20 +1,14 @@
 import { deserialize as e } from "./deserialize.js";
 //#region src/alchemyApiDeserializer.js
-function t(e) {
-	let n = [];
-	return e.forEach((e) => {
-		e.nested_elements?.length > 0 && (e.nested_elements = t(e.nested_elements)), e.nestedElements?.length > 0 && (e.nestedElements = t(e.nestedElements)), e.essences?.length > 0 && (e.essences = e.essences.filter((e) => !e.deprecated)), e.deprecated || n.push(e);
-	}), n;
+var t = /* @__PURE__ */ new Set();
+function n(e) {
+	t.has(e) || (t.add(e), console.warn(`[@alchemy_cms/json_api] \`${e}\` is deprecated; use \`deserialize\` instead.`));
 }
-function n(n) {
-	let r = e(n);
-	return r.elements = t(r.elements), r;
+function r(t) {
+	return n("deserializePage"), e(t);
 }
-function r(n) {
-	let r = e(n);
-	return r.forEach((e) => {
-		e.elements = t(e.elements);
-	}), r;
+function i(t) {
+	return n("deserializePages"), e(t);
 }
 //#endregion
-export { e as deserialize, n as deserializePage, r as deserializePages };
+export { e as deserialize, r as deserializePage, i as deserializePages };

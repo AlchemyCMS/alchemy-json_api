@@ -1,43 +1,36 @@
 import { deserialize } from "./deserialize"
 
-// Recursively filters all deprecated elements and essences from collection
-function filterDeprecatedElements(elements) {
-  const els = []
+const warned = new Set()
 
-  elements.forEach((element) => {
-    if (element.nested_elements?.length > 0) {
-      element.nested_elements = filterDeprecatedElements(
-        element.nested_elements
-      )
-    }
-    if (element.nestedElements?.length > 0) {
-      element.nestedElements = filterDeprecatedElements(element.nestedElements)
-    }
-    if (element.essences?.length > 0) {
-      element.essences = element.essences.filter((essence) => {
-        return !essence.deprecated
-      })
-    }
-    if (!element.deprecated) {
-      els.push(element)
-    }
-  })
-
-  return els
+// Warn once per function so callers notice the deprecation without spamming the
+// console on every call.
+function warnDeprecated(name) {
+  if (warned.has(name)) return
+  warned.add(name)
+  console.warn(
+    `[@alchemy_cms/json_api] \`${name}\` is deprecated; use \`deserialize\` instead.`
+  )
 }
 
-// Returns deserialized page without deprecated content
+/**
+ * Deserializes a JSON:API page document.
+ *
+ * @deprecated Use `deserialize` instead. `deserializePage` used to strip
+ * deprecated elements, but `deprecated` is an admin-only hint and must not
+ * alter the serialized output, so this is now only a thin wrapper around
+ * `deserialize`.
+ */
 export function deserializePage(pageData) {
-  const page = deserialize(pageData)
-  page.elements = filterDeprecatedElements(page.elements)
-  return page
+  warnDeprecated("deserializePage")
+  return deserialize(pageData)
 }
 
-// Returns deserialized pages without deprecated content
+/**
+ * Deserializes a collection of JSON:API page documents.
+ *
+ * @deprecated Use `deserialize` instead; see `deserializePage`.
+ */
 export function deserializePages(pagesData) {
-  const pages = deserialize(pagesData)
-  pages.forEach((page) => {
-    page.elements = filterDeprecatedElements(page.elements)
-  })
-  return pages
+  warnDeprecated("deserializePages")
+  return deserialize(pagesData)
 }
