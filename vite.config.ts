@@ -5,8 +5,8 @@ export default defineConfig({
   build: {
     lib: {
       entry: {
-        "alchemy-json_api": resolve(__dirname, "src/main.js"),
-        deserialize: resolve(__dirname, "src/deserialize.js")
+        "alchemy-json_api": resolve(__dirname, "src/main.ts"),
+        deserialize: resolve(__dirname, "src/deserialize.ts")
       },
       formats: ["es"],
       fileName: (_format, entryName) => `${entryName}.js`

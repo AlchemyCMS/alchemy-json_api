@@ -22,18 +22,31 @@
     "Thomas von Deyen"
   ],
   "main": "dist/alchemy-json_api.js",
+  "types": "dist/main.d.ts",
   "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/main.d.ts",
+      "import": "./dist/alchemy-json_api.js"
+    },
+    "./deserialize": {
+      "types": "./dist/deserialize.d.ts",
+      "import": "./dist/deserialize.js"
+    }
+  },
   "files": [
     "dist"
   ],
   "devDependencies": {
     "prettier": "^3.3.3",
+    "typescript": "^7.0.2",
     "vite": "^8.0.0",
     "vitest": "^4.0.10"
   },
   "scripts": {
-    "build": "vite build",
-    "lint": "prettier --check 'src/**/*.js'",
+    "build": "vite build && tsc -p tsconfig.json",
+    "lint": "prettier --check 'src/**/*.ts'",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
     "test": "vitest"
   },
   "packageManager": "pnpm@10.12.1"
