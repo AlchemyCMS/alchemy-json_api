@@ -1,30 +1,36 @@
 //#region src/deserialize.js
-function e(e, n = {}) {
-	let r = structuredClone(e);
-	n ||= {};
-	let i = r.included || [];
-	return Array.isArray(r.data) ? r.data.map((e) => t(e, i, !1, n)) : t(r.data, i, !1, n);
+function e({ type: e, id: t }) {
+	return `${e}:${t}`;
 }
-function t(e, t, r, i) {
-	if (t.cached ||= {}, e.type in t.cached || (t.cached[e.type] = {}), r && e.id in t.cached[e.type]) return t.cached[e.type][e.id];
-	let a = e.attributes || {};
-	if (a.id = e.id, t.cached[e.type][e.id] = a, e.relationships) for (let r of Object.keys(e.relationships)) {
-		let o = e.relationships[r];
-		if (Array.isArray(o.data)) {
-			let e = [];
-			o.data.forEach((r) => {
-				let a = n(t, r.type, r.id, i);
-				e.push(a);
-			}), a[r] = e;
-		} else a[r] = o && o.data ? n(t, o.data.type, o.data.id, i) : null;
+function t({ id: e }) {
+	return { id: e };
+}
+function n(t) {
+	let n = /* @__PURE__ */ new Map();
+	for (let r of t) {
+		let t = e(r);
+		n.has(t) || n.set(t, r);
 	}
-	return a;
+	return n;
 }
-function n(e, n, r, i) {
-	let a = null;
-	return e.forEach((o) => {
-		o.type === n && o.id === r && (a = t(o, e, !0, i));
-	}), a ||= { id: r }, a;
+function r(n, r, i) {
+	let o = e(i), s = r.has(o) ? void 0 : n.get(o);
+	return s ? a(n, r, s) : t(i);
+}
+function i(e, t, n) {
+	return Array.isArray(n) ? n.map((n) => r(e, t, n)) : n ? r(e, t, n) : null;
+}
+function a(t, n, r) {
+	let a = new Set(n).add(e(r)), o = Object.entries(r.relationships ?? {}).map(([e, n]) => [e, i(t, a, n?.data ?? null)]);
+	return {
+		...r.attributes,
+		id: r.id,
+		...Object.fromEntries(o)
+	};
+}
+function o(e) {
+	let { data: t = null, included: r = [] } = e == null ? {} : structuredClone(e), i = n(r), o = (e) => a(i, /* @__PURE__ */ new Set(), e);
+	return Array.isArray(t) ? t.map(o) : t ? o(t) : null;
 }
 //#endregion
-export { e as deserialize };
+export { o as deserialize };

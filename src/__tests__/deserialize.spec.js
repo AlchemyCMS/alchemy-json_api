@@ -51,4 +51,41 @@ describe("deserialize", () => {
       }
     ])
   })
+
+  it("breaks reference cycles into { id } stubs instead of overflowing", () => {
+    const serialized = {
+      data: {
+        type: "product",
+        id: "1",
+        relationships: {
+          primaryTaxon: { data: { type: "taxon", id: "t1" } }
+        }
+      },
+      included: [
+        {
+          type: "taxon",
+          id: "t1",
+          attributes: { name: "root" },
+          relationships: {
+            children: { data: [{ type: "taxon", id: "t2" }] }
+          }
+        },
+        {
+          type: "taxon",
+          id: "t2",
+          attributes: { name: "child" },
+          relationships: {
+            ancestors: { data: [{ type: "taxon", id: "t1" }] }
+          }
+        }
+      ]
+    }
+
+    const result = deserialize(serialized)
+
+    expect(() => JSON.stringify(result)).not.toThrow()
+    // t1 -> children -> t2 -> ancestors -> t1 would close a cycle, so the
+    // back-reference to the in-progress t1 is emitted as an { id } stub.
+    expect(result.primaryTaxon.children[0].ancestors[0]).toEqual({ id: "t1" })
+  })
 })
