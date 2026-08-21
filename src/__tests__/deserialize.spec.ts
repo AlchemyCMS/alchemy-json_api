@@ -265,6 +265,59 @@ describe("deserialize", () => {
     ).toBe("Original")
   })
 
+  describe("resolution strategy", () => {
+    const sharedDoc = () => ({
+      data: {
+        type: "product",
+        id: "1",
+        attributes: {},
+        relationships: {
+          a: { data: { type: "t", id: "9" } },
+          b: { data: { type: "t", id: "9" } }
+        }
+      },
+      included: [{ type: "t", id: "9", attributes: { name: "X" } }]
+    })
+
+    it("default resolves a resource once and shares it by reference", () => {
+      const r = deserialize<{ a: object; b: object }>(sharedDoc())
+      expect(r.a).toEqual({ id: "9", name: "X" })
+      expect(r.a).toBe(r.b) // same object instance
+    })
+
+    it("{ expand: true } fully expands each path as distinct objects", () => {
+      const r = deserialize<{ a: object; b: object }>(sharedDoc(), {
+        expand: true
+      })
+      expect(r.a).toEqual(r.b)
+      expect(r.a).not.toBe(r.b) // distinct copies
+    })
+
+    it("both strategies break cycles and stay serializable", () => {
+      const doc = {
+        data: {
+          type: "node",
+          id: "A",
+          attributes: {},
+          relationships: { next: { data: { type: "node", id: "B" } } }
+        },
+        included: [
+          {
+            type: "node",
+            id: "B",
+            attributes: {},
+            relationships: { next: { data: { type: "node", id: "A" } } }
+          }
+        ]
+      }
+      for (const options of [{}, { expand: true }]) {
+        const r = deserialize<{ next: { next: unknown } }>(doc, options)
+        expect(() => JSON.stringify(r)).not.toThrow()
+        expect(r.next.next).toEqual({ id: "A" })
+      }
+    })
+  })
+
   describe("end-to-end: a real product document (api /products/2333)", () => {
     // A trimmed-but-faithful slice of the live JSON:API response for product
     // 2333 ("Gatsby Reed Diffuser Bottle"), using the real ids, names and
