@@ -49,17 +49,43 @@ mount Alchemy::JsonApi::Engine => "/jsonapi/"
 
 ### In your frontend app
 
-This repo provides an NPM package with deserializers to help you convert the response into JS objects.
+This repo provides an NPM package with a `deserialize` function that converts a JSON:API response into plain JS objects.
 
 ```js
-import { deserializePages } from "@alchemy_cms/json_api"
+import { deserialize } from "@alchemy_cms/json_api"
 
-const response = await fetch("/jsonapi/pages.json")
-const data = await response.json()
-const pages = deserializePages(data)
+const response = await fetch("/jsonapi/pages/homepage.json")
+const page = deserialize(await response.json())
 
-console.log(pages[0].name) // => Homepage
+console.log(page.name) // => Homepage
+console.log(page.elements[0].ingredients) // relationships are resolved inline
 ```
+
+`deserialize` flattens each resource's `attributes` onto the returned object (injecting its `id`, dropping `type`) and resolves every relationship inline: a related resource present in the response's `included` becomes a nested object, and one that is absent becomes an `{ id }` stub you can use to fetch it later.
+
+> [!NOTE]
+> `deserializePage` and `deserializePages` still exist as thin, **deprecated** aliases for `deserialize`. Prefer `deserialize`.
+
+#### Reference resolution (acyclic by design)
+
+JSON:API graphs are routinely cyclic: a taxon's `children` link back through `ancestors`, a variant points at its `product` which lists that same `variant`, a navigation node references both its `parent` and its `children`. Resolved naively this yields a **circular** object graph — one that cannot be passed to `JSON.stringify` and overflows the stack (`RangeError: Maximum call stack size exceeded`) when walked recursively.
+
+`deserialize` always returns an **acyclic** graph, using the classic depth-first three-colour marking to decide what to do with each reference:
+
+- **grey** — a resource currently being resolved (on the resolution stack). A reference to it is a _back-edge_ that would close a cycle, so it is emitted as an `{ id }` stub.
+- **black** — a resource already fully resolved. It is memoised and shared by reference; because a finished resource can never be one of your ancestors, reusing it can never reintroduce a cycle.
+- **white** — a resource not yet seen; it is resolved on first encounter.
+
+So **each resource is resolved once and shared by reference**: cost scales with the number of resources, not the number of paths that reach them, and the result is always safe to serialize. Every resource is fully expanded at its first-resolved location; elsewhere it appears as the same object, or as an `{ id }` stub at a reference that would have closed a cycle.
+
+> [!TIP]
+> Pass `{ expand: true }` to fully expand every reference path instead — a resource reached through several paths is materialised in full at each one:
+>
+> ```js
+> const page = deserialize(response, { expand: true })
+> ```
+>
+> This is faithful per path but re-expands shared subtrees, so on densely cross-linked documents (large menus, product graphs) the output can grow by orders of magnitude. Reach for it only when a consumer needs a fully-expanded object at every path.
 
 ## HTTP Caching
 

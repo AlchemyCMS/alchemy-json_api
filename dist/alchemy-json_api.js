@@ -1,5 +1,5 @@
-import { deserialize as e } from "./deserialize.js";
-//#region src/alchemyApiDeserializer.js
+import e from "./deserialize.js";
+//#region src/alchemyApiDeserializer.ts
 var t = /* @__PURE__ */ new Set();
 function n(e) {
 	t.has(e) || (t.add(e), console.warn(`[@alchemy_cms/json_api] \`${e}\` is deprecated; use \`deserialize\` instead.`));
