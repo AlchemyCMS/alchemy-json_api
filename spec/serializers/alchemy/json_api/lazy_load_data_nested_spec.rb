@@ -33,12 +33,12 @@ module LazyLoadDataNestedSpec
     belongs_to(:parent, serializer: ParentSerializer, lazy_load_data: true) { |r| r.parent }
   end
 
-  # Relationship without lazy_load_data -- must be unaffected by the patch.
+  # Relationship that opts out of lazy loading -- must always emit linkage.
   class EagerSerializer
     include JSONAPI::Serializer
 
     set_type :eager
-    belongs_to(:leaf, serializer: LeafSerializer) { |r| r.leaf }
+    belongs_to(:leaf, serializer: LeafSerializer, lazy_load_data: false) { |r| r.leaf }
   end
 end
 
@@ -69,7 +69,7 @@ RSpec.describe "FastJsonapi lazy_load_data patch (nested includes)" do
     expect(relationship(hash, :parent, "10", :unwanted)).not_to have_key(:data)
   end
 
-  it "leaves relationships without lazy_load_data untouched" do
+  it "still emits linkage for a relationship with lazy_load_data: false" do
     record = LazyLoadDataNestedSpec::Record.new(
       id: "1",
       leaf: LazyLoadDataNestedSpec::Record.new(id: "9", name: "x")

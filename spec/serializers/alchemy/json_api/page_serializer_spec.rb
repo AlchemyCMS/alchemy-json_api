@@ -98,7 +98,11 @@ RSpec.describe Alchemy::JsonApi::PageSerializer do
 
     subject { serializer.serializable_hash[:data][:relationships] }
 
+    let(:options) { {include: [:ancestors]} }
+
     describe "elements" do
+      let(:options) { {include: [:elements, :language]} }
+
       it "does not include trashed, fixed or hidden elements" do
         expect(subject[:elements]).to eq(
           data: [
@@ -110,6 +114,8 @@ RSpec.describe Alchemy::JsonApi::PageSerializer do
     end
 
     describe "fixed_elements" do
+      let(:options) { {include: [:fixed_elements, :language]} }
+
       it "does not include trashed, non-fixed or hidden elements" do
         expect(subject[:fixed_elements]).to eq(
           data: [

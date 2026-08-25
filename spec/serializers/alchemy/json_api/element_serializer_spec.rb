@@ -42,6 +42,8 @@ RSpec.describe Alchemy::JsonApi::ElementSerializer do
   end
 
   describe "relationships" do
+    let(:options) { {include: [:nested_elements]} }
+
     subject { serializer.serializable_hash[:data][:relationships] }
 
     it "has nested_elements" do
@@ -49,8 +51,10 @@ RSpec.describe Alchemy::JsonApi::ElementSerializer do
     end
 
     context "with ingredients" do
+      let(:options) { {include: [:ingredients]} }
+
       before do
-        expect(element).to receive(:ingredients) do
+        allow(element).to receive(:ingredients) do
           [
             FactoryBot.build_stubbed(:alchemy_ingredient_text, element: element),
             FactoryBot.build_stubbed(:alchemy_ingredient_richtext, element: element),

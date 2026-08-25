@@ -27,7 +27,7 @@ RSpec.describe Alchemy::JsonApi::IngredientPageSerializer do
   end
 
   describe "relationships" do
-    subject { serializer.serializable_hash[:data][:relationships] }
+    subject { described_class.new(ingredient, include: [:page]).serializable_hash[:data][:relationships] }
 
     it "has page object" do
       expect(subject[:page]).to eq(data: {id: page.id.to_s, type: :page})
