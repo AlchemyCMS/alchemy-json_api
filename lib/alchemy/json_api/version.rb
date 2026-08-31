@@ -2,6 +2,6 @@
 
 module Alchemy
   module JsonApi
-    VERSION = "8.3.0.dev"
+    VERSION = "8.4.0.a"
   end
 end
