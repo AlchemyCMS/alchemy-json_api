@@ -1,10 +1,10 @@
 import { deserialize } from "./deserialize"
 
-const warned = new Set()
+const warned = new Set<string>()
 
 // Warn once per function so callers notice the deprecation without spamming the
 // console on every call.
-function warnDeprecated(name) {
+function warnDeprecated(name: string): void {
   if (warned.has(name)) return
   warned.add(name)
   console.warn(
@@ -20,9 +20,9 @@ function warnDeprecated(name) {
  * alter the serialized output, so this is now only a thin wrapper around
  * `deserialize`.
  */
-export function deserializePage(pageData) {
+export function deserializePage<T = unknown>(pageData: unknown): T {
   warnDeprecated("deserializePage")
-  return deserialize(pageData)
+  return deserialize<T>(pageData)
 }
 
 /**
@@ -30,7 +30,7 @@ export function deserializePage(pageData) {
  *
  * @deprecated Use `deserialize` instead; see `deserializePage`.
  */
-export function deserializePages(pagesData) {
+export function deserializePages<T = unknown>(pagesData: unknown): T[] {
   warnDeprecated("deserializePages")
-  return deserialize(pagesData)
+  return deserialize<T[]>(pagesData)
 }
