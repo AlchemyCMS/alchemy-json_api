@@ -26,13 +26,9 @@ $ gem install alchemy-json_api
 
 ### In your JS/Frontend app
 
-Run this in your application:
-
-```
-npm install @alchemy_cms/json_api --save
-```
-
-or with the package manager of your choice
+A JavaScript/TypeScript deserializer is published as
+[`@alchemy_cms/json_api`](https://www.npmjs.com/package/@alchemy_cms/json_api).
+See [`javascript/README.md`](javascript/README.md) for installation and usage.
 
 ## Usage
 
@@ -46,20 +42,6 @@ mount Alchemy::JsonApi::Engine => "/jsonapi/"
 ```
 
 > __NOTE__ Pick any path you like. This will be the **prefix** of your API URLs
-
-### In your frontend app
-
-This repo provides an NPM package with deserializers to help you convert the response into JS objects.
-
-```js
-import { deserializePages } from "@alchemy_cms/json_api"
-
-const response = await fetch("/jsonapi/pages.json")
-const data = await response.json()
-const pages = deserializePages(data)
-
-console.log(pages[0].name) // => Homepage
-```
 
 ## HTTP Caching
 

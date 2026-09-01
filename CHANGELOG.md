@@ -1,5 +1,9 @@
 # Changelog
 
+> This changelog tracks the **`alchemy-json_api` Ruby gem**. The npm package
+> `@alchemy_cms/json_api` has its own changelog at
+> [`javascript/CHANGELOG.md`](javascript/CHANGELOG.md).
+
 ## 8.2.0 (2026-04-10)
 
 <!-- Release notes generated using configuration in .github/release.yml at main -->

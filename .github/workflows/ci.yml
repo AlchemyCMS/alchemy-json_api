@@ -4,7 +4,11 @@ on:
   push:
     branches:
       - main
+    paths-ignore:
+      - "javascript/**"
   pull_request:
+    paths-ignore:
+      - "javascript/**"
 
 jobs:
   RSpec:
@@ -46,22 +50,3 @@ jobs:
           DB_USER: user
           DB_PASSWORD: password
         run: bundle exec rake
-  Vitest:
-    runs-on: ubuntu-24.04
-    env:
-      NODE_ENV: test
-    steps:
-      - uses: actions/checkout@v4
-      - name: Restore node modules cache
-        uses: actions/cache@v4
-        with:
-          path: node_modules
-          key: ${{ runner.os }}-pnpm-${{ hashFiles('./package.json') }}
-          restore-keys: |
-            ${{ runner.os }}-pnpm-
-      - name: Install pnpm
-        uses: pnpm/action-setup@v4
-      - name: Install dependencies
-        run: pnpm install
-      - name: Run Vitest
-        run: pnpm run test

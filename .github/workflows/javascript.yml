@@ -1,0 +1,80 @@
+name: JavaScript
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "javascript/**"
+      - ".github/workflows/javascript.yml"
+  pull_request:
+    paths:
+      - "javascript/**"
+      - ".github/workflows/javascript.yml"
+
+defaults:
+  run:
+    working-directory: javascript
+
+jobs:
+  Build:
+    runs-on: ubuntu-24.04
+    env:
+      NODE_ENV: production
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.12.1
+      - name: Restore node modules cache
+        uses: actions/cache@v4
+        with:
+          path: javascript/node_modules
+          key: ${{ runner.os }}-pnpm-${{ hashFiles('javascript/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-
+      - name: Install dependencies
+        run: pnpm install
+      - name: Build package
+        run: pnpm run build
+  Vitest:
+    runs-on: ubuntu-24.04
+    env:
+      NODE_ENV: test
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.12.1
+      - name: Restore node modules cache
+        uses: actions/cache@v4
+        with:
+          path: javascript/node_modules
+          key: ${{ runner.os }}-pnpm-${{ hashFiles('javascript/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-
+      - name: Install dependencies
+        run: pnpm install
+      - name: Run Vitest
+        run: pnpm run test -- --run
+  Prettier:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.12.1
+      - name: Restore node modules cache
+        uses: actions/cache@v4
+        with:
+          path: javascript/node_modules
+          key: ${{ runner.os }}-pnpm-${{ hashFiles('javascript/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-
+      - name: Install dependencies
+        run: pnpm install
+      - name: Lint JS files
+        run: pnpm run lint
