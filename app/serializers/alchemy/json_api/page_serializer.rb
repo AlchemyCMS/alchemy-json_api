@@ -33,24 +33,28 @@ module Alchemy
         end
       end
 
-      belongs_to :language, record_type: :language, serializer: ::Alchemy::JsonApi::LanguageSerializer
+      belongs_to :language, record_type: :language, serializer: ::Alchemy::JsonApi::LanguageSerializer, lazy_load_data: true
 
-      has_many :ancestors, record_type: :page, serializer: self do |page|
+      has_many :ancestors, record_type: :page, serializer: self, lazy_load_data: true do |page|
         page.ancestors.map do |ancestor|
           Alchemy::JsonApi::Page.new(ancestor, page_version_type: page.page_version_type)
         end
       end
 
       # All public elements of this page regardless of if they are fixed or nested.
-      # Used for eager loading and should be used as the +include+ parameter of your query
+      # Used for eager loading and should be used as the +include+ parameter of your query.
+      # Eager: paired with the recursive nested_elements linkage to build the element
+      # tree, which can't be expressed as an `include`.
       has_many :all_elements, record_type: :element, serializer: ELEMENT_SERIALIZER
 
       # The top level public, non-fixed elements of this page that - if present -
-      # contains their nested_elements.
+      # contains their nested_elements. Eager: the roots of the element tree
+      # (see all_elements above).
       has_many :elements, record_type: :element, serializer: ELEMENT_SERIALIZER
 
       # The top level public, fixed elements of this page that - if present -
-      # contains their nested_elements.
+      # contains their nested_elements. Eager: the roots of the element tree
+      # (see all_elements above).
       has_many :fixed_elements, record_type: :element, serializer: ELEMENT_SERIALIZER
     end
   end

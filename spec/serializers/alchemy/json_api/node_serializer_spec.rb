@@ -32,6 +32,8 @@ RSpec.describe Alchemy::JsonApi::NodeSerializer do
     subject { serializer.serializable_hash[:data][:relationships] }
 
     context "with children" do
+      let(:options) { {include: [:children]} }
+
       let(:node) do
         FactoryBot.create(
           :alchemy_node,
@@ -52,6 +54,8 @@ RSpec.describe Alchemy::JsonApi::NodeSerializer do
     end
 
     context "with page assigned" do
+      let(:options) { {include: [:page]} }
+
       let(:node) do
         FactoryBot.create(
           :alchemy_node,

@@ -92,7 +92,7 @@ RSpec.describe "Alchemy::JsonApi::Admin::LayoutPagesController", type: :request 
 
       it "loads elements from draft version" do
         element = FactoryBot.create(:alchemy_element, page_version: page.draft_version)
-        subject
+        get alchemy_json_api.admin_layout_page_path(page)
         document = JSON.parse(response.body)
         expect(document["data"]["relationships"]["elements"]).to eq(
           {

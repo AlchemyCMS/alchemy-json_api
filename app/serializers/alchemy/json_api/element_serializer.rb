@@ -18,10 +18,13 @@ module Alchemy
       end
 
       has_many :ingredients,
+        lazy_load_data: true,
         serializer: ->(record) do
           "Alchemy::JsonApi::Ingredient#{record.type.demodulize}Serializer".constantize
         end
 
+      # Eager: the element tree (all_elements -> nested_elements) is recursive
+      # and can't be expressed as an `include`, so its linkage is always present.
       has_many :nested_elements, record_type: :element, serializer: self
     end
   end
