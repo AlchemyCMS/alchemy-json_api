@@ -168,7 +168,7 @@ module Alchemy
 
         _, limit, page = jsonapi_pagination_params
 
-        numbers = { current: page }
+        numbers = {current: page}
 
         total = @_jsonapi_original_size
 
