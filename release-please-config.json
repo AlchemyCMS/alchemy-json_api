@@ -1,0 +1,13 @@
+{
+  "$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json",
+  "include-component-in-tag": true,
+  "packages": {
+    "javascript": {
+      "release-type": "node",
+      "package-name": "@alchemy_cms/json_api",
+      "component": "package",
+      "changelog-path": "CHANGELOG.md",
+      "release-as": "4.0.0"
+    }
+  }
+}
