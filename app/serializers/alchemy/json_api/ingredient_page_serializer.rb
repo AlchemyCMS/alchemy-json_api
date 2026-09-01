@@ -19,7 +19,7 @@ module Alchemy
         ingredient.page&.url_path
       end
 
-      has_one :page, record_type: :page, serializer: PageSerializer do |ingredient|
+      has_one :page, record_type: :page, serializer: PageSerializer, lazy_load_data: true do |ingredient|
         Alchemy::JsonApi::Page.new(ingredient.page) if ingredient.page
       end
     end

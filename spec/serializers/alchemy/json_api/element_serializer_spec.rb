@@ -49,8 +49,10 @@ RSpec.describe Alchemy::JsonApi::ElementSerializer do
     end
 
     context "with ingredients" do
+      let(:options) { {include: [:ingredients]} }
+
       before do
-        expect(element).to receive(:ingredients) do
+        allow(element).to receive(:ingredients) do
           [
             FactoryBot.build_stubbed(:alchemy_ingredient_text, element: element),
             FactoryBot.build_stubbed(:alchemy_ingredient_richtext, element: element),

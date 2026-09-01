@@ -11,7 +11,7 @@ module Alchemy
         ingredient.node&.name
       end
 
-      belongs_to :node, record_type: :node, serializer: ::Alchemy::JsonApi::NodeSerializer
+      belongs_to :node, record_type: :node, serializer: ::Alchemy::JsonApi::NodeSerializer, lazy_load_data: true
 
       with_options if: proc { |ingredient| ingredient.node } do
         attribute :name do |ingredient|
