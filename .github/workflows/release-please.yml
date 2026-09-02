@@ -49,5 +49,8 @@ jobs:
           version: 10.12.1
       - name: Install dependencies
         run: pnpm install
+      - name: Build
+        run: pnpm run build
+      # pnpm builds; npm only uploads (--ignore-scripts skips the prepare rebuild).
       - name: Publish to npm with provenance
-        run: npm publish --provenance --access public
+        run: npm publish --provenance --access public --ignore-scripts
