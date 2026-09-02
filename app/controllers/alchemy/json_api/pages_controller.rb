@@ -99,24 +99,27 @@ module Alchemy
             [
               :legacy_urls,
               {language: {nodes: [:parent, :children, {page: {language: {site: :languages}}}]}},
-              {
-                page_version_type => {
-                  elements: [
-                    :nested_elements,
-                    {ingredients: :related_object}
-                  ]
-                }
-              }
+              {page_version_type => {elements: element_includes}}
             ]
           )
       end
 
+      # Ingredients are lazy-loaded relationships, so only eager load them (and
+      # their related objects) when the request actually includes them.
+      def element_includes
+        includes = [:nested_elements]
+        includes << {ingredients: :related_object} if include_ingredients?
+        includes
+      end
+
       def preload_ingredients(scope)
-        if params[:include]&.match?(/ingredients/)
-          Alchemy::JsonApi::Page.preload_ingredient_relations(scope, page_version_type)
-        else
-          scope
-        end
+        return scope unless include_ingredients?
+
+        Alchemy::JsonApi::Page.preload_ingredient_relations(scope, page_version_type)
+      end
+
+      def include_ingredients?
+        params[:include]&.match?(/ingredients/)
       end
 
       def page_version_type
