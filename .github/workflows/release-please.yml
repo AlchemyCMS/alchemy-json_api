@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -23,7 +24,7 @@ jobs:
 
   publish:
     needs: release-please
-    if: needs.release-please.outputs.release_created == 'true'
+    if: ${{ needs.release-please.outputs.release_created == 'true' || github.event_name == 'workflow_dispatch' }}
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -38,11 +39,18 @@ jobs:
         with:
           node-version: "22"
           registry-url: "https://registry.npmjs.org"
+      # pnpm's OIDC trusted-publishing handshake is broken (pnpm/pnpm#11513),
+      # so publish with the npm CLI, which needs >= 11.5.1 for trusted publishing.
+      - name: Update npm for OIDC trusted publishing
+        run: npm install --global npm@latest
       - name: Install pnpm
         uses: pnpm/action-setup@v4
         with:
           version: 10.12.1
       - name: Install dependencies
         run: pnpm install
+      - name: Build
+        run: pnpm run build
+      # pnpm builds; npm only uploads (--ignore-scripts skips the prepare rebuild).
       - name: Publish to npm with provenance
-        run: pnpm publish --provenance --access public --no-git-checks
+        run: npm publish --provenance --access public --ignore-scripts
