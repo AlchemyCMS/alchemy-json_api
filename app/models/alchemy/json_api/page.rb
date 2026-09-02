@@ -2,17 +2,15 @@ module Alchemy
   module JsonApi
     class Page < SimpleDelegator
       def self.preload_ingredient_relations(pages, page_version_type)
-        pages.map { |page| page.send(page_version_type) }.flat_map(&:elements).flat_map(&:ingredients).group_by do |ingredient|
-          serializer = "Alchemy::JsonApi::Ingredient#{ingredient.type.demodulize}Serializer".safe_constantize
-          serializer ? serializer.preload_relations : []
-        end.each do |preload_relations, ingredients|
-          preload(records: ingredients.map(&:related_object).compact, associations: preload_relations)
+        related_objects = pages.map { |page| page.send(page_version_type) }
+          .flat_map(&:elements)
+          .flat_map(&:ingredients)
+          .filter_map(&:related_object)
+
+        related_objects.group_by(&:class).each do |klass, objects|
+          klass.alchemy_element_preloads(objects) if klass.respond_to?(:alchemy_element_preloads)
         end
         pages
-      end
-
-      def self.preload(records:, associations:)
-        ActiveRecord::Associations::Preloader.new(records: records, associations: associations).call
       end
 
       attr_reader :page_version_type, :page_version
