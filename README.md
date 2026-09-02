@@ -1,5 +1,7 @@
 # Alchemy::JsonApi
 
+[![Test](https://github.com/AlchemyCMS/alchemy-json_api/actions/workflows/ci.yml/badge.svg)](https://github.com/AlchemyCMS/alchemy-json_api/actions/workflows/ci.yml) [![JavaScript](https://github.com/AlchemyCMS/alchemy-json_api/actions/workflows/javascript.yml/badge.svg)](https://github.com/AlchemyCMS/alchemy-json_api/actions/workflows/javascript.yml)
+
 A JSON-API based API for AlchemyCMS
 
 ## Installation
