@@ -1,6 +1,18 @@
 module Alchemy
   module JsonApi
     class Page < SimpleDelegator
+      def self.preload_ingredient_relations(pages, page_version_type)
+        related_objects = pages.map { |page| page.send(page_version_type) }
+          .flat_map(&:elements)
+          .flat_map(&:ingredients)
+          .filter_map(&:related_object)
+
+        related_objects.group_by(&:class).each do |klass, objects|
+          klass.alchemy_element_preloads(objects) if klass.respond_to?(:alchemy_element_preloads)
+        end
+        pages
+      end
+
       attr_reader :page_version_type, :page_version
 
       def initialize(page, page_version_type: :public_version)
