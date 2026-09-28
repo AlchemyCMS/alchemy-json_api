@@ -4,13 +4,7 @@ on:
   push:
     branches:
       - main
-    paths:
-      - "javascript/**"
-      - ".github/workflows/javascript.yml"
   pull_request:
-    paths:
-      - "javascript/**"
-      - ".github/workflows/javascript.yml"
 
 defaults:
   run:

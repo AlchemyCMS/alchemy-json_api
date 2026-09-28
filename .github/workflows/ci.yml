@@ -4,11 +4,7 @@ on:
   push:
     branches:
       - main
-    paths-ignore:
-      - "javascript/**"
   pull_request:
-    paths-ignore:
-      - "javascript/**"
 
 jobs:
   RSpec:
