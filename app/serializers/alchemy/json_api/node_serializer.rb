@@ -21,6 +21,13 @@ module Alchemy
       end
 
       has_many :children, record_type: :node, serializer: self, lazy_load_data: true
+
+      typelize(
+        name: "string",
+        link_url: "string | null",
+        link_title: "string | null",
+        link_nofollow: "boolean | null"
+      )
     end
   end
 end
