@@ -96,4 +96,22 @@ RSpec.describe Alchemy::JsonApi::Page, type: :model do
       is_expected.to match([fixed_element.id])
     end
   end
+
+  describe ".preload_ingredient_relations" do
+    let(:page) { FactoryBot.create(:alchemy_page, :public) }
+    let(:element) { FactoryBot.create(:alchemy_element, page_version: page.public_version, name: "all_you_can_eat") }
+    let(:picture) { FactoryBot.create(:alchemy_picture) }
+    let!(:ingredient) { FactoryBot.create(:alchemy_ingredient_picture, element: element, picture: picture) }
+
+    it "lets each related object class preload its own storage-specific associations" do
+      expect(Alchemy::Picture).to receive(:alchemy_element_preloads).with([picture])
+      described_class.preload_ingredient_relations([page], :public_version)
+    end
+
+    it "preloads related objects without raising and returns the pages" do
+      expect {
+        expect(described_class.preload_ingredient_relations([page], :public_version)).to eq([page])
+      }.not_to raise_error
+    end
+  end
 end
