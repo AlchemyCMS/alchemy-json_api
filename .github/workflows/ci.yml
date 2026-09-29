@@ -3,7 +3,7 @@ name: Test
 on:
   push:
     branches:
-      - main
+      - 8.2-stable
   pull_request:
 
 jobs:
