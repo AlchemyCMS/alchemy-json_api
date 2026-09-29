@@ -1,5 +1,21 @@
 # Changelog
 
+## 8.2.1 (2026-09-29)
+
+<!-- Release notes generated using configuration in .github/release.yml at 8.2-stable -->
+
+## What's Changed
+### Bug Fixes
+* [8.2-stable] fix(IngredientPictureSerializer): Use picture_url (#214) by @alchemycms-ci-bot in https://github.com/AlchemyCMS/alchemy-json_api/pull/217
+### Performance Improvements
+* [8.2-stable] Route element visibility through ElementsRepository (#196) by @alchemycms-ci-bot in https://github.com/AlchemyCMS/alchemy-json_api/pull/215
+* [8.2-stable] refactor: load elements through core's shared element repository (#199) by @alchemycms-ci-bot in https://github.com/AlchemyCMS/alchemy-json_api/pull/216
+
+## New Contributors
+* @alchemycms-ci-bot made their first contribution in https://github.com/AlchemyCMS/alchemy-json_api/pull/215
+
+**Full Changelog**: https://github.com/AlchemyCMS/alchemy-json_api/compare/v8.2.0...v8.2.1
+
 ## 8.2.0 (2026-04-10)
 
 <!-- Release notes generated using configuration in .github/release.yml at main -->
