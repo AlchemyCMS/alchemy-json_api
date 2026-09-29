@@ -37,6 +37,20 @@ module Alchemy
           ingredient.attachment.file_size
         end
       end
+
+      typelize(
+        value: "string | null",
+        width: "string | number | null",
+        height: "string | number | null",
+        allow_fullscreen: "boolean | string | null",
+        autoplay: "boolean | null",
+        controls: "boolean | null",
+        preload: "string | null",
+        video_name: "string",
+        video_file_name: "string",
+        video_mime_type: "string",
+        video_file_size: "number"
+      )
     end
   end
 end

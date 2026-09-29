@@ -13,6 +13,13 @@ module Alchemy
       )
 
       attribute :body, &:value
+
+      typelize(
+        value: "string | null",
+        sanitized_body: "string | null",
+        stripped_body: "string | null",
+        body: "string | null"
+      )
     end
   end
 end

@@ -6,6 +6,8 @@ module Alchemy
   module JsonApi
     class IngredientColorSerializer < BaseSerializer
       include IngredientSerializer
+
+      typelize(value: "string | null")
     end
   end
 end

@@ -30,6 +30,15 @@ module Alchemy
           ingredient.attachment.file_size
         end
       end
+
+      typelize(
+        value: "string | null",
+        link_title: "string | null",
+        attachment_name: "string",
+        attachment_file_name: "string",
+        attachment_mime_type: "string",
+        attachment_file_size: "number"
+      )
     end
   end
 end
