@@ -15,10 +15,7 @@ module Alchemy
         :link_target
       )
 
-      attribute :value do |ingredient|
-        ingredient.picture&.url
-      end
-
+      attribute :value, &:picture_url
       attribute :alt_text, &:alt_tag
       attribute :link_url, &:link
 

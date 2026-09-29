@@ -35,6 +35,12 @@ RSpec.describe Alchemy::JsonApi::IngredientPictureSerializer do
       expect(subject[:image_dimensions]).to eq(width: 1, height: 1)
     end
 
+    it "uses cropped image url" do
+      expect(ingredient).to receive(:settings).at_least(:once) { {crop: true, size: "1x1"} }
+      expect(ingredient).to receive(:picture_url).and_call_original
+      subject
+    end
+
     describe "image_dimensions" do
       let(:image_dimensions) { subject[:image_dimensions] }
 
