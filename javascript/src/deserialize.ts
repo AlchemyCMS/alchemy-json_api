@@ -1,11 +1,12 @@
 /*
  * JSON:API deserializer.
  *
- * A resource's relationships routinely form cycles (e.g. a taxon's `children`
- * each carry an `ancestors` array pointing back to the taxon). Resolving those
- * naively yields a circular object graph, which cannot be serialized with
- * `JSON.stringify` and throws `RangeError: Maximum call stack size exceeded`
- * when walked recursively. This produces an acyclic graph instead.
+ * A resource is typically referenced from many places in one document (menu
+ * nodes point at their `parent` and list their `children`, several elements
+ * link to the same page, a page's `ancestors` are shared by its siblings).
+ * Each resource is therefore materialized exactly once and the same object is
+ * shared by every reference to it, so the output is linear in the size of the
+ * document.
  *
  * Observable contract:
  *
@@ -19,18 +20,24 @@
  *
  * Deliberate features:
  *
- *   1. Cycle-safe by construction: each resource carries the set of ancestor
- *      keys currently being resolved; a relationship that would revisit an
- *      ancestor is emitted as a `{ id }` stub rather than recursed into, so the
- *      result is always acyclic. This generalises to any back-reference.
+ *   1. Shared references: every `type:id` in `included` resolves to one object.
+ *      The object is registered before its relationships are resolved, so a
+ *      back-reference (e.g. a menu node's `parent`, which lists the node among
+ *      its `children`) is a real reference to that same object, and the
+ *      graph may therefore contain cycles. Consumers that walk it must track
+ *      visited objects; `structuredClone`, devalue (Nuxt payloads) and Vue
+ *      reactivity all do. Plain `JSON.stringify` does not.
  *   2. O(1) relationship lookups: `included` is indexed once by `type:id`.
  *   3. Input is never touched: the document is cloned up front, so neither the
  *      argument nor any nested attribute object is aliased by, or mutable
  *      through, the returned graph.
  *
- * The implementation is a set of small pure functions: nothing mutates shared
- * state, and the ancestor `path` is passed down by value (a new Set per hop)
- * rather than mutated in place.
+ * Why not break cycles with stubs? 4.0.0 did, by re-resolving a resource at
+ * every place it was referenced and stubbing only references to its own
+ * ancestors. That keeps the graph acyclic, but the output then grows with the
+ * number of *paths* through the relationship graph rather than the number of
+ * resources, which is exponential once resources cross-reference each other
+ * (see the "output size" specs).
  */
 
 // Internal shapes describing the JSON:API document we consume. They are not
@@ -60,8 +67,8 @@ type Deserialized = Record<string, unknown>
 /** A `type:id` map of every sideloaded resource. */
 type ResourceIndex = Map<string, JsonApiResource>
 
-/** The set of `type:id` keys currently on the resolution path (ancestors). */
-type Path = ReadonlySet<string>
+/** Every resource materialized so far, by `type:id`. */
+type Cache = Map<string, Deserialized>
 
 const keyOf = ({ type, id }: JsonApiResourceIdentifier): string =>
   `${type}:${id}`
@@ -73,57 +80,57 @@ const indexResources = (included: readonly JsonApiResource[]): ResourceIndex =>
   new Map(included.map((resource) => [keyOf(resource), resource]))
 
 /**
- * Resolve one relationship identifier to a full object or an `{ id }` stub.
- * Stubs when the target is on the current path (would close a cycle) or is not
- * present in `included`.
+ * Resolve one relationship identifier to the shared object for that resource,
+ * or to an `{ id }` stub when it is not present in `included`.
  */
 const resolveRef = (
   index: ResourceIndex,
-  path: Path,
+  cache: Cache,
   ref: JsonApiResourceIdentifier
 ): Deserialized => {
-  const key = keyOf(ref)
-  const target = path.has(key) ? undefined : index.get(key)
-  return target ? resolveResource(index, path, target) : stub(ref)
+  const target = index.get(keyOf(ref))
+  return target ? resolveResource(index, cache, target) : stub(ref)
 }
 
 /** Resolve a relationship's `data` (to-one, to-many, or null) to its value. */
 const resolveRelationship = (
   index: ResourceIndex,
-  path: Path,
+  cache: Cache,
   data: JsonApiResourceIdentifier | JsonApiResourceIdentifier[] | null
 ): Deserialized | Deserialized[] | null => {
   if (Array.isArray(data))
-    return data.map((ref) => resolveRef(index, path, ref))
-  if (data) return resolveRef(index, path, data)
+    return data.map((ref) => resolveRef(index, cache, ref))
+  if (data) return resolveRef(index, cache, data)
   return null
 }
 
 /**
- * Flatten a resource into `{ ...attributes, id, ...resolvedRelationships }`.
- * The resource's own key is added to `path` for its descendants so a cycle back
- * to it resolves as a stub.
+ * Flatten a resource into `{ ...attributes, id, ...resolvedRelationships }`,
+ * once per `type:id`. The object is cached before its relationships are
+ * resolved, so a reference back to it (directly or through a cycle) returns
+ * this same object instead of building another copy.
  */
 const resolveResource = (
   index: ResourceIndex,
-  path: Path,
+  cache: Cache,
   resource: JsonApiResource
 ): Deserialized => {
-  const childPath = new Set(path).add(keyOf(resource))
-  const relationships = Object.entries(resource.relationships ?? {}).map(
-    ([name, rel]) =>
-      [name, resolveRelationship(index, childPath, rel?.data ?? null)] as const
-  )
+  const key = keyOf(resource)
+  const cached = cache.get(key)
+  if (cached) return cached
 
-  return {
-    ...resource.attributes,
-    id: resource.id,
-    ...Object.fromEntries(relationships)
+  const result: Deserialized = { ...resource.attributes, id: resource.id }
+  cache.set(key, result)
+
+  for (const [name, rel] of Object.entries(resource.relationships ?? {})) {
+    result[name] = resolveRelationship(index, cache, rel?.data ?? null)
   }
+  return result
 }
 
 /**
- * Deserialize a JSON:API document into plain, acyclic objects.
+ * Deserialize a JSON:API document into plain objects, sharing one object per
+ * resource. The result may contain reference cycles.
  *
  * The `document` is a raw API response with no compile-time shape, so the
  * parameter is `unknown`. The caller names the shape it expects out via `T`;
@@ -137,8 +144,9 @@ export function deserialize<T = unknown>(document: unknown): T {
     document == null ? {} : structuredClone(document)
   ) as JsonApiDocument
   const index = indexResources(included)
+  const cache: Cache = new Map()
   const resolve = (resource: JsonApiResource) =>
-    resolveResource(index, new Set<string>(), resource)
+    resolveResource(index, cache, resource)
 
   if (Array.isArray(data)) return data.map(resolve) as T
   if (data) return resolve(data) as T
