@@ -11,7 +11,11 @@ var e = ({ type: e, id: t }) => `${e}:${t}`, t = ({ id: e }) => ({ id: e }), n =
 	};
 };
 function o(e) {
-	let { data: t = null, included: r = [] } = e == null ? {} : structuredClone(e), i = n(r), o = (e) => a(i, /* @__PURE__ */ new Set(), e);
+	return s(e);
+}
+function s(e) {
+	if (e == null) return null;
+	let { data: t = null, included: r = [] } = structuredClone(e), i = n(r), o = (e) => a(i, /* @__PURE__ */ new Set(), e);
 	return Array.isArray(t) ? t.map(o) : t ? o(t) : null;
 }
 //#endregion

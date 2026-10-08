@@ -1,4 +1,4 @@
-import { deserialize } from "./deserialize"
+import { deserialize, type JsonApiDocument } from "./deserialize"
 
 const warned = new Set<string>()
 
@@ -20,7 +20,7 @@ function warnDeprecated(name: string): void {
  * alter the serialized output, so this is now only a thin wrapper around
  * `deserialize`.
  */
-export function deserializePage<T = unknown>(pageData: unknown): T {
+export function deserializePage<T>(pageData: JsonApiDocument): T {
   warnDeprecated("deserializePage")
   return deserialize<T>(pageData)
 }
@@ -30,7 +30,7 @@ export function deserializePage<T = unknown>(pageData: unknown): T {
  *
  * @deprecated Use `deserialize` instead; see `deserializePage`.
  */
-export function deserializePages<T = unknown>(pagesData: unknown): T[] {
+export function deserializePages<T>(pagesData: JsonApiDocument): T[] {
   warnDeprecated("deserializePages")
   return deserialize<T[]>(pagesData)
 }

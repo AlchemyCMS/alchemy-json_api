@@ -118,7 +118,9 @@ describe("deserialize", () => {
 
   // Carried over from the original JS suite: numeric ids are preserved, and a
   // to-many whose targets are absent from `included` becomes an array of
-  // `{ id }` stubs (alongside an expanded to-one).
+  // `{ id }` stubs (alongside an expanded to-one). JSON:API requires string
+  // ids, so this is not a valid `JsonApiDocument`; untyped JavaScript callers
+  // can still pass one, and it keeps working.
   it("preserves numeric ids and stubs absent to-many targets", () => {
     const doc = {
       data: [
@@ -140,6 +142,7 @@ describe("deserialize", () => {
       included: [{ type: "addr", id: 1, attributes: { street: "Street 1" } }]
     }
 
+    // @ts-expect-error -- numeric ids violate JSON:API's string-id rule
     expect(deserialize(doc)).toEqual([
       {
         id: 1,
