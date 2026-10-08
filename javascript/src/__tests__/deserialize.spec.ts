@@ -151,9 +151,9 @@ describe("deserialize", () => {
     ])
   })
 
-  describe("cycle safety", () => {
+  describe("cycles and shared references", () => {
     // Models the real taxonomy shape: a root taxon whose children each point
-    // back to it via `ancestors`, which would otherwise close a cycle.
+    // back to it via `ancestors`, which closes a cycle.
     const buildTaxonomyDoc = () => ({
       data: {
         type: "product",
@@ -189,9 +189,9 @@ describe("deserialize", () => {
       ]
     })
 
-    it("produces an acyclic graph that JSON.stringify can serialize", () => {
+    it("terminates on cyclic documents and yields a graph structuredClone can copy", () => {
       const result = deserialize(buildTaxonomyDoc())
-      expect(() => JSON.stringify(result)).not.toThrow()
+      expect(() => structuredClone(result)).not.toThrow()
     })
 
     it("preserves ancestor names and urlPaths used by breadcrumbs", () => {
@@ -209,27 +209,43 @@ describe("deserialize", () => {
       expect(ancestors[0]!.urlPath).toBeNull()
     })
 
-    it("replaces cycle-closing back-references with { id } stubs", () => {
-      const result = deserialize<{
-        primaryTaxon: {
-          ancestors: {
-            id: string
-            children?: ({ id: string } | Record<string, unknown>)[]
-          }[]
-        }
-      }>(buildTaxonomyDoc())
+    it("resolves back-references to the same shared object", () => {
+      type Taxon = { id: string; children?: Taxon[]; ancestors?: Taxon[] }
+      const result = deserialize<{ primaryTaxon: Taxon }>(buildTaxonomyDoc())
 
-      const root = result.primaryTaxon.ancestors[0]!
-      // `root.children` contains `child` (fully, since it's not on the path
-      // from root) and `root` itself as a stub (it *is* on the path).
-      const rootSelfRef = root.children?.find(
-        (c) => "id" in c && c.id === "root"
-      )
-      expect(rootSelfRef).toEqual({ id: "root" })
+      const child = result.primaryTaxon
+      const root = child.ancestors![0]!
+      // root.children lists the child and root itself; both are the very
+      // objects already reachable from the product, not copies or stubs.
+      expect(root.children![0]).toBe(child)
+      expect(root.children![1]).toBe(root)
     })
 
-    it("does not stack-overflow or hang on deeply nested cycles", () => {
-      // A -> B -> A chain.
+    it("materializes a resource referenced from many places only once", () => {
+      // Two pages whose page ingredients link to the same page.
+      const doc = {
+        data: [
+          {
+            type: "ingredient",
+            id: "1",
+            relationships: { page: { data: { type: "page", id: "9" } } }
+          },
+          {
+            type: "ingredient",
+            id: "2",
+            relationships: { page: { data: { type: "page", id: "9" } } }
+          }
+        ],
+        included: [{ type: "page", id: "9", attributes: { name: "About us" } }]
+      }
+
+      const [a, b] = deserialize<{ page: unknown }[]>(doc)
+      expect(a!.page).toEqual({ id: "9", name: "About us" })
+      expect(a!.page).toBe(b!.page)
+    })
+
+    it("stubs references back to the primary resource, which is not in included", () => {
+      // A -> B -> A chain, where A is the primary `data`.
       const doc = {
         data: {
           type: "node",
@@ -249,8 +265,91 @@ describe("deserialize", () => {
 
       const result = deserialize<{ next: { next: unknown } }>(doc)
       expect(() => JSON.stringify(result)).not.toThrow()
-      // B.next points back to A, which is on the path -> stub.
+      // Only `included` is resolvable, so B.next is a stub for A.
       expect(result.next.next).toEqual({ id: "A" })
+    })
+  })
+
+  describe("output size", () => {
+    // Count distinct objects reachable from the result.
+    const countObjects = (root: unknown): number => {
+      const seen = new Set<object>()
+      const stack = [root]
+      while (stack.length) {
+        const value = stack.pop()
+        if (value === null || typeof value !== "object" || seen.has(value))
+          continue
+        seen.add(value)
+        stack.push(...Object.values(value))
+      }
+      return seen.size
+    }
+
+    // A menu tree: `depth` levels of `branching` nodes, each listing its
+    // `children` and pointing back at its `parent`, all of them included.
+    // Resolving it per path (as 4.0.0 did) re-expands every subtree through
+    // each node's parent, which grows exponentially with the depth.
+    const menu = (depth: number, branching: number) => {
+      const included: {
+        type: string
+        id: string
+        attributes: { name: string }
+        relationships: {
+          parent: { data: { type: string; id: string } | null }
+          children: { data: { type: string; id: string }[] }
+        }
+      }[] = []
+      const build = (parent: string | null, level: number): string => {
+        const id = String(included.length + 1)
+        const node = {
+          type: "node",
+          id,
+          attributes: { name: `Node ${id}` },
+          relationships: {
+            parent: { data: parent ? { type: "node", id: parent } : null },
+            children: { data: [] as { type: string; id: string }[] }
+          }
+        }
+        included.push(node)
+        if (level < depth) {
+          for (let i = 0; i < branching; i++) {
+            node.relationships.children.data.push({
+              type: "node",
+              id: build(id, level + 1)
+            })
+          }
+        }
+        return id
+      }
+      const root = build(null, 0)
+      return {
+        data: {
+          type: "language",
+          id: "en",
+          relationships: { menus: { data: [{ type: "node", id: root }] } }
+        },
+        included
+      }
+    }
+
+    it("is linear in the number of resources for cyclic trees", () => {
+      // 1 + 5 + 25 + 125 = 156 nodes; 4.0.0 materialized 73k objects here.
+      const document = menu(3, 5)
+      const result = deserialize(document)
+
+      // language + menus array + per node: node and children array.
+      expect(countObjects(result)).toBe(2 + document.included.length * 2)
+    })
+
+    it("shares parent and children references", () => {
+      type MenuNode = { parent: MenuNode | null; children: MenuNode[] }
+      const result = deserialize<{ menus: MenuNode[] }>(menu(2, 2))
+      const root = result.menus[0]!
+      const child = root.children[0]!
+
+      expect(root.parent).toBeNull()
+      expect(child.parent).toBe(root)
+      expect(child.children[0]!.parent).toBe(child)
     })
   })
 
@@ -273,7 +372,7 @@ describe("deserialize", () => {
     //   - flattened attributes + injected id
     //   - null to-one relationships (fragrance, replacementProduct are null)
     //   - a to-many relationship (variants) whose member has its own to-many
-    //     (optionValues) and a self-referential `product` back-edge -> stub
+    //     (optionValues) and a `product` back-edge to `data` -> stub
     //   - a real 4-level taxon ancestor chain (primaryTaxon -> ancestors)
     const document = {
       data: {
@@ -387,8 +486,8 @@ describe("deserialize", () => {
                 position: 25
               }
             ],
-            // variant.product points back to the root product (on the path) ->
-            // resolved as an { id } stub, which keeps the graph acyclic.
+            // variant.product points back to the primary product, which is
+            // `data` rather than `included`, so it resolves as an { id } stub.
             product: { id: "2333" }
           }
         ],
@@ -405,7 +504,7 @@ describe("deserialize", () => {
       })
     })
 
-    it("is fully serializable (acyclic)", () => {
+    it("is JSON-serializable, as its only back-edge targets `data`", () => {
       expect(() => JSON.stringify(deserialize(document))).not.toThrow()
     })
   })

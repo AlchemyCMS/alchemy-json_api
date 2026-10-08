@@ -1,5 +1,6 @@
 /**
- * Deserialize a JSON:API document into plain, acyclic objects.
+ * Deserialize a JSON:API document into plain objects, sharing one object per
+ * resource. The result may contain reference cycles.
  *
  * The `document` is a raw API response with no compile-time shape, so the
  * parameter is `unknown`. The caller names the shape it expects out via `T`;
