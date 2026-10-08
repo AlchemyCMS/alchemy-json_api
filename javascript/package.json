@@ -47,7 +47,7 @@
     "build": "vite build && tsc -p tsconfig.json",
     "prepare": "pnpm run build",
     "lint": "prettier --check 'src/**/*.ts'",
-    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "typecheck": "tsc --noEmit -p tsconfig.json && tsc -p tsconfig.spec.json",
     "test": "vitest"
   },
   "packageManager": "pnpm@10.12.1"

@@ -1,3 +1,4 @@
+import { type JsonApiDocument } from "./deserialize";
 /**
  * Deserializes a JSON:API page document.
  *
@@ -6,10 +7,10 @@
  * alter the serialized output, so this is now only a thin wrapper around
  * `deserialize`.
  */
-export declare function deserializePage<T = unknown>(pageData: unknown): T;
+export declare function deserializePage<T>(pageData: JsonApiDocument): T;
 /**
  * Deserializes a collection of JSON:API page documents.
  *
  * @deprecated Use `deserialize` instead; see `deserializePage`.
  */
-export declare function deserializePages<T = unknown>(pagesData: unknown): T[];
+export declare function deserializePages<T>(pagesData: JsonApiDocument): T[];
