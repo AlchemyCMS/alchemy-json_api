@@ -1,5 +1,18 @@
 # Changelog
 
+## [5.0.0](https://github.com/AlchemyCMS/alchemy-json_api/compare/package-v4.0.0...package-v5.0.0) (2026-10-08)
+
+
+### ⚠ BREAKING CHANGES
+
+* **deserialize:** share resources instead of copying them per path ([#220](https://github.com/AlchemyCMS/alchemy-json_api/issues/220))
+* **deserialize:** back-references between included resources are now the same object rather than `{ id }` stubs, so the result may contain cycles and is no longer guaranteed to be `JSON.stringify`-safe. structuredClone, devalue and Vue/React state handle cycles. References to the primary `data` resource are still `{ id }` stubs, as before.
+
+### Bug Fixes
+
+* **deserialize:** share resources instead of copying them per path ([8e2d073](https://github.com/AlchemyCMS/alchemy-json_api/commit/8e2d073960f754e8e985a9147f147b01a97e2f11))
+* **deserialize:** share resources instead of copying them per path ([#220](https://github.com/AlchemyCMS/alchemy-json_api/issues/220)) ([0af5e01](https://github.com/AlchemyCMS/alchemy-json_api/commit/0af5e0181313f3c080313b6023b0b1eed209711f))
+
 ## [4.0.0](https://github.com/AlchemyCMS/alchemy-json_api/compare/package-v3.0.1...package-v4.0.0) (2026-09-01)
 
 
