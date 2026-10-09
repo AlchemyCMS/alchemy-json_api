@@ -45,6 +45,59 @@ mount Alchemy::JsonApi::Engine => "/jsonapi/"
 
 > __NOTE__ Pick any path you like. This will be the **prefix** of your API URLs
 
+### TypeScript types
+
+Generate TypeScript types of your elements and page layouts for the deserialized API responses with
+
+```bash
+$ bin/rails alchemy:json_api:generate_types
+```
+
+This writes them to `app/javascript/types/alchemy.d.ts`. Set `OUTPUT` to write them somewhere else, e.g. into your frontend app:
+
+```bash
+$ bin/rails alchemy:json_api:generate_types OUTPUT=../frontend/src/types/alchemy.d.ts
+```
+
+Re-run the task whenever you change your `elements.yml` or `page_layouts.yml`.
+
+The types let you narrow pages by their page layout and elements by their name:
+
+```ts
+import { deserialize } from "@alchemy_cms/json_api"
+import type { AlchemyPage } from "./types/alchemy"
+
+const page = deserialize<AlchemyPage>(data)
+
+if (page.page_layout === "standard") {
+  page.elements.forEach((element) => {
+    if (element.name === "article") {
+      element.ingredients // only the ingredients of the article element, if included
+    }
+  })
+}
+```
+
+> [!NOTE]
+> Relationships are typed as complete objects. Relationships that are not part of the `include` parameter of your query only contain the `id`. Relationships that are only serialized if included, like the `ingredients` of an element, are `null` otherwise and typed accordingly.
+
+If you add your own ingredient serializers, declare the TypeScript types of their attributes. Undeclared attributes are typed as `unknown`.
+
+```rb
+# app/serializers/alchemy/json_api/ingredient_rating_serializer.rb
+module Alchemy
+  module JsonApi
+    class IngredientRatingSerializer < BaseSerializer
+      include IngredientSerializer
+
+      attribute :max_stars
+
+      typelize(value: "number | null", max_stars: "number")
+    end
+  end
+end
+```
+
 ## HTTP Caching
 
 Alchemy::JsonApi allows for caching API responses. It respects the caching configuration of your Rails app and of your Alchemy configuration and settings in the pages page layout configuration. Restricted pages are never cached.

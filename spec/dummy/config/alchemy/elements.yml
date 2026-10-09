@@ -42,10 +42,8 @@
       type: Datetime
     - role: news_headline
       type: Text
-      rss_title: true
     - role: body
       type: Richtext
-      rss_description: true
 
 - name: download
   ingredients:

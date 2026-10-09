@@ -12,6 +12,13 @@ module Alchemy
         :link_target,
         :link_title
       )
+
+      typelize(
+        value: "string | null",
+        link_class_name: "string | null",
+        link_target: "string | null",
+        link_title: "string | null"
+      )
     end
   end
 end

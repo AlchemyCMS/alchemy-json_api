@@ -22,6 +22,12 @@ module Alchemy
       has_one :page, record_type: :page, serializer: PageSerializer, lazy_load_data: true do |ingredient|
         Alchemy::JsonApi::Page.new(ingredient.page) if ingredient.page
       end
+
+      typelize(
+        value: "string | null",
+        page_name: "string | null",
+        page_url: "string | null"
+      )
     end
   end
 end
