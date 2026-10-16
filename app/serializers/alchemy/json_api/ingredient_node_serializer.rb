@@ -30,6 +30,14 @@ module Alchemy
           ingredient.node.nofollow
         end
       end
+
+      typelize(
+        value: "string | null",
+        name: "string",
+        link_url: "string | null",
+        link_title: "string | null",
+        link_nofollow: "boolean | null"
+      )
     end
   end
 end

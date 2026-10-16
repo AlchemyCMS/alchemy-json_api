@@ -26,6 +26,15 @@ module Alchemy
       # Eager: the element tree (all_elements -> nested_elements) is recursive
       # and can't be expressed as an `include`, so its linkage is always present.
       has_many :nested_elements, record_type: :element, serializer: self
+
+      typelize(
+        name: "string",
+        fixed: "boolean",
+        position: "number",
+        created_at: "string",
+        updated_at: "string",
+        deprecated: "boolean"
+      )
     end
   end
 end

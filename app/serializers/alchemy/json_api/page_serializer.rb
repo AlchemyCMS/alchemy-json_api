@@ -56,6 +56,21 @@ module Alchemy
       # contains their nested_elements. Eager: the roots of the element tree
       # (see all_elements above).
       has_many :fixed_elements, record_type: :element, serializer: ELEMENT_SERIALIZER
+
+      typelize(
+        name: "string",
+        urlname: "string",
+        url_path: "string",
+        page_layout: "string",
+        language_code: "string",
+        created_at: "string",
+        updated_at: "string",
+        restricted: "boolean",
+        legacy_urls: "string[]",
+        title: "string | null",
+        meta_keywords: "string | null",
+        meta_description: "string | null"
+      )
     end
   end
 end

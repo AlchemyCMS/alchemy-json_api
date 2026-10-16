@@ -6,6 +6,8 @@ module Alchemy
   module JsonApi
     class IngredientBooleanSerializer < BaseSerializer
       include IngredientSerializer
+
+      typelize(value: "boolean | null")
     end
   end
 end
