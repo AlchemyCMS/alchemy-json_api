@@ -441,6 +441,32 @@ RSpec.describe "Alchemy::JsonApi::Pages", type: :request do
 
         expect(queries_for_three_pages).to eq(queries_for_one_page)
       end
+
+      def count_ingredient_load_queries
+        queries = []
+        subscriber = ActiveSupport::Notifications.subscribe("sql.active_record") do |_name, _start, _finish, _id, payload|
+          next if payload[:name] == "SCHEMA" || payload[:cached]
+          queries << payload[:sql] if payload[:sql].include?(%("alchemy_ingredients"))
+        end
+        yield
+        queries.size
+      ensure
+        ActiveSupport::Notifications.unsubscribe(subscriber)
+      end
+
+      it "does not load ingredients when they are not included" do
+        create_page_with_element
+
+        without_ingredients = count_ingredient_load_queries do
+          get alchemy_json_api.pages_path(include: "all_elements")
+        end
+        expect(without_ingredients).to eq(0)
+
+        with_ingredients = count_ingredient_load_queries do
+          get alchemy_json_api.pages_path(include: "all_elements.ingredients")
+        end
+        expect(with_ingredients).to be > 0
+      end
     end
 
     context "with pagination params" do
