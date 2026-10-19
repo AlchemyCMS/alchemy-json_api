@@ -12,7 +12,14 @@ module Alchemy
       # Introduced in Alchemy 6.1
       if Alchemy::Ingredients::Headline.stored_attributes[:data].include?(:dom_id)
         attribute :dom_id
+        typelize(dom_id: "string | null")
       end
+
+      typelize(
+        value: "string | null",
+        level: "string | number | null",
+        size: "string | number | null"
+      )
     end
   end
 end

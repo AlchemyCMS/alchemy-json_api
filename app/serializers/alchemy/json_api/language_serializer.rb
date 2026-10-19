@@ -17,6 +17,13 @@ module Alchemy
       end
       has_many :pages, lazy_load_data: true
       has_one :root_page, record_type: :page, serializer: ::Alchemy::JsonApi::PageSerializer, lazy_load_data: true
+
+      typelize(
+        name: "string",
+        language_code: "string",
+        country_code: "string",
+        locale: "string"
+      )
     end
   end
 end
