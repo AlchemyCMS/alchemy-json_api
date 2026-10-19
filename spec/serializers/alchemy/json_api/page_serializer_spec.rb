@@ -20,7 +20,9 @@ RSpec.describe Alchemy::JsonApi::PageSerializer do
           :alchemy_page,
           :public,
           urlname: "a-page",
-          tag_list: "Tag1,Tag2"
+          tag_list: "Tag1,Tag2",
+          robot_index: false,
+          robot_follow: false
         ).tap do |page|
           page.public_version.title = "Public Page Title"
           page.public_version.meta_keywords = "public, meta, keywords"
@@ -42,6 +44,8 @@ RSpec.describe Alchemy::JsonApi::PageSerializer do
         expect(attributes[:updated_at]).to eq(page.updated_at)
         expect(attributes[:legacy_urls]).to eq(["/other"])
         expect(attributes[:restricted]).to be false
+        expect(attributes[:robot_index]).to be false
+        expect(attributes[:robot_follow]).to be false
         expect(attributes.keys).not_to include(:tag_list, :status)
       end
     end
@@ -75,6 +79,8 @@ RSpec.describe Alchemy::JsonApi::PageSerializer do
         expect(attributes[:updated_at]).to eq(page.updated_at)
         expect(attributes[:legacy_urls]).to eq(["/other"])
         expect(attributes[:restricted]).to be false
+        expect(attributes[:robot_index]).to be true
+        expect(attributes[:robot_follow]).to be true
         expect(attributes.keys).not_to include(:tag_list, :status)
       end
     end
