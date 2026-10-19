@@ -1,5 +1,16 @@
 # Changelog
 
+## 8.2.2 (2026-10-19)
+
+<!-- Release notes generated using configuration in .github/release.yml at 8.2-stable -->
+
+## What's Changed
+### New Features
+* [8.2-stable] feat(PageSerializer): expose robot_index and robot_follow attributes by @alchemycms-bot[bot] in https://github.com/AlchemyCMS/alchemy-json_api/pull/224
+
+
+**Full Changelog**: https://github.com/AlchemyCMS/alchemy-json_api/compare/v8.2.1...v8.2.2
+
 ## 8.2.1 (2026-09-29)
 
 <!-- Release notes generated using configuration in .github/release.yml at 8.2-stable -->
