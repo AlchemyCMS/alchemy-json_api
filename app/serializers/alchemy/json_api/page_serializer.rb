@@ -13,7 +13,9 @@ module Alchemy
         :language_code,
         :created_at,
         :updated_at,
-        :restricted
+        :restricted,
+        :robot_index,
+        :robot_follow
       )
 
       cache_options store: Rails.cache, namespace: "alchemy-jsonapi"
