@@ -149,4 +149,34 @@ RSpec.describe "Alchemy::JsonApi::Admin::LayoutPagesController", type: :request 
       end
     end
   end
+
+  describe "GET /alchemy/json_api/admin/layout_pages/:page_layout" do
+    let(:page) { FactoryBot.create(:alchemy_page, :layoutpage, name: "My Footer") }
+
+    subject { get alchemy_json_api.admin_layout_page_path(page.page_layout) }
+
+    context "as author user" do
+      before do
+        allow_any_instance_of(ApplicationController).to receive(:current_user) do
+          FactoryBot.create(:alchemy_author_user)
+        end
+      end
+
+      it "finds the unpublished layout page by its page layout" do
+        subject
+        expect(response).to have_http_status(200)
+        document = JSON.parse(response.body)
+        expect(document["data"]).to have_id(page.id.to_s)
+      end
+
+      it "loads elements from draft version" do
+        element = FactoryBot.create(:alchemy_element, page_version: page.draft_version)
+        subject
+        document = JSON.parse(response.body)
+        expect(document["data"]["relationships"]["elements"]["data"]).to eq(
+          [{"id" => element.id.to_s, "type" => "element"}]
+        )
+      end
+    end
+  end
 end
