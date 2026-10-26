@@ -4,6 +4,8 @@ module Alchemy
   module JsonApi
     module Admin
       class LayoutPagesController < JsonApi::Admin::PagesController
+        include FindLayoutPageByPageLayout
+
         private
 
         def page_scope
