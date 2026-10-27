@@ -35,6 +35,18 @@ module Alchemy
           ingredient.attachment.file_size
         end
       end
+
+      typelize(
+        value: "string | null",
+        autoplay: "boolean | null",
+        controls: "boolean | null",
+        muted: "boolean | null",
+        loop: "boolean | null",
+        audio_name: "string",
+        audio_file_name: "string",
+        audio_mime_type: "string",
+        audio_file_size: "number"
+      )
     end
   end
 end

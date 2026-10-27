@@ -76,6 +76,23 @@ module Alchemy
           ingredient.picture.image_file_size
         end
       end
+
+      typelize(
+        value: "string | null",
+        title: "string | null",
+        caption: "string | null",
+        link_class_name: "string | null",
+        link_title: "string | null",
+        link_target: "string | null",
+        alt_text: "string | null",
+        link_url: "string | null",
+        image_dimensions: "{ width: number; height: number }",
+        srcset: "Array<{ url: string; desc: string; width: string; height: string | null; type: string }>",
+        image_name: "string",
+        image_file_name: "string",
+        image_mime_type: "string",
+        image_file_size: "number"
+      )
     end
   end
 end
