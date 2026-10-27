@@ -1,5 +1,27 @@
 # Changelog
 
+## 8.4.0 (2026-10-27)
+
+<!-- Release notes generated using configuration in .github/release.yml at main -->
+
+## What's Changed
+### New Features
+* feat(serializer): lazy-load relationship data by default by @tvdeyen in https://github.com/AlchemyCMS/alchemy-json_api/pull/203
+* feat(PageSerializer): expose robot_index and robot_follow attributes by @mamhoff in https://github.com/AlchemyCMS/alchemy-json_api/pull/223
+* feat(LayoutPagesController): find layout pages by page layout by @mamhoff in https://github.com/AlchemyCMS/alchemy-json_api/pull/227
+### Bug Fixes
+* fix(IngredientPictureSerializer): Use picture_url by @tvdeyen in https://github.com/AlchemyCMS/alchemy-json_api/pull/214
+### Performance Improvements
+* feat: Cache ingredient serializers by @tvdeyen in https://github.com/AlchemyCMS/alchemy-json_api/pull/186
+* Route element visibility through ElementsRepository by @tvdeyen in https://github.com/AlchemyCMS/alchemy-json_api/pull/196
+* refactor: load elements through core's shared element repository by @tvdeyen in https://github.com/AlchemyCMS/alchemy-json_api/pull/199
+* perf(Elements/Ingredients): Do not serialize timestamps by @mamhoff in https://github.com/AlchemyCMS/alchemy-json_api/pull/229
+
+## New Contributors
+* @github-actions[bot] made their first contribution in https://github.com/AlchemyCMS/alchemy-json_api/pull/212
+
+**Full Changelog**: https://github.com/AlchemyCMS/alchemy-json_api/compare/v8.2.2...v8.4.0
+
 > This changelog tracks the **`alchemy-json_api` Ruby gem**. The npm package
 > `@alchemy_cms/json_api` has its own changelog at
 > [`javascript/CHANGELOG.md`](javascript/CHANGELOG.md).
