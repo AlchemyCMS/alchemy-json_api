@@ -6,9 +6,7 @@ module Alchemy
       def self.included(klass)
         klass.attributes(
           :role,
-          :value,
-          :created_at,
-          :updated_at
+          :value
         )
 
         klass.attribute :deprecated, &:deprecated?

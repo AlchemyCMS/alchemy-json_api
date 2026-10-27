@@ -6,9 +6,7 @@ module Alchemy
       attributes(
         :name,
         :fixed,
-        :position,
-        :created_at,
-        :updated_at
+        :position
       )
 
       cache_options store: Rails.cache, namespace: "alchemy-jsonapi"
