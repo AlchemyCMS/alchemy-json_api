@@ -7,7 +7,7 @@ changelog:
       - skip-changelog
       - chore
       - javascript
-      - autorelease:*
+      - "autorelease: tagged"
 
   categories:
     - title: "Breaking Changes"
