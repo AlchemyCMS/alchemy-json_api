@@ -6,6 +6,7 @@ changelog:
     labels:
       - skip-changelog
       - chore
+      - javascript
 
   categories:
     - title: "Breaking Changes"
