@@ -1,5 +1,59 @@
 # Changelog
 
+## 8.4.0 (2026-10-27)
+
+<!-- Release notes generated using configuration in .github/release.yml at main -->
+
+## What's Changed
+### Breaking Changes
+* fix(deserialize)!: share resources instead of copying them per path by @mamhoff in https://github.com/AlchemyCMS/alchemy-json_api/pull/220
+### New Features
+* feat(serializer): lazy-load relationship data by default by @tvdeyen in https://github.com/AlchemyCMS/alchemy-json_api/pull/203
+* feat(PageSerializer): expose robot_index and robot_follow attributes by @mamhoff in https://github.com/AlchemyCMS/alchemy-json_api/pull/223
+* feat(LayoutPagesController): find layout pages by page layout by @mamhoff in https://github.com/AlchemyCMS/alchemy-json_api/pull/227
+### Bug Fixes
+* fix(IngredientPictureSerializer): Use picture_url by @tvdeyen in https://github.com/AlchemyCMS/alchemy-json_api/pull/214
+### Performance Improvements
+* Route element visibility through ElementsRepository by @tvdeyen in https://github.com/AlchemyCMS/alchemy-json_api/pull/196
+* refactor: load elements through core's shared element repository by @tvdeyen in https://github.com/AlchemyCMS/alchemy-json_api/pull/199
+### Dependencies
+* chore(deps-dev): bump vite from 8.0.8 to 8.0.11 by @dependabot[bot] in https://github.com/AlchemyCMS/alchemy-json_api/pull/179
+* chore(deps-dev): bump vitest from 4.1.4 to 4.1.5 in the vitest group across 1 directory by @dependabot[bot] in https://github.com/AlchemyCMS/alchemy-json_api/pull/177
+* chore(deps-dev): bump prettier from 3.8.1 to 3.8.3 by @dependabot[bot] in https://github.com/AlchemyCMS/alchemy-json_api/pull/176
+* chore(deps-dev): bump vitest from 4.1.5 to 4.1.6 in the vitest group by @dependabot[bot] in https://github.com/AlchemyCMS/alchemy-json_api/pull/180
+* chore(deps-dev): bump vite from 8.0.11 to 8.0.13 by @dependabot[bot] in https://github.com/AlchemyCMS/alchemy-json_api/pull/181
+* chore(deps-dev): bump vite from 8.0.13 to 8.0.14 by @dependabot[bot] in https://github.com/AlchemyCMS/alchemy-json_api/pull/183
+* chore(deps-dev): bump vitest from 4.1.6 to 4.1.7 in the vitest group across 1 directory by @dependabot[bot] in https://github.com/AlchemyCMS/alchemy-json_api/pull/182
+* chore(deps-dev): bump vitest from 4.1.7 to 4.1.8 in the vitest group by @dependabot[bot] in https://github.com/AlchemyCMS/alchemy-json_api/pull/184
+* chore(deps-dev): bump vite from 8.0.14 to 8.0.16 by @dependabot[bot] in https://github.com/AlchemyCMS/alchemy-json_api/pull/185
+* chore(deps-dev): bump prettier from 3.8.3 to 3.8.4 by @dependabot[bot] in https://github.com/AlchemyCMS/alchemy-json_api/pull/187
+* chore(deps-dev): bump vitest from 4.1.8 to 4.1.9 in the vitest group by @dependabot[bot] in https://github.com/AlchemyCMS/alchemy-json_api/pull/188
+* chore(deps-dev): bump vitest from 4.1.9 to 4.1.10 in the vitest group across 1 directory by @dependabot[bot] in https://github.com/AlchemyCMS/alchemy-json_api/pull/191
+* chore(deps-dev): bump prettier from 3.8.4 to 3.9.5 by @dependabot[bot] in https://github.com/AlchemyCMS/alchemy-json_api/pull/192
+* chore(deps-dev): bump vite from 8.0.16 to 8.1.5 by @dependabot[bot] in https://github.com/AlchemyCMS/alchemy-json_api/pull/194
+* chore(deps-dev): bump prettier from 3.9.5 to 3.9.6 by @dependabot[bot] in https://github.com/AlchemyCMS/alchemy-json_api/pull/195
+* chore(deps-dev): bump vite from 8.1.5 to 8.2.0 by @dependabot[bot] in https://github.com/AlchemyCMS/alchemy-json_api/pull/197
+* chore(deps-dev): bump vite from 8.2.0 to 8.2.1 by @dependabot[bot] in https://github.com/AlchemyCMS/alchemy-json_api/pull/198
+* chore(deps-dev): bump vitest from 4.1.10 to 4.1.11 in the vitest group by @dependabot[bot] in https://github.com/AlchemyCMS/alchemy-json_api/pull/205
+* chore(deps-dev): bump vite from 8.2.1 to 8.2.2 by @dependabot[bot] in https://github.com/AlchemyCMS/alchemy-json_api/pull/206
+* chore(deps-dev): bump vite from 8.2.2 to 8.2.4 in /javascript by @dependabot[bot] in https://github.com/AlchemyCMS/alchemy-json_api/pull/226
+### Other Changes
+* feat: Cache ingredient serializers by @tvdeyen in https://github.com/AlchemyCMS/alchemy-json_api/pull/186
+* fix(deserialize): break reference cycles to prevent stack overflow by @tvdeyen in https://github.com/AlchemyCMS/alchemy-json_api/pull/200
+* refactor: stop filtering deprecated content in the deserializer by @tvdeyen in https://github.com/AlchemyCMS/alchemy-json_api/pull/201
+* refactor(ts): migrate deserializer to TypeScript with typed distribution by @tvdeyen in https://github.com/AlchemyCMS/alchemy-json_api/pull/202
+* chore(npm)!: release 4.0.0 by @tvdeyen in https://github.com/AlchemyCMS/alchemy-json_api/pull/207
+* ci: automate npm releases with release-please by @tvdeyen in https://github.com/AlchemyCMS/alchemy-json_api/pull/209
+* chore: release @alchemy_cms/json_api 4.0.0 by @tvdeyen in https://github.com/AlchemyCMS/alchemy-json_api/pull/211
+* chore(main): release package 4.0.0 by @github-actions[bot] in https://github.com/AlchemyCMS/alchemy-json_api/pull/212
+* ci: publish to npm with the npm CLI instead of pnpm by @tvdeyen in https://github.com/AlchemyCMS/alchemy-json_api/pull/213
+* chore(main): release package 5.0.0 by @github-actions[bot] in https://github.com/AlchemyCMS/alchemy-json_api/pull/222
+
+## New Contributors
+* @github-actions[bot] made their first contribution in https://github.com/AlchemyCMS/alchemy-json_api/pull/212
+
+**Full Changelog**: https://github.com/AlchemyCMS/alchemy-json_api/compare/v8.2.2...v8.4.0
+
 > This changelog tracks the **`alchemy-json_api` Ruby gem**. The npm package
 > `@alchemy_cms/json_api` has its own changelog at
 > [`javascript/CHANGELOG.md`](javascript/CHANGELOG.md).
